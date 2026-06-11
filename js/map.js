@@ -175,15 +175,18 @@ function renderRoute(upToDay) {
     if (day.type === "flight") {
       const startCoord = LOCATIONS[day.start];
       if (startCoord) flightSegments.push([startCoord, coord]);
+    } else if (day.roadPoints && day.roadPoints.length > 0) {
+      // Inject the realistic highway curves mapped out for this day
+      drivePoints.push(...day.roadPoints);
     } else {
-      // Only add to drive line if it's a new location
+      // Straight line backup if routing API fails
       const last = drivePoints[drivePoints.length - 1];
       if (!last || last[0] !== coord[0] || last[1] !== coord[1]) {
         drivePoints.push(coord);
       }
     }
 
-    // Marker for every day (overlapping ones stack but tooltip distinguishes)
+    // Marker for every day
     const marker = createMarker(day, coord);
     marker.addTo(map);
     allMarkers.push(marker);
@@ -203,6 +206,37 @@ function renderRoute(upToDay) {
   }
 }
 
+// Automatically convert straight drives into highway routing maps
+async function loadRealisticRoads() {
+  const promises = tripData.days.map(async (day) => {
+    if (day.type === "drive" && day.start !== day.finish) {
+      const startCoord = LOCATIONS[day.start];
+      const finishCoord = LOCATIONS[day.finish];
+      
+      if (startCoord && finishCoord) {
+        // OSRM expects [longitude, latitude] string formatting
+        const url = `https://router.project-osrm.org/route/v1/driving/${startCoord[1]},${startCoord[0]};${finishCoord[1]},${finishCoord[0]}?overview=full&geometries=geojson`;
+        
+        try {
+          const response = await fetch(url);
+          const data = await response.json();
+          if (data.routes && data.routes.length > 0) {
+            // Unpack highway nodes and invert back to [latitude, longitude] for Leaflet
+            day.roadPoints = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
+            return;
+          }
+        } catch (e) {
+          console.warn(`Routing server failed for Day ${day.day}. Reverting to straight connection line.`);
+        }
+      }
+    }
+    // Baseline backup assignment
+    day.roadPoints = [];
+  });
+
+  await Promise.all(promises);
+}
+
 async function init() {
   map = L.map("map", { zoomControl: true, attributionControl: true }).setView([39.5, -98.5], 4);
   L.control.zoom({ position: "bottomright" }).remove();
@@ -213,5 +247,49 @@ async function init() {
     subdomains: "abcd", maxZoom: 19
   }).addTo(map);
 
-  // --- NEW CODE: FETCH AND DRAW STATE BOUNDARIES ---
-  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us
+  // Fetch and draw state boundary lines
+  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
+    .then(res => res.json())
+    .then(geoData => {
+      geoData.features = geoData.features.filter(feature => 
+        !["Alaska", "Hawaii", "Puerto Rico"].includes(feature.properties.name)
+      );
+
+      L.geoJSON(geoData, {
+        style: {
+          color: "#718096",
+          weight: 1.5,
+          fillColor: "#EDF2F7",
+          fillOpacity: 0.2
+        }
+      }).addTo(map);
+    })
+    .catch(err => console.error("Could not render state lines:", err));
+
+  const res = await fetch("data/trip.json");
+  tripData = await res.json();
+
+  // Load actual driving layouts right before building timeline
+  await loadRealisticRoads();
+
+  // Populate stats
+  document.getElementById("stat-days").textContent = tripData.stats.days;
+  document.getElementById("stat-miles").textContent = tripData.stats.milesDriven.toLocaleString();
+  document.getElementById("stat-states").textContent = tripData.stats.states;
+  document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
+
+  renderRoute(93);
+
+  // Fit map to the full route once loaded
+  const allCoords = tripData.days.map(d => LOCATIONS[d.finish]).filter(Boolean);
+  if (allCoords.length) {
+    map.fitBounds(L.latLngBounds(allCoords), { padding: [60, 60] });
+  }
+
+  document.getElementById("close-detail").addEventListener("click", closeDayDetail);
+
+  // Expose for timeline.js
+  window.RT2K15 = { renderRoute, tripData };
+}
+
+init();
