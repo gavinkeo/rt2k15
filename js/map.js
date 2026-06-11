@@ -108,6 +108,11 @@ let eventsModeActive = false;
 // Lower = slower. Higher = faster.
 const CAR_SPEED = 250000;
 
+// Distance display settings
+const LOCAL_DRIVING_MARKUP = 1.10;
+const MILES_TO_KM = 1.609344;
+const COUNTRIES_VISITED = 2;
+
 // Dynamic styling
 const style = document.createElement("style");
 style.innerHTML = `
@@ -166,7 +171,7 @@ style.innerHTML = `
     top: 20px;
     left: 20px;
     z-index: 700;
-    width: 280px;
+    width: 300px;
     background: rgba(250, 250, 247, 0.96);
     backdrop-filter: blur(8px);
     border: 1px solid rgba(20, 20, 20, 0.12);
@@ -233,39 +238,42 @@ style.innerHTML = `
     background: rgba(255,255,255,0.68);
     position: relative;
     overflow: hidden;
-    min-height: 56px;
+    min-height: 58px;
   }
 
   .stat-main-row {
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
   }
 
   .trip-menu .stat-value {
     display: block;
-    font-size: 24px;
+    font-size: 23px;
     font-weight: 850;
     line-height: 1;
     letter-spacing: -0.03em;
     color: #111;
+    white-space: nowrap;
   }
 
   .stat-label-row {
     display: block;
     margin-top: 8px;
-    font-size: 10px;
+    font-size: 9.5px;
     text-transform: uppercase;
     letter-spacing: 0.10em;
     color: rgba(0,0,0,0.54);
+    white-space: nowrap;
   }
 
   .stat-icon-emoji {
-    font-size: 22px;
+    font-size: 21px;
     line-height: 1;
     margin-top: -1px;
     filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+    flex: 0 0 auto;
   }
 
   .flag-icon {
@@ -321,6 +329,57 @@ style.innerHTML = `
     color: #d52b1e;
     font-size: 11px;
     line-height: 1;
+  }
+
+  .suv-icon {
+    width: 34px;
+    height: 20px;
+    display: inline-block;
+    position: relative;
+    flex: 0 0 auto;
+    margin-top: 0px;
+  }
+
+  .suv-icon::before {
+    content: "";
+    position: absolute;
+    left: 2px;
+    top: 6px;
+    width: 29px;
+    height: 10px;
+    background: #111;
+    border-radius: 6px 8px 4px 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.22);
+  }
+
+  .suv-icon::after {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 2px;
+    width: 16px;
+    height: 8px;
+    background: #111;
+    border-radius: 7px 8px 0 0;
+  }
+
+  .suv-wheel {
+    position: absolute;
+    bottom: 1px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #111;
+    box-shadow: inset 0 0 0 2px #444;
+    z-index: 2;
+  }
+
+  .suv-wheel.front {
+    right: 4px;
+  }
+
+  .suv-wheel.back {
+    left: 5px;
   }
 
   .menu-section {
@@ -398,12 +457,16 @@ style.innerHTML = `
     .trip-menu {
       top: 10px;
       left: 10px;
-      width: min(280px, calc(100% - 20px));
+      width: min(300px, calc(100% - 20px));
     }
 
     .trip-menu-toggle {
       padding: 10px 12px;
       font-size: 16px;
+    }
+
+    .trip-menu .stat-value {
+      font-size: 22px;
     }
   }
 `;
@@ -416,6 +479,18 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function formatShortStat(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) return "—";
+
+  if (Math.abs(number) >= 1000) {
+    return `${(number / 1000).toFixed(1)}K`;
+  }
+
+  return Math.round(number).toLocaleString();
 }
 
 function greatCircleArc(start, end, segments = 64) {
@@ -630,13 +705,32 @@ function setupTripMenu() {
             <span class="stat-value" id="stat-miles">—</span>
             <span class="stat-icon-emoji" aria-hidden="true">🛣️</span>
           </div>
-          <span class="stat-label-row">Miles</span>
+          <span class="stat-label-row">Miles est.</span>
+        </div>
+
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-km">—</span>
+            <span class="suv-icon" aria-hidden="true">
+              <span class="suv-wheel back"></span>
+              <span class="suv-wheel front"></span>
+            </span>
+          </div>
+          <span class="stat-label-row">Kilometres est.</span>
+        </div>
+
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-countries">—</span>
+            <span class="stat-icon-emoji" aria-hidden="true">🌎</span>
+          </div>
+          <span class="stat-label-row">Countries</span>
         </div>
 
         <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-states">—</span>
-            <span class="flag-icon flag-usa" aria-label="United States flag"></span>
+            <span class="flag-icon flag-usa" aria-hidden="true"></span>
           </div>
           <span class="stat-label-row">States</span>
         </div>
@@ -644,7 +738,7 @@ function setupTripMenu() {
         <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-provinces">—</span>
-            <span class="flag-icon flag-canada" aria-label="Canada flag"></span>
+            <span class="flag-icon flag-canada" aria-hidden="true"></span>
           </div>
           <span class="stat-label-row">Provinces</span>
         </div>
@@ -1026,8 +1120,14 @@ async function init() {
 
   setupTripMenu();
 
+  const rawMiles = Number(tripData.stats.milesDriven) || 0;
+  const estimatedMiles = rawMiles * LOCAL_DRIVING_MARKUP;
+  const estimatedKm = estimatedMiles * MILES_TO_KM;
+
   document.getElementById("stat-days").textContent = tripData.stats.days;
-  document.getElementById("stat-miles").textContent = tripData.stats.milesDriven.toLocaleString();
+  document.getElementById("stat-miles").textContent = formatShortStat(estimatedMiles);
+  document.getElementById("stat-km").textContent = formatShortStat(estimatedKm);
+  document.getElementById("stat-countries").textContent = COUNTRIES_VISITED;
   document.getElementById("stat-states").textContent = tripData.stats.states;
   document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
 
@@ -1051,7 +1151,8 @@ async function init() {
     isRouteAnimating: () => isRouteAnimating,
     setEventsMode,
     tripData,
-    carSpeed: CAR_SPEED
+    carSpeed: CAR_SPEED,
+    localDrivingMarkup: LOCAL_DRIVING_MARKUP
   };
 }
 
