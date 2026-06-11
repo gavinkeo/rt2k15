@@ -70,6 +70,13 @@ const STATE_CODES = {
   "Prince Edward Island": "PE", "Quebec": "QC", "Saskatchewan": "SK"
 };
 
+// Manual label positions for provinces where Leaflet's centre point looks visually wrong.
+const MANUAL_PROVINCE_LABELS = {
+  "British Columbia": [53.7, -125.2],
+  "Ontario": [49.8, -84.8],
+  "Newfoundland and Labrador": [53.3, -60.8]
+};
+
 const EVENT_ICONS = {
   "MLB": "⚾",
   "NFL": "🏈",
@@ -106,7 +113,7 @@ let eventsModeActive = false;
 
 // SPEED CONTROLLER: metres per second.
 // Lower = slower. Higher = faster.
-const CAR_SPEED = 500000;
+const CAR_SPEED = 250000;
 
 // Distance display settings
 const LOCAL_DRIVING_MARKUP = 1.10;
@@ -1082,15 +1089,37 @@ async function init() {
           fillOpacity: 0
         },
         onEachFeature: (f, l) => {
-          if (STATE_CODES[f.properties.name]) {
-            l.bindTooltip(STATE_CODES[f.properties.name], {
-              permanent: true,
-              direction: "center",
-              className: "state-label"
-            });
-          }
+          const name = f.properties.name;
+          const code = STATE_CODES[name];
+
+          if (!code) return;
+
+          // Awkwardly shaped provinces get manual labels instead.
+          if (MANUAL_PROVINCE_LABELS[name]) return;
+
+          l.bindTooltip(code, {
+            permanent: true,
+            direction: "center",
+            className: "state-label"
+          });
         }
       }).addTo(map);
+
+      Object.entries(MANUAL_PROVINCE_LABELS).forEach(([name, coord]) => {
+        const code = STATE_CODES[name];
+        if (!code) return;
+
+        L.marker(coord, {
+          interactive: false,
+          opacity: 0
+        })
+          .bindTooltip(code, {
+            permanent: true,
+            direction: "center",
+            className: "state-label"
+          })
+          .addTo(map);
+      });
     });
 
   const res = await fetch("data/trip.json");
