@@ -97,7 +97,7 @@ let paintedPoints = [];
 let carCurrentPos = null;
 let lastEngineTime = null;
 
-// Timeline.js waits on these so long drives are not interrupted.
+// timeline.js waits on these so long drives are not interrupted.
 let isRouteAnimating = false;
 let routeAnimationResolvers = [];
 
@@ -229,24 +229,98 @@ style.innerHTML = `
   .trip-menu .stat {
     border: 1px solid rgba(0,0,0,0.10);
     border-radius: 8px;
-    padding: 8px;
-    background: rgba(255,255,255,0.62);
+    padding: 11px 12px;
+    background: rgba(255,255,255,0.68);
+    position: relative;
+    overflow: hidden;
+    min-height: 56px;
+  }
+
+  .stat-main-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   .trip-menu .stat-value {
     display: block;
-    font-size: 18px;
-    font-weight: 800;
+    font-size: 24px;
+    font-weight: 850;
     line-height: 1;
+    letter-spacing: -0.03em;
+    color: #111;
   }
 
-  .trip-menu .stat-label {
+  .stat-label-row {
     display: block;
-    margin-top: 4px;
+    margin-top: 8px;
     font-size: 10px;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.10em;
     color: rgba(0,0,0,0.54);
+  }
+
+  .stat-icon-emoji {
+    font-size: 22px;
+    line-height: 1;
+    margin-top: -1px;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+  }
+
+  .flag-icon {
+    width: 30px;
+    height: 20px;
+    display: inline-block;
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.18), 0 1px 2px rgba(0,0,0,0.12);
+    flex: 0 0 auto;
+  }
+
+  .flag-usa {
+    background: repeating-linear-gradient(
+      to bottom,
+      #b22234 0px,
+      #b22234 2px,
+      #ffffff 2px,
+      #ffffff 4px
+    );
+  }
+
+  .flag-usa::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 13px;
+    height: 11px;
+    background: #3c3b6e;
+    border-radius: 2px 0 2px 0;
+  }
+
+  .flag-canada {
+    background: linear-gradient(
+      to right,
+      #d52b1e 0%,
+      #d52b1e 25%,
+      #ffffff 25%,
+      #ffffff 75%,
+      #d52b1e 75%,
+      #d52b1e 100%
+    );
+  }
+
+  .flag-canada::before {
+    content: "✦";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -53%);
+    color: #d52b1e;
+    font-size: 11px;
+    line-height: 1;
   }
 
   .menu-section {
@@ -523,63 +597,68 @@ function setEventsMode(active) {
 }
 
 function setupTripMenu() {
-  let menu = document.getElementById("trip-menu");
+  let menu = document.getElementById("trip-menu") || document.querySelector(".panel-info");
 
   if (!menu) {
-    const oldPanel = document.querySelector(".panel-info");
+    menu = document.createElement("div");
+    document.body.appendChild(menu);
+  }
 
-    if (oldPanel) {
-      menu = oldPanel;
-      menu.id = "trip-menu";
-      menu.className = "trip-menu";
-    } else {
-      menu = document.createElement("div");
-      menu.id = "trip-menu";
-      menu.className = "trip-menu";
-      document.body.appendChild(menu);
-    }
+  menu.id = "trip-menu";
+  menu.className = "trip-menu";
 
-    menu.innerHTML = `
-      <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
-        <span>RT2K15</span>
-        <span class="trip-menu-chevron">▾</span>
-      </button>
+  menu.innerHTML = `
+    <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
+      <span>RT2K15</span>
+      <span class="trip-menu-chevron">▾</span>
+    </button>
 
-      <div class="trip-menu-content" id="trip-menu-content">
-        <p class="subtitle">San Francisco → Miami, the long way</p>
+    <div class="trip-menu-content" id="trip-menu-content">
+      <p class="subtitle">San Francisco → Miami, the long way</p>
 
-<div class="stats">
-  <div class="stat">
-    <span class="stat-value" id="stat-days">—</span>
-    <span class="stat-label">🕒 DAYS</span>
-  </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-days">—</span>
+            <span class="stat-icon-emoji" aria-hidden="true">🕒</span>
+          </div>
+          <span class="stat-label-row">Days</span>
+        </div>
 
-  <div class="stat">
-    <span class="stat-value" id="stat-miles">—</span>
-    <span class="stat-label">🛣️ MILES</span>
-  </div>
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-miles">—</span>
+            <span class="stat-icon-emoji" aria-hidden="true">🛣️</span>
+          </div>
+          <span class="stat-label-row">Miles</span>
+        </div>
 
-  <div class="stat">
-    <span class="stat-value" id="stat-states">—</span>
-    <span class="stat-label">🇺🇸 STATES</span>
-  </div>
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-states">—</span>
+            <span class="flag-icon flag-usa" aria-label="United States flag"></span>
+          </div>
+          <span class="stat-label-row">States</span>
+        </div>
 
-  <div class="stat">
-    <span class="stat-value" id="stat-provinces">—</span>
-    <span class="stat-label">🇨🇦 PROVINCES</span>
-  </div>
-</div>
-
-        <div class="menu-section">
-          <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
-            Highlight events
-          </button>
-
-          <div class="events-list" id="events-list"></div>
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-provinces">—</span>
+            <span class="flag-icon flag-canada" aria-label="Canada flag"></span>
+          </div>
+          <span class="stat-label-row">Provinces</span>
         </div>
       </div>
-    `;
-  }
+
+      <div class="menu-section">
+        <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
+          Highlight events
+        </button>
+
+        <div class="events-list" id="events-list"></div>
+      </div>
+    </div>
+  `;
 
   const toggle = document.getElementById("trip-menu-toggle");
   const eventsToggle = document.getElementById("events-toggle");
