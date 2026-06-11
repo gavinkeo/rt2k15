@@ -104,12 +104,12 @@ style.innerHTML = `
     text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
   }
   
-  /* The sleek CX-5 */
+  /* Static profile wrapper for the CX-5 */
   .cx5-car {
-    width: 32px;
-    height: 56px;
-    margin-left: -16px;
-    margin-top: -28px;
+    width: 56px;
+    height: 32px;
+    margin-left: -28px;
+    margin-top: -16px;
   }
 `;
 document.head.appendChild(style);
@@ -132,17 +132,6 @@ function greatCircleArc(start, end, segments = 64) {
     points.push([lat, lon]);
   }
   return points;
-}
-
-function getBearing(start, end) {
-  const lat1 = start[0] * Math.PI / 180;
-  const lon1 = start[1] * Math.PI / 180;
-  const lat2 = end[0] * Math.PI / 180;
-  const lon2 = end[1] * Math.PI / 180;
-  const y = Math.sin(lon2 - lon1) * Math.cos(lat2);
-  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
-  const brng = Math.atan2(y, x) * 180 / Math.PI;
-  return (brng + 360) % 360;
 }
 
 function createMarker(day, latlng) {
@@ -236,36 +225,31 @@ function renderRoute(upToDay) {
   }
 
   if (drivePoints.length > 1) {
-    // ELECTRIC NEON CYAN LINE
     routeLayer = L.polyline(drivePoints, {
       color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
     }).addTo(map);
 
     const lastPoint = drivePoints[drivePoints.length - 1];
     const prevPoint = drivePoints[drivePoints.length - 2];
-    const bearing = getBearing(prevPoint, lastPoint);
 
-    // Calculate duration based on distance so speed is visually consistent
+    // Calculate distance and slow down animation speed to 1/3rd of previous value
     const distanceMeters = map.distance(prevPoint, lastPoint);
-    // Limits animation to be between 0.6 seconds (short hops) and 3.5 seconds (long cross-country drives)
-    const duration = Math.max(0.6, Math.min(3.5, distanceMeters / 250000));
+    const duration = Math.max(1.8, Math.min(10.5, (distanceMeters / 250000) * 3));
 
-    // Sleek new Mazda CX-5 SVG
+    // Side profile SVG view of a crossover SUV (No Rotation)
     const carHtml = `
       <div class="cx5-car">
-        <svg viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(${bearing}deg); transition: transform 0.3s ease;">
-          <rect x="18" y="15" width="64" height="150" rx="20" fill="rgba(0,0,0,0.5)" filter="blur(4px)"/>
-          <path d="M 22 30 C 22 15, 78 15, 78 30 L 82 150 C 82 170, 18 170, 18 150 Z" fill="#151515" stroke="#333" stroke-width="1.5"/>
-          <path d="M 28 65 Q 50 55 72 65 L 68 40 Q 50 35 32 40 Z" fill="#0a0a0a" stroke="#222"/>
-          <path d="M 30 65 L 70 65 L 68 135 L 32 135 Z" fill="#111"/>
-          <rect x="38" y="75" width="24" height="30" rx="3" fill="#050505"/>
-          <path d="M 32 135 L 68 135 L 74 155 Q 50 160 26 155 Z" fill="#0a0a0a" stroke="#222"/>
-          <path d="M 22 25 Q 30 20 38 24 L 35 28 Q 28 26 22 30 Z" fill="#E6FFFF"/>
-          <path d="M 78 25 Q 70 20 62 24 L 65 28 Q 72 26 78 30 Z" fill="#E6FFFF"/>
-          <polygon points="22,25 38,24 -15,-50 0,-60" fill="rgba(255,255,255,0.12)"/>
-          <polygon points="78,25 62,24 115,-50 100,-60" fill="rgba(255,255,255,0.12)"/>
-          <path d="M 20 155 Q 30 160 40 157 L 40 153 Q 30 156 22 152 Z" fill="#FF0000"/>
-          <path d="M 80 155 Q 70 160 60 157 L 60 153 Q 70 156 78 152 Z" fill="#FF0000"/>
+        <svg viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="90" cy="82" rx="75" ry="10" fill="rgba(0,0,0,0.4)" filter="blur(3px)"/>
+          <circle cx="45" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
+          <circle cx="45" cy="75" r="7" fill="#555"/>
+          <circle cx="135" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
+          <circle cx="135" cy="75" r="7" fill="#555"/>
+          <path d="M 15 65 Q 12 55 20 45 L 45 42 L 75 25 Q 95 22 135 25 L 160 45 Q 168 55 165 65 Q 160 70 150 70 L 148 68 Q 135 58 122 68 L 58 68 Q 45 58 32 68 L 20 70 Z" fill="#181818" stroke="#444" stroke-width="1.5"/>
+          <path d="M 52 40 L 74 27 L 102 27 L 108 40 Z" fill="#080808"/>
+          <path d="M 112 40 L 105 27 L 132 27 L 145 40 Z" fill="#080808"/>
+          <path d="M 160 46 L 165 48 L 162 54 Z" fill="#FFFFEE"/>
+          <path d="M 20 46 L 15 48 L 17 54 Z" fill="#FF2222"/>
         </svg>
       </div>
     `;
@@ -278,7 +262,6 @@ function renderRoute(upToDay) {
     } else {
       const markerEl = carMarker.getElement();
       if (markerEl) {
-        // Injects dynamic, calculated speed
         markerEl.style.transition = `transform ${duration}s linear`; 
         carMarker.setLatLng(lastPoint);
         carMarker.setIcon(L.divIcon({ className: 'moving-car-icon', html: carHtml, iconSize: [0, 0] }));
@@ -322,7 +305,6 @@ async function loadRealisticRoads() {
 }
 
 async function init() {
-  // Clear all default zoom controls so we can place it bottom-left
   map = L.map("map", { zoomControl: false, attributionControl: true }).setView([39.5, -98.5], 4);
   L.control.zoom({ position: "bottomleft" }).addTo(map);
 
