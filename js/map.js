@@ -208,8 +208,8 @@ async function init() {
   L.control.zoom({ position: "bottomright" }).remove();
   L.control.zoom({ position: "topright" }).addTo(map);
 
-  L.tileLayer("[{s}.basemaps.cartocdn.com](https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png)", {
-    attribution: '&copy; OpenStreetMap &copy; CARTO',
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
     subdomains: "abcd", maxZoom: 19
   }).addTo(map);
 
