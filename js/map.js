@@ -548,12 +548,27 @@ function setupTripMenu() {
       <div class="trip-menu-content" id="trip-menu-content">
         <p class="subtitle">San Francisco → Miami, the long way</p>
 
-        <div class="stats">
-          <div class="stat"><span class="stat-value" id="stat-days">—</span><span class="stat-label">days</span></div>
-          <div class="stat"><span class="stat-value" id="stat-miles">—</span><span class="stat-label">miles</span></div>
-          <div class="stat"><span class="stat-value" id="stat-states">—</span><span class="stat-label">states</span></div>
-          <div class="stat"><span class="stat-value" id="stat-provinces">—</span><span class="stat-label">provinces</span></div>
-        </div>
+<div class="stats">
+  <div class="stat">
+    <span class="stat-value" id="stat-days">—</span>
+    <span class="stat-label">🕒 DAYS</span>
+  </div>
+
+  <div class="stat">
+    <span class="stat-value" id="stat-miles">—</span>
+    <span class="stat-label">🛣️ MILES</span>
+  </div>
+
+  <div class="stat">
+    <span class="stat-value" id="stat-states">—</span>
+    <span class="stat-label">🇺🇸 STATES</span>
+  </div>
+
+  <div class="stat">
+    <span class="stat-value" id="stat-provinces">—</span>
+    <span class="stat-label">🇨🇦 PROVINCES</span>
+  </div>
+</div>
 
         <div class="menu-section">
           <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
