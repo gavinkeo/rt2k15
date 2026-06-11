@@ -239,12 +239,13 @@ async function init() {
   L.control.zoom({ position: "bottomright" }).remove();
   L.control.zoom({ position: "topright" }).addTo(map);
 
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png", {
-  attribution: '&copy; OpenStreetMap &copy; CARTO',
-    subdomains: "abcd", maxZoom: 19
+  // --- SATELLITE MAP LAYER ---
+  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    maxZoom: 19
   }).addTo(map);
 
-  // Fetch and draw state boundary lines
+  // --- FETCH AND DRAW CLEAN WHITE STATE BOUNDARIES ---
   fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
     .then(res => res.json())
     .then(geoData => {
@@ -254,10 +255,9 @@ async function init() {
 
       L.geoJSON(geoData, {
         style: {
-          color: "#718096",
-          weight: 1.5,
-          fillColor: "#EDF2F7",
-          fillOpacity: 0.2
+          color: "#FFFFFF",      // Crisp white borders
+          weight: 1,             // Thin lines
+          fillOpacity: 0         // Transparent fill so the satellite photo shows perfectly
         }
       }).addTo(map);
     })
