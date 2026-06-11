@@ -68,6 +68,7 @@ const EVENT_ICONS = {
 // Global Tracking Variables
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
+let eventsModeActive = false;
 
 // --- DECOUPLED PHYSICS ENGINE VARIABLES ---
 let carMarker = null;
