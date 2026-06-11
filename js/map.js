@@ -62,7 +62,24 @@ const EVENT_ICONS = {
 };
 
 let map, routeLayer, flightLayer, allMarkers = [];
+let carMarker = null; // Our new Mazda CX-5
 let tripData = null;
+
+// Inject CSS for smooth car driving
+const style = document.createElement('style');
+style.innerHTML = `
+  .moving-car-icon {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+  .cx5-car {
+    width: 28px;
+    height: 48px;
+    margin-left: -14px;
+    margin-top: -24px;
+    transition: transform 0.4s ease-out;
+  }
+`;
+document.head.appendChild(style);
 
 // Build a great-circle arc between two points (for flights)
 function greatCircleArc(start, end, segments = 64) {
@@ -83,6 +100,18 @@ function greatCircleArc(start, end, segments = 64) {
     points.push([lat, lon]);
   }
   return points;
+}
+
+// Calculate the heading angle for the car
+function getBearing(start, end) {
+  const lat1 = start[0] * Math.PI / 180;
+  const lon1 = start[1] * Math.PI / 180;
+  const lat2 = end[0] * Math.PI / 180;
+  const lon2 = end[1] * Math.PI / 180;
+  const y = Math.sin(lon2 - lon1) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(lon2 - lon1);
+  const brng = Math.atan2(y, x) * 180 / Math.PI;
+  return (brng + 360) % 360;
 }
 
 function createMarker(day, latlng) {
@@ -173,26 +202,66 @@ function renderRoute(upToDay) {
       const startCoord = LOCATIONS[day.start];
       if (startCoord) flightSegments.push([startCoord, coord]);
     } else if (day.roadPoints && day.roadPoints.length > 0) {
-      // Inject the realistic highway curves mapped out for this day
       drivePoints.push(...day.roadPoints);
     } else {
-      // Straight line backup if routing API fails
       const last = drivePoints[drivePoints.length - 1];
       if (!last || last[0] !== coord[0] || last[1] !== coord[1]) {
         drivePoints.push(coord);
       }
     }
 
-    // Marker for every day
     const marker = createMarker(day, coord);
     marker.addTo(map);
     allMarkers.push(marker);
   }
 
   if (drivePoints.length > 1) {
+    // ELECTRIC NEON CYAN LINE
     routeLayer = L.polyline(drivePoints, {
-      color: "#E85D2F", weight: 3, opacity: 0.85, lineJoin: "round"
+      color: "#00E5FF", 
+      weight: 4, 
+      opacity: 0.9, 
+      lineJoin: "round"
     }).addTo(map);
+
+    // THE MAZDA CX-5 LOGIC
+    const lastPoint = drivePoints[drivePoints.length - 1];
+    const prevPoint = drivePoints[drivePoints.length - 2];
+    const bearing = getBearing(prevPoint, lastPoint);
+
+    const carHtml = `
+      <div class="cx5-car" style="transform: rotate(${bearing}deg);">
+        <svg viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
+          <rect x="15" y="10" width="70" height="140" rx="18" fill="#111" stroke="#333" stroke-width="2"/>
+          <path d="M22 55 L78 55 L72 35 L28 35 Z" fill="#000" stroke="#444" stroke-width="1"/>
+          <path d="M25 115 L75 115 L70 130 L30 130 Z" fill="#000" stroke="#444" stroke-width="1"/>
+          <ellipse cx="25" cy="16" rx="7" ry="5" fill="#FFFFDD" />
+          <ellipse cx="75" cy="16" rx="7" ry="5" fill="#FFFFDD" />
+          <rect x="18" y="142" width="16" height="6" rx="2" fill="#FF1111"/>
+          <rect x="66" y="142" width="16" height="6" rx="2" fill="#FF1111"/>
+        </svg>
+      </div>
+    `;
+
+    if (!carMarker) {
+      carMarker = L.marker(lastPoint, {
+        icon: L.divIcon({
+          className: 'moving-car-icon',
+          html: carHtml,
+          iconSize: [0, 0] 
+        }),
+        zIndexOffset: 1000 // Always on top
+      }).addTo(map);
+    } else {
+      carMarker.setLatLng(lastPoint);
+      const iconDiv = carMarker.getElement().querySelector('.cx5-car');
+      if (iconDiv) {
+        iconDiv.style.transform = `rotate(${bearing}deg)`;
+      }
+    }
+  } else if (carMarker) {
+    carMarker.remove();
+    carMarker = null;
   }
 
   if (flightSegments.length) {
@@ -211,14 +280,12 @@ async function loadRealisticRoads() {
       const finishCoord = LOCATIONS[day.finish];
       
       if (startCoord && finishCoord) {
-        // OSRM expects [longitude, latitude] string formatting
         const url = `https://router.project-osrm.org/route/v1/driving/${startCoord[1]},${startCoord[0]};${finishCoord[1]},${finishCoord[0]}?overview=full&geometries=geojson`;
         
         try {
           const response = await fetch(url);
           const data = await response.json();
           if (data.routes && data.routes.length > 0) {
-            // Unpack highway nodes and invert back to [latitude, longitude] for Leaflet
             day.roadPoints = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
             return;
           }
@@ -227,7 +294,6 @@ async function loadRealisticRoads() {
         }
       }
     }
-    // Baseline backup assignment
     day.roadPoints = [];
   });
 
@@ -255,9 +321,9 @@ async function init() {
 
       L.geoJSON(geoData, {
         style: {
-          color: "#FFFFFF",      // Crisp white borders
-          weight: 1,             // Thin lines
-          fillOpacity: 0         // Transparent fill so the satellite photo shows perfectly
+          color: "#FFFFFF",      
+          weight: 1,             
+          fillOpacity: 0         
         }
       }).addTo(map);
     })
