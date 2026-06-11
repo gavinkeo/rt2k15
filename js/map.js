@@ -700,26 +700,7 @@ function setupTripMenu() {
           <span class="stat-label-row">Days</span>
         </div>
 
-        <div class="stat">
-          <div class="stat-main-row">
-            <span class="stat-value" id="stat-miles">—</span>
-            <span class="stat-icon-emoji" aria-hidden="true">🛣️</span>
-          </div>
-          <span class="stat-label-row">Miles est.</span>
-        </div>
-
-        <div class="stat">
-          <div class="stat-main-row">
-            <span class="stat-value" id="stat-km">—</span>
-            <span class="suv-icon" aria-hidden="true">
-              <span class="suv-wheel back"></span>
-              <span class="suv-wheel front"></span>
-            </span>
-          </div>
-          <span class="stat-label-row">Kilometres est.</span>
-        </div>
-
-        <div class="stat">
+                <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-countries">—</span>
             <span class="stat-icon-emoji" aria-hidden="true">🌎</span>
@@ -743,6 +724,25 @@ function setupTripMenu() {
           <span class="stat-label-row">Provinces</span>
         </div>
       </div>
+
+              <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-km">—</span>
+            <span class="suv-icon" aria-hidden="true">
+              <span class="suv-wheel back"></span>
+              <span class="suv-wheel front"></span>
+            </span>
+          </div>
+          <span class="stat-label-row">Kilometres</span>
+        </div>
+
+              <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-miles">—</span>
+            <span class="stat-icon-emoji" aria-hidden="true">🛣️</span>
+          </div>
+          <span class="stat-label-row">Miles</span>
+        </div>
 
       <div class="menu-section">
         <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
