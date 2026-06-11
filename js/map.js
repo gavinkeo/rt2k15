@@ -106,7 +106,7 @@ let eventsModeActive = false;
 
 // SPEED CONTROLLER: metres per second.
 // Lower = slower. Higher = faster.
-const CAR_SPEED = 400000;
+const CAR_SPEED = 500000;
 
 // Distance display settings
 const LOCAL_DRIVING_MARKUP = 1.10;
