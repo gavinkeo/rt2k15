@@ -231,6 +231,28 @@ style.innerHTML = `
     margin-bottom: 16px;
   }
 
+  .trip-menu.events-open .stats {
+    display: none;
+  }
+
+  .stats-compact {
+    display: none;
+    margin-bottom: 12px;
+    padding: 10px 11px;
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.72);
+    font-size: 11px;
+    line-height: 1.55;
+    color: rgba(0,0,0,0.66);
+    font-weight: 750;
+    letter-spacing: 0.01em;
+  }
+
+  .trip-menu.events-open .stats-compact {
+    display: block;
+  }
+
   .trip-menu .stat {
     border: 1px solid rgba(0,0,0,0.10);
     border-radius: 8px;
@@ -387,6 +409,11 @@ style.innerHTML = `
     padding-top: 14px;
   }
 
+  .trip-menu.events-open .menu-section {
+    padding-top: 0;
+    border-top: none;
+  }
+
   .menu-action-btn {
     width: 100%;
     border: 1px solid #111;
@@ -412,7 +439,7 @@ style.innerHTML = `
   .events-list {
     margin-top: 12px;
     display: none;
-    max-height: 260px;
+    max-height: 310px;
     overflow-y: auto;
     padding-right: 2px;
   }
@@ -467,6 +494,10 @@ style.innerHTML = `
 
     .trip-menu .stat-value {
       font-size: 22px;
+    }
+
+    .events-list {
+      max-height: 290px;
     }
   }
 `;
@@ -700,7 +731,7 @@ function setupTripMenu() {
           <span class="stat-label-row">Days</span>
         </div>
 
-                <div class="stat">
+        <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-countries">—</span>
             <span class="stat-icon-emoji" aria-hidden="true">🌎</span>
@@ -723,9 +754,8 @@ function setupTripMenu() {
           </div>
           <span class="stat-label-row">Provinces</span>
         </div>
-      </div>
 
-              <div class="stat">
+        <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-km">—</span>
             <span class="suv-icon" aria-hidden="true">
@@ -736,13 +766,23 @@ function setupTripMenu() {
           <span class="stat-label-row">Kilometres</span>
         </div>
 
-              <div class="stat">
+        <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-miles">—</span>
             <span class="stat-icon-emoji" aria-hidden="true">🛣️</span>
           </div>
           <span class="stat-label-row">Miles</span>
         </div>
+      </div>
+
+      <div class="stats-compact" id="stats-compact">
+        <span id="compact-days">—</span>d ·
+        <span id="compact-countries">—</span> countries ·
+        <span id="compact-states">—</span> states ·
+        <span id="compact-provinces">—</span> provinces ·
+        <span id="compact-km">—</span> km ·
+        <span id="compact-miles">—</span> mi
+      </div>
 
       <div class="menu-section">
         <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
@@ -1125,11 +1165,18 @@ async function init() {
   const estimatedKm = estimatedMiles * MILES_TO_KM;
 
   document.getElementById("stat-days").textContent = tripData.stats.days;
-  document.getElementById("stat-miles").textContent = formatShortStat(estimatedMiles);
-  document.getElementById("stat-km").textContent = formatShortStat(estimatedKm);
   document.getElementById("stat-countries").textContent = COUNTRIES_VISITED;
   document.getElementById("stat-states").textContent = tripData.stats.states;
   document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
+  document.getElementById("stat-km").textContent = formatShortStat(estimatedKm);
+  document.getElementById("stat-miles").textContent = formatShortStat(estimatedMiles);
+
+  document.getElementById("compact-days").textContent = tripData.stats.days;
+  document.getElementById("compact-countries").textContent = COUNTRIES_VISITED;
+  document.getElementById("compact-states").textContent = tripData.stats.states;
+  document.getElementById("compact-provinces").textContent = tripData.stats.provinces;
+  document.getElementById("compact-km").textContent = formatShortStat(estimatedKm);
+  document.getElementById("compact-miles").textContent = formatShortStat(estimatedMiles);
 
   renderRoute(93, { instant: true });
 
