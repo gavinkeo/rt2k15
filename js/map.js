@@ -151,62 +151,48 @@ function closeDayDetail() {
 // --- THE BUG-FREE PHYSICS ENGINE ---
 function engineLoop(timestamp) {
   if (!lastEngineTime) lastEngineTime = timestamp;
-  const dt = timestamp - lastEngineTime;
+  const dt = Math.min(timestamp - lastEngineTime, 50); // Cap frame drops
   lastEngineTime = timestamp;
 
-  if (carQueue.length > 0 && carCurrentPos) {
-    // Meters per millisecond (Adjust 0.05 to make it faster/slower)
-    const speed = 0.05; 
-    let distanceToTravel = speed * dt;
+  if (animationQueue.length > 0 && carCurrentPos) {
+    let distanceToTravel = CAR_SPEED * (dt / 1000);
 
-    while (distanceToTravel > 0 && carQueue.length > 0) {
-      const targetPos = carQueue[0];
+    while (distanceToTravel > 0 && animationQueue.length > 0) {
+      const targetPos = animationQueue[0];
       const distToTarget = map.distance(carCurrentPos, targetPos);
+
+      // THE FIX: If distance is 0, consume point immediately and skip math to avoid NaN
+      if (distToTarget === 0) {
+        carCurrentPos = targetPos;
+        paintedPoints.push(targetPos);
+        animationQueue.shift();
+        continue;
+      }
 
       if (distToTarget <= distanceToTravel) {
         carCurrentPos = targetPos;
-        carQueue.shift();
+        paintedPoints.push(targetPos);
+        animationQueue.shift();
         distanceToTravel -= distToTarget;
       } else {
         const ratio = distanceToTravel / distToTarget;
-        carCurrentPos = [
-          carCurrentPos[0] + (targetPos[0] - carCurrentPos[0]) * ratio,
-          carCurrentPos[1] + (targetPos[1] - carCurrentPos[1]) * ratio
-        ];
+        const lat = carCurrentPos[0] + (targetPos[0] - carCurrentPos[0]) * ratio;
+        const lng = carCurrentPos[1] + (targetPos[1] - carCurrentPos[1]) * ratio;
+        carCurrentPos = [lat, lng];
         distanceToTravel = 0;
       }
     }
+
     if (carMarker) carMarker.setLatLng(carCurrentPos);
+    if (activeLineLayer) activeLineLayer.setLatLngs([...paintedPoints, carCurrentPos]);
   }
+
   requestAnimationFrame(engineLoop);
 }
 
 function renderRoute(upToDay) {
-  // 1. Keep markers and static lines
-  if (routeLayer) routeLayer.remove();
-  allMarkers.forEach(m => m.remove());
-  allMarkers = [];
-
-  let staticPoints = [];
-  for (const day of tripData.days) {
-    if (day.day > upToDay) break;
-    let pts = (day.roadPoints && day.roadPoints.length > 0) ? day.roadPoints : [LOCATIONS[day.finish]];
-    staticPoints.push(...pts);
-    allMarkers.push(createMarker(day, LOCATIONS[day.finish]));
-  }
-
-  // 2. Draw historical route
-  routeLayer = L.polyline(staticPoints, { color: "#00E5FF", weight: 4 }).addTo(map);
-
-  // 3. ONLY push to queue if the timeline moved forward
-  if (upToDay > lastUpToDay) {
-    const currentDay = tripData.days.find(d => d.day === upToDay);
-    if (currentDay && currentDay.roadPoints) {
-      carQueue.push(...currentDay.roadPoints);
-    }
-  }
+  const isPlaying = (upToDay === lastUpToDay + 1);
   lastUpToDay = upToDay;
-}
 
   if (routeLayer) routeLayer.remove();
   if (flightLayer) flightLayer.remove();
