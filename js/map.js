@@ -353,57 +353,6 @@ style.innerHTML = `
     line-height: 1;
   }
 
-  .suv-icon {
-    width: 34px;
-    height: 20px;
-    display: inline-block;
-    position: relative;
-    flex: 0 0 auto;
-    margin-top: 0px;
-  }
-
-  .suv-icon::before {
-    content: "";
-    position: absolute;
-    left: 2px;
-    top: 6px;
-    width: 29px;
-    height: 10px;
-    background: #111;
-    border-radius: 6px 8px 4px 4px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.22);
-  }
-
-  .suv-icon::after {
-    content: "";
-    position: absolute;
-    left: 7px;
-    top: 2px;
-    width: 16px;
-    height: 8px;
-    background: #111;
-    border-radius: 7px 8px 0 0;
-  }
-
-  .suv-wheel {
-    position: absolute;
-    bottom: 1px;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: #111;
-    box-shadow: inset 0 0 0 2px #444;
-    z-index: 2;
-  }
-
-  .suv-wheel.front {
-    right: 4px;
-  }
-
-  .suv-wheel.back {
-    left: 5px;
-  }
-
   .menu-section {
     border-top: 1px solid rgba(0,0,0,0.10);
     padding-top: 14px;
@@ -512,14 +461,10 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-function formatShortStat(value) {
+function formatFullStat(value) {
   const number = Number(value);
 
   if (!Number.isFinite(number)) return "—";
-
-  if (Math.abs(number) >= 1000) {
-    return `${(number / 1000).toFixed(1)}K`;
-  }
 
   return Math.round(number).toLocaleString();
 }
@@ -758,10 +703,6 @@ function setupTripMenu() {
         <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-km">—</span>
-            <span class="suv-icon" aria-hidden="true">
-              <span class="suv-wheel back"></span>
-              <span class="suv-wheel front"></span>
-            </span>
           </div>
           <span class="stat-label-row">Kilometres</span>
         </div>
@@ -769,7 +710,6 @@ function setupTripMenu() {
         <div class="stat">
           <div class="stat-main-row">
             <span class="stat-value" id="stat-miles">—</span>
-            <span class="stat-icon-emoji" aria-hidden="true">🛣️</span>
           </div>
           <span class="stat-label-row">Miles</span>
         </div>
@@ -1168,15 +1108,15 @@ async function init() {
   document.getElementById("stat-countries").textContent = COUNTRIES_VISITED;
   document.getElementById("stat-states").textContent = tripData.stats.states;
   document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
-  document.getElementById("stat-km").textContent = formatShortStat(estimatedKm);
-  document.getElementById("stat-miles").textContent = formatShortStat(estimatedMiles);
+  document.getElementById("stat-km").textContent = formatFullStat(estimatedKm);
+  document.getElementById("stat-miles").textContent = formatFullStat(estimatedMiles);
 
   document.getElementById("compact-days").textContent = tripData.stats.days;
   document.getElementById("compact-countries").textContent = COUNTRIES_VISITED;
   document.getElementById("compact-states").textContent = tripData.stats.states;
   document.getElementById("compact-provinces").textContent = tripData.stats.provinces;
-  document.getElementById("compact-km").textContent = formatShortStat(estimatedKm);
-  document.getElementById("compact-miles").textContent = formatShortStat(estimatedMiles);
+  document.getElementById("compact-km").textContent = formatFullStat(estimatedKm);
+  document.getElementById("compact-miles").textContent = formatFullStat(estimatedMiles);
 
   renderRoute(93, { instant: true });
 
