@@ -69,73 +69,186 @@ const EVENT_ICONS = {
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
 
-// --- DECOUPLED PHYSICS ENGINE VARIABLES ---
-let carMarker = null; 
+// --- DISTANCE-BASED ANIMATION ENGINE VARIABLES ---
+let carMarker = null;
 let lastUpToDay = -1;
 let animationQueue = [];
 let paintedPoints = [];
 let carCurrentPos = null;
 let lastEngineTime = null;
+let currentCarSpeed = 120000;
+let isAnimating = false;
+let animationResolvers = [];
+let isAutoPlaying = false;
+let playbackRunId = 0;
+let currentRenderedDay = 0;
 
-// SPEED CONTROLLER: Meters per second (Real world pacing)
-// Adjust this if it is still too fast or too slow!
-const CAR_SPEED = 250000; 
+// --- DISTANCE TIMING CONTROLLER ---
+// Main setting:
+// bigger number = slower long drives
+// smaller number = faster long drives
+const MS_PER_KM = 10;
+
+// These stop tiny hops looking weird and huge drives dragging forever.
+const MIN_DAY_ANIMATION_MS = 850;
+const MAX_DAY_ANIMATION_MS = 9000;
+const DAY_PAUSE_MS = 250;
+const DEFAULT_CAR_SPEED = 120000;
 
 // --- DYNAMIC STYLING ---
-const style = document.createElement('style');
+const style = document.createElement("style");
 style.innerHTML = `
-  .marker-dot { background-color: #FFFFFF; border: 2px solid #00E5FF; border-radius: 50%; box-shadow: 0 0 8px rgba(0, 229, 255, 0.8); display: flex; align-items: center; justify-content: center; color: #111; font-size: 10px; transition: all 0.2s ease; }
-  .marker-dot:hover { transform: scale(1.3); box-shadow: 0 0 12px rgba(0, 229, 255, 1); }
-  .marker-event { background-color: #FF00FF; border-color: #FFF; font-size: 14px; box-shadow: 0 0 10px #FF00FF; }
-  .marker-airport { background-color: #FFEB3B; border-color: #111; font-size: 12px; box-shadow: 0 0 10px #FFEB3B; }
-  .leaflet-tooltip.state-label { background: transparent !important; border: none !important; box-shadow: none !important; color: rgba(255, 255, 255, 0.85); font-weight: 700; font-size: 14px; letter-spacing: 1px; text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8); }
-  
-  /* The CX-5 Side Profile */
-  .cx5-car { width: 56px; height: 32px; margin-left: -28px; margin-top: -16px; }
+  .marker-dot {
+    background-color: #FFFFFF;
+    border: 2px solid #00E5FF;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    font-size: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .marker-dot:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 12px rgba(0, 229, 255, 1);
+  }
+
+  .marker-event {
+    background-color: #FF00FF;
+    border-color: #FFF;
+    font-size: 14px;
+    box-shadow: 0 0 10px #FF00FF;
+  }
+
+  .marker-airport {
+    background-color: #FFEB3B;
+    border-color: #111;
+    font-size: 12px;
+    box-shadow: 0 0 10px #FFEB3B;
+  }
+
+  .leaflet-tooltip.state-label {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
+  }
+
+  /* Mazda CX-5-ish side profile */
+  .cx5-car {
+    width: 56px;
+    height: 32px;
+    margin-left: -28px;
+    margin-top: -16px;
+  }
 `;
 document.head.appendChild(style);
 
 function greatCircleArc(start, end, segments = 64) {
   const [lat1, lon1] = start.map(d => d * Math.PI / 180);
   const [lat2, lon2] = end.map(d => d * Math.PI / 180);
-  const d = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin((lat1 - lat2) / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin((lon1 - lon2) / 2), 2)));
+
+  const d = 2 * Math.asin(
+    Math.sqrt(
+      Math.pow(Math.sin((lat1 - lat2) / 2), 2) +
+      Math.cos(lat1) * Math.cos(lat2) *
+      Math.pow(Math.sin((lon1 - lon2) / 2), 2)
+    )
+  );
+
   const points = [];
+
   for (let i = 0; i <= segments; i++) {
     const f = i / segments;
     const A = Math.sin((1 - f) * d) / Math.sin(d);
     const B = Math.sin(f * d) / Math.sin(d);
+
     const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
     const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
     const z = A * Math.sin(lat1) + B * Math.sin(lat2);
-    points.push([Math.atan2(z, Math.sqrt(x * x + y * y)) * 180 / Math.PI, Math.atan2(y, x) * 180 / Math.PI]);
+
+    points.push([
+      Math.atan2(z, Math.sqrt(x * x + y * y)) * 180 / Math.PI,
+      Math.atan2(y, x) * 180 / Math.PI
+    ]);
   }
+
   return points;
 }
 
 function createMarker(day, latlng) {
-  let className = "marker-dot", html = "", size = 12;
-  if (day.event) { className = "marker-dot marker-event"; html = EVENT_ICONS[day.event.type] || "★"; size = 24; }
-  else if (day.type === "stay") { className = "marker-dot marker-stay"; size = 14; }
-  else if (day.type === "flight") { className = "marker-dot marker-airport"; html = "✈"; size = 22; }
+  let className = "marker-dot";
+  let html = "";
+  let size = 12;
 
-  const icon = L.divIcon({ className: className, html: html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
-  const marker = L.marker(latlng, { icon: icon }).on("click", () => showDayDetail(day));
-  marker.bindTooltip(`Day ${day.day} · ${day.finish}`, { direction: "top", offset: [0, -size / 2] });
+  if (day.event) {
+    className = "marker-dot marker-event";
+    html = EVENT_ICONS[day.event.type] || "★";
+    size = 24;
+  } else if (day.type === "stay") {
+    className = "marker-dot marker-stay";
+    size = 14;
+  } else if (day.type === "flight") {
+    className = "marker-dot marker-airport";
+    html = "✈";
+    size = 22;
+  }
+
+  const icon = L.divIcon({
+    className,
+    html,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2]
+  });
+
+  const marker = L.marker(latlng, { icon }).on("click", () => showDayDetail(day));
+  marker.bindTooltip(`Day ${day.day} · ${day.finish}`, {
+    direction: "top",
+    offset: [0, -size / 2]
+  });
+
   return marker;
 }
 
 function showDayDetail(day) {
-  const panel = document.getElementById("day-detail"), content = document.getElementById("detail-content");
-  const dateStr = new Date(day.date).toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
+  const panel = document.getElementById("day-detail");
+  const content = document.getElementById("detail-content");
+
+  const dateStr = new Date(day.date).toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric"
+  });
+
   let html = `<h2>Day ${day.day}</h2><h3>${day.finish}</h3><p class="detail-date">${dateStr}</p>`;
 
   if (day.type === "drive" && day.miles) {
     html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${day.miles} mi · ${day.drivingTime}</div></div>`;
-    if (day.start !== day.finish) html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${day.start}${day.via ? " → " + day.via : ""} → ${day.finish}</div></div>`;
+
+    if (day.start !== day.finish) {
+      html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${day.start}${day.via ? " → " + day.via : ""} → ${day.finish}</div></div>`;
+    }
   }
-  if (day.event) html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${day.event.type}</span>${day.event.name}</div></div>`;
-  if (day.attractions && day.attractions.length) html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${a}</li>`).join("")}</ul></div>`;
-  if (day.hotel) html += `<div class="detail-section"><div class="detail-label">Hotel</div><div class="detail-value">${day.hotel}</div></div>`;
+
+  if (day.event) {
+    html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${day.event.type}</span>${day.event.name}</div></div>`;
+  }
+
+  if (day.attractions && day.attractions.length) {
+    html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${a}</li>`).join("")}</ul></div>`;
+  }
+
+  if (day.hotel) {
+    html += `<div class="detail-section"><div class="detail-label">Hotel</div><div class="detail-value">${day.hotel}</div></div>`;
+  }
 
   content.innerHTML = html;
   panel.classList.add("open");
@@ -148,20 +261,242 @@ function closeDayDetail() {
   panel.setAttribute("aria-hidden", "true");
 }
 
-// --- THE BUG-FREE PHYSICS ENGINE ---
+function clamp(value, min, max) {
+  return Math.max(min, Math.min(max, value));
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getMaxDay() {
+  return tripData && tripData.days && tripData.days.length
+    ? Math.max(...tripData.days.map(d => d.day))
+    : 0;
+}
+
+function getDayRoutePoints(day) {
+  if (!day) return [];
+
+  const finishCoord = LOCATIONS[day.finish];
+  if (!finishCoord) return [];
+
+  if (day.type === "drive") {
+    return day.roadPoints && day.roadPoints.length > 0
+      ? [...day.roadPoints]
+      : [finishCoord];
+  }
+
+  return [finishCoord];
+}
+
+function polylineDistanceMeters(points) {
+  if (!map || !points || points.length < 2) return 0;
+
+  let metres = 0;
+
+  for (let i = 1; i < points.length; i++) {
+    metres += map.distance(points[i - 1], points[i]);
+  }
+
+  return metres;
+}
+
+function animationDurationForPoints(points) {
+  const metres = polylineDistanceMeters(points);
+
+  if (metres <= 0) {
+    return MIN_DAY_ANIMATION_MS;
+  }
+
+  const km = metres / 1000;
+  return clamp(km * MS_PER_KM, MIN_DAY_ANIMATION_MS, MAX_DAY_ANIMATION_MS);
+}
+
+function resolveAnimationWaiters() {
+  if (!animationResolvers.length) return;
+
+  const resolvers = animationResolvers.splice(0);
+  resolvers.forEach(resolve => resolve());
+}
+
+function waitForCurrentAnimation() {
+  if (!isAnimating || animationQueue.length === 0) {
+    return Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    animationResolvers.push(resolve);
+  });
+}
+
+function finishCurrentAnimation() {
+  if (!isAnimating) return;
+
+  isAnimating = false;
+
+  if (activeLineLayer && paintedPoints.length) {
+    activeLineLayer.setLatLngs(paintedPoints);
+  }
+
+  resolveAnimationWaiters();
+}
+
+function cancelCurrentAnimation() {
+  animationQueue = [];
+  paintedPoints = [];
+  isAnimating = false;
+  resolveAnimationWaiters();
+
+  if (activeLineLayer) {
+    activeLineLayer.setLatLngs([]);
+  }
+}
+
+function findTimelineSlider() {
+  return (
+    document.getElementById("day-slider") ||
+    document.getElementById("timeline-slider") ||
+    document.getElementById("timeline") ||
+    document.querySelector('input[type="range"]')
+  );
+}
+
+function findPlayButton() {
+  return (
+    document.getElementById("play-button") ||
+    document.getElementById("play-pause") ||
+    document.getElementById("playPause") ||
+    document.getElementById("play")
+  );
+}
+
+function setPlayButtonState(playing) {
+  const button = findPlayButton();
+  if (!button) return;
+
+  button.textContent = playing ? "❚❚" : "▶";
+  button.setAttribute("aria-label", playing ? "Pause animation" : "Play animation");
+}
+
+function syncTimelineUI(dayNumber) {
+  const maxDay = getMaxDay();
+
+  const slider = findTimelineSlider();
+
+  if (slider) {
+    slider.min = 0;
+    slider.max = maxDay;
+    slider.value = dayNumber;
+  }
+
+  const dayLabel =
+    document.getElementById("day-label") ||
+    document.getElementById("current-day") ||
+    document.getElementById("timeline-day") ||
+    document.querySelector("[data-current-day]");
+
+  if (dayLabel) {
+    dayLabel.textContent = `Day ${dayNumber} / ${maxDay}`;
+  }
+}
+
+async function playTrip() {
+  if (!tripData || isAutoPlaying) return;
+
+  isAutoPlaying = true;
+  const runId = ++playbackRunId;
+  setPlayButtonState(true);
+
+  const maxDay = getMaxDay();
+
+  // If already at the end, restart from the beginning.
+  if (currentRenderedDay >= maxDay) {
+    renderRoute(0, { instant: true });
+    await sleep(150);
+  }
+
+  while (isAutoPlaying && runId === playbackRunId && currentRenderedDay < maxDay) {
+    const nextDay = currentRenderedDay + 1;
+
+    renderRoute(nextDay, { forceAnimate: true });
+    await waitForCurrentAnimation();
+
+    if (!isAutoPlaying || runId !== playbackRunId) break;
+
+    await sleep(DAY_PAUSE_MS);
+  }
+
+  if (runId === playbackRunId) {
+    isAutoPlaying = false;
+    setPlayButtonState(false);
+  }
+}
+
+function pauseTrip() {
+  isAutoPlaying = false;
+  playbackRunId++;
+  setPlayButtonState(false);
+}
+
+function setupTimelineControls() {
+  const maxDay = getMaxDay();
+
+  let slider = findTimelineSlider();
+
+  if (slider) {
+    slider.min = 0;
+    slider.max = maxDay;
+    slider.value = currentRenderedDay;
+
+    const cleanSlider = slider.cloneNode(true);
+    cleanSlider.removeAttribute("oninput");
+    cleanSlider.removeAttribute("onchange");
+    slider.parentNode.replaceChild(cleanSlider, slider);
+    slider = cleanSlider;
+
+    slider.addEventListener("input", () => {
+      pauseTrip();
+      renderRoute(Number(slider.value), { instant: true });
+    });
+  }
+
+  let button = findPlayButton();
+
+  if (button) {
+    const cleanButton = button.cloneNode(true);
+    cleanButton.removeAttribute("onclick");
+    button.parentNode.replaceChild(cleanButton, button);
+    button = cleanButton;
+
+    button.addEventListener("click", () => {
+      if (isAutoPlaying) {
+        pauseTrip();
+      } else {
+        playTrip();
+      }
+    });
+
+    setPlayButtonState(false);
+  }
+
+  syncTimelineUI(currentRenderedDay);
+}
+
+// --- DISTANCE-BASED PHYSICS ENGINE ---
 function engineLoop(timestamp) {
   if (!lastEngineTime) lastEngineTime = timestamp;
-  const dt = Math.min(timestamp - lastEngineTime, 50); // Cap frame drops
+
+  const dt = Math.min(timestamp - lastEngineTime, 50);
   lastEngineTime = timestamp;
 
   if (animationQueue.length > 0 && carCurrentPos) {
-    let distanceToTravel = CAR_SPEED * (dt / 1000);
+    let distanceToTravel = currentCarSpeed * (dt / 1000);
 
     while (distanceToTravel > 0 && animationQueue.length > 0) {
       const targetPos = animationQueue[0];
       const distToTarget = map.distance(carCurrentPos, targetPos);
 
-      // THE FIX: If distance is 0, consume point immediately and skip math to avoid NaN
       if (distToTarget === 0) {
         carCurrentPos = targetPos;
         paintedPoints.push(targetPos);
@@ -178,24 +513,46 @@ function engineLoop(timestamp) {
         const ratio = distanceToTravel / distToTarget;
         const lat = carCurrentPos[0] + (targetPos[0] - carCurrentPos[0]) * ratio;
         const lng = carCurrentPos[1] + (targetPos[1] - carCurrentPos[1]) * ratio;
+
         carCurrentPos = [lat, lng];
         distanceToTravel = 0;
       }
     }
 
-    if (carMarker) carMarker.setLatLng(carCurrentPos);
-    if (activeLineLayer) activeLineLayer.setLatLngs([...paintedPoints, carCurrentPos]);
+    if (carMarker) {
+      carMarker.setLatLng(carCurrentPos);
+    }
+
+    if (activeLineLayer) {
+      activeLineLayer.setLatLngs([...paintedPoints, carCurrentPos]);
+    }
+  }
+
+  if (isAnimating && animationQueue.length === 0) {
+    finishCurrentAnimation();
   }
 
   requestAnimationFrame(engineLoop);
 }
 
-function renderRoute(upToDay) {
-  const isPlaying = (upToDay === lastUpToDay + 1);
+function renderRoute(upToDay, options = {}) {
+  upToDay = Number(upToDay) || 0;
+
+  const maxDay = getMaxDay();
+  upToDay = clamp(upToDay, 0, maxDay);
+
+  const isSequentialStep = upToDay === lastUpToDay + 1;
+  const isPlayingStep = options.forceAnimate === true || (isSequentialStep && !options.instant);
+
+  cancelCurrentAnimation();
+
   lastUpToDay = upToDay;
+  currentRenderedDay = upToDay;
+  syncTimelineUI(upToDay);
 
   if (routeLayer) routeLayer.remove();
   if (flightLayer) flightLayer.remove();
+
   allMarkers.forEach(m => m.remove());
   allMarkers = [];
 
@@ -205,49 +562,78 @@ function renderRoute(upToDay) {
 
   for (const day of tripData.days) {
     if (day.day > upToDay) break;
+
     const coord = LOCATIONS[day.finish];
     if (!coord) continue;
 
     if (day.type === "flight") {
-      if (LOCATIONS[day.start]) flightSegments.push([LOCATIONS[day.start], coord]);
+      if (LOCATIONS[day.start]) {
+        flightSegments.push([LOCATIONS[day.start], coord]);
+      }
     } else {
-      let pts = (day.roadPoints && day.roadPoints.length > 0) ? [...day.roadPoints] : [coord];
-      
-      if (day.day === upToDay && isPlaying) {
+      const pts = getDayRoutePoints(day);
+
+      if (day.day === upToDay && isPlayingStep) {
         animatePoints = pts;
-        if (staticPoints.length > 0) animatePoints.unshift(staticPoints[staticPoints.length - 1]);
+
+        if (staticPoints.length > 0) {
+          animatePoints.unshift(staticPoints[staticPoints.length - 1]);
+        }
       } else {
         staticPoints.push(...pts);
       }
     }
+
     const marker = createMarker(day, coord);
     marker.addTo(map);
     allMarkers.push(marker);
   }
 
-  // Instantly draw everything up to the previous day
   if (staticPoints.length > 1) {
-    routeLayer = L.polyline(staticPoints, { color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round" }).addTo(map);
+    routeLayer = L.polyline(staticPoints, {
+      color: "#00E5FF",
+      weight: 4,
+      opacity: 0.9,
+      lineJoin: "round"
+    }).addTo(map);
   }
 
-  // Provide an active layer for the car to "paint"
   if (!activeLineLayer) {
-    activeLineLayer = L.polyline([], { color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round" }).addTo(map);
+    activeLineLayer = L.polyline([], {
+      color: "#00E5FF",
+      weight: 4,
+      opacity: 0.9,
+      lineJoin: "round"
+    }).addTo(map);
   }
 
-  if (isPlaying && animatePoints.length > 0) {
+  if (isPlayingStep && animatePoints.length > 0) {
     carCurrentPos = animatePoints[0];
     paintedPoints = [carCurrentPos];
     animationQueue = animatePoints.slice(1);
+    activeLineLayer.setLatLngs([carCurrentPos]);
+
+    const metres = polylineDistanceMeters(animatePoints);
+    const durationMs = animationDurationForPoints(animatePoints);
+
+    currentCarSpeed = metres > 0
+      ? metres / (durationMs / 1000)
+      : DEFAULT_CAR_SPEED;
+
+    isAnimating = animationQueue.length > 0 && metres > 0;
+
+    if (!isAnimating) {
+      finishCurrentAnimation();
+    }
   } else {
-    // Scrubbing or Jumping: Snap everything instantly
     animationQueue = [];
     paintedPoints = [];
     activeLineLayer.setLatLngs([]);
     carCurrentPos = staticPoints.length ? staticPoints[staticPoints.length - 1] : null;
+    isAnimating = false;
+    resolveAnimationWaiters();
   }
 
-  // Draw or Update the Car Marker
   if (carCurrentPos) {
     if (!carMarker) {
       const carHtml = `
@@ -266,9 +652,14 @@ function renderRoute(upToDay) {
           </svg>
         </div>
       `;
+
       carMarker = L.marker(carCurrentPos, {
-        icon: L.divIcon({ className: 'moving-car-icon', html: carHtml, iconSize: [0, 0] }),
-        zIndexOffset: 1000 
+        icon: L.divIcon({
+          className: "moving-car-icon",
+          html: carHtml,
+          iconSize: [0, 0]
+        }),
+        zIndexOffset: 1000
       }).addTo(map);
     } else {
       carMarker.setLatLng(carCurrentPos);
@@ -280,51 +671,111 @@ function renderRoute(upToDay) {
 
   if (flightSegments.length) {
     const flightLines = flightSegments.map(([a, b]) => greatCircleArc(a, b));
-    flightLayer = L.layerGroup(flightLines.map(line => L.polyline(line, { color: "#6B8FA8", weight: 2, opacity: 0.7, dashArray: "6, 6" }))).addTo(map);
+
+    flightLayer = L.layerGroup(
+      flightLines.map(line => L.polyline(line, {
+        color: "#6B8FA8",
+        weight: 2,
+        opacity: 0.7,
+        dashArray: "6, 6"
+      }))
+    ).addTo(map);
   }
+
+  return {
+    day: upToDay,
+    isAnimating,
+    durationMs: isPlayingStep ? animationDurationForPoints(animatePoints) : 0,
+    distanceMeters: isPlayingStep ? polylineDistanceMeters(animatePoints) : 0
+  };
 }
 
 async function loadRealisticRoads() {
-  const promises = tripData.days.map(async (day) => {
+  const promises = tripData.days.map(async day => {
     if (day.type === "drive" && day.start !== day.finish) {
       if (LOCATIONS[day.start] && LOCATIONS[day.finish]) {
         const url = `https://router.project-osrm.org/route/v1/driving/${LOCATIONS[day.start][1]},${LOCATIONS[day.start][0]};${LOCATIONS[day.finish][1]},${LOCATIONS[day.finish][0]}?overview=full&geometries=geojson`;
+
         try {
           const res = await fetch(url);
           const data = await res.json();
+
           if (data.routes && data.routes.length > 0) {
             day.roadPoints = data.routes[0].geometry.coordinates.map(c => [c[1], c[0]]);
             return;
           }
-        } catch (e) { console.warn(`Routing failed for Day ${day.day}.`); }
+        } catch (e) {
+          console.warn(`Routing failed for Day ${day.day}.`);
+        }
       }
     }
+
     day.roadPoints = [];
   });
+
   await Promise.all(promises);
 }
 
 async function init() {
-  map = L.map("map", { zoomControl: false, attributionControl: true }).setView([39.5, -98.5], 4);
+  map = L.map("map", {
+    zoomControl: false,
+    attributionControl: true
+  }).setView([39.5, -98.5], 4);
+
   L.control.zoom({ position: "bottomleft" }).addTo(map);
 
-  L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri', maxZoom: 19
+  L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+    attribution: "Tiles &copy; Esri",
+    maxZoom: 19
   }).addTo(map);
 
   fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
-    .then(r => r.json()).then(g => {
+    .then(r => r.json())
+    .then(g => {
       g.features = g.features.filter(f => !["Alaska", "Hawaii", "Puerto Rico"].includes(f.properties.name));
-      L.geoJSON(g, { style: { color: "rgba(255,255,255,0.4)", weight: 1.2, fillOpacity: 0 }, onEachFeature: (f, l) => { if (STATE_CODES[f.properties.name]) l.bindTooltip(STATE_CODES[f.properties.name], { permanent: true, direction: "center", className: "state-label" }); } }).addTo(map);
+
+      L.geoJSON(g, {
+        style: {
+          color: "rgba(255,255,255,0.4)",
+          weight: 1.2,
+          fillOpacity: 0
+        },
+        onEachFeature: (f, l) => {
+          if (STATE_CODES[f.properties.name]) {
+            l.bindTooltip(STATE_CODES[f.properties.name], {
+              permanent: true,
+              direction: "center",
+              className: "state-label"
+            });
+          }
+        }
+      }).addTo(map);
     });
 
   fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
-    .then(r => r.json()).then(g => {
-      L.geoJSON(g, { style: { color: "rgba(255,255,255,0.4)", weight: 1.2, fillOpacity: 0 }, onEachFeature: (f, l) => { if (STATE_CODES[f.properties.name]) l.bindTooltip(STATE_CODES[f.properties.name], { permanent: true, direction: "center", className: "state-label" }); } }).addTo(map);
+    .then(r => r.json())
+    .then(g => {
+      L.geoJSON(g, {
+        style: {
+          color: "rgba(255,255,255,0.4)",
+          weight: 1.2,
+          fillOpacity: 0
+        },
+        onEachFeature: (f, l) => {
+          if (STATE_CODES[f.properties.name]) {
+            l.bindTooltip(STATE_CODES[f.properties.name], {
+              permanent: true,
+              direction: "center",
+              className: "state-label"
+            });
+          }
+        }
+      }).addTo(map);
     });
 
   const res = await fetch("data/trip.json");
   tripData = await res.json();
+
   await loadRealisticRoads();
 
   document.getElementById("stat-days").textContent = tripData.stats.days;
@@ -332,15 +783,27 @@ async function init() {
   document.getElementById("stat-states").textContent = tripData.stats.states;
   document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
 
-  renderRoute(93);
+  renderRoute(93, { instant: true });
+  setupTimelineControls();
 
   const allCoords = tripData.days.map(d => LOCATIONS[d.finish]).filter(Boolean);
-  if (allCoords.length) map.fitBounds(L.latLngBounds(allCoords), { padding: [60, 60] });
+
+  if (allCoords.length) {
+    map.fitBounds(L.latLngBounds(allCoords), {
+      padding: [60, 60]
+    });
+  }
+
   document.getElementById("close-detail").addEventListener("click", closeDayDetail);
-  
-  // Kick off the physics engine
+
   requestAnimationFrame(engineLoop);
-  window.RT2K15 = { renderRoute, tripData };
+
+  window.RT2K15 = {
+    renderRoute,
+    playTrip,
+    pauseTrip,
+    tripData
+  };
 }
 
 init();
