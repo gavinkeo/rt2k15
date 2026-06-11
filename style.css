@@ -265,3 +265,97 @@ html, body { height: 100%; font-family: 'Inter', system-ui, sans-serif; color: v
     font-size: 16px;
   }
 }
+
+/* Mobile bottom control cleanup */
+@media (max-width: 640px) {
+  .timeline {
+    left: 12px;
+    right: 12px;
+    bottom: calc(env(safe-area-inset-bottom) + 12px);
+    transform: none;
+    width: auto;
+    padding: 10px 12px;
+    gap: 10px;
+    border-radius: 16px;
+    display: grid;
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    align-items: center;
+    z-index: 650;
+  }
+
+  .play-btn {
+    width: 42px;
+    height: 42px;
+    font-size: 13px;
+  }
+
+  .timeline-track {
+    min-width: 0;
+    gap: 0;
+  }
+
+  /* Hide month labels on mobile to reduce clutter */
+  .timeline-labels {
+    display: none;
+  }
+
+  #timeline-slider {
+    height: 5px;
+  }
+
+  #timeline-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  #timeline-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .day-counter {
+    font-size: 11px;
+    line-height: 1.1;
+    text-align: right;
+  }
+
+  /* Move zoom controls above the timeline */
+  .leaflet-bottom.leaflet-left {
+    bottom: calc(env(safe-area-inset-bottom) + 86px) !important;
+    left: 12px !important;
+  }
+
+  .leaflet-control-zoom {
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  /* Keep attribution visible but less intrusive */
+  .leaflet-bottom.leaflet-right {
+    bottom: calc(env(safe-area-inset-bottom) + 2px) !important;
+    right: 6px !important;
+  }
+
+  .leaflet-control-attribution {
+    font-size: 10px;
+    max-width: 52vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.75;
+  }
+
+  /* Make top menu fit mobile better */
+  .trip-menu {
+    top: 12px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: none;
+  }
+
+  .trip-menu.open {
+    max-height: calc(100dvh - 125px);
+    overflow-y: auto;
+  }
+}
