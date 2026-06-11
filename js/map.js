@@ -660,12 +660,12 @@ function setupTripMenu() {
 
   menu.innerHTML = `
     <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
-      <span>RT2K15</span>
+      <span>Road Trip 2K15</span>
       <span class="trip-menu-chevron">▾</span>
     </button>
 
     <div class="trip-menu-content" id="trip-menu-content">
-      <p class="subtitle">San Francisco → Miami, the long way</p>
+      <p class="subtitle">San Fran → Miami, 18 Jun → 16 Sep</p>
 
       <div class="stats">
         <div class="stat">
