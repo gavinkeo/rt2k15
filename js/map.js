@@ -69,31 +69,22 @@ const EVENT_ICONS = {
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
 
-// --- DISTANCE-BASED ANIMATION ENGINE VARIABLES ---
+// --- DECOUPLED PHYSICS ENGINE VARIABLES ---
 let carMarker = null;
 let lastUpToDay = -1;
 let animationQueue = [];
 let paintedPoints = [];
 let carCurrentPos = null;
 let lastEngineTime = null;
-let currentCarSpeed = 120000;
-let isAnimating = false;
-let animationResolvers = [];
-let isAutoPlaying = false;
-let playbackRunId = 0;
-let currentRenderedDay = 0;
 
-// --- DISTANCE TIMING CONTROLLER ---
-// Main setting:
-// bigger number = slower long drives
-// smaller number = faster long drives
-const MS_PER_KM = 10;
+// These let timeline.js wait until the car/line has finished the current day.
+let isRouteAnimating = false;
+let routeAnimationResolvers = [];
 
-// These stop tiny hops looking weird and huge drives dragging forever.
-const MIN_DAY_ANIMATION_MS = 850;
-const MAX_DAY_ANIMATION_MS = 9000;
-const DAY_PAUSE_MS = 250;
-const DEFAULT_CAR_SPEED = 120000;
+// SPEED CONTROLLER: Metres per second.
+// Bigger number = faster car.
+// Smaller number = slower car.
+const CAR_SPEED = 250000;
 
 // --- DYNAMIC STYLING ---
 const style = document.createElement("style");
@@ -141,7 +132,7 @@ style.innerHTML = `
     text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
   }
 
-  /* Mazda CX-5-ish side profile */
+  /* The CX-5 Side Profile */
   .cx5-car {
     width: 56px;
     height: 32px;
@@ -183,6 +174,29 @@ function greatCircleArc(start, end, segments = 64) {
   return points;
 }
 
+function resolveRouteAnimationWaiters() {
+  const waiters = routeAnimationResolvers.splice(0);
+  waiters.forEach(resolve => resolve());
+}
+
+function waitForRouteAnimation() {
+  if (!isRouteAnimating && animationQueue.length === 0) {
+    return Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    routeAnimationResolvers.push(resolve);
+  });
+}
+
+function finishRouteAnimationIfComplete() {
+  if (!isRouteAnimating) return;
+  if (animationQueue.length > 0) return;
+
+  isRouteAnimating = false;
+  resolveRouteAnimationWaiters();
+}
+
 function createMarker(day, latlng) {
   let className = "marker-dot";
   let html = "";
@@ -209,6 +223,7 @@ function createMarker(day, latlng) {
   });
 
   const marker = L.marker(latlng, { icon }).on("click", () => showDayDetail(day));
+
   marker.bindTooltip(`Day ${day.day} · ${day.finish}`, {
     direction: "top",
     offset: [0, -size / 2]
@@ -261,229 +276,7 @@ function closeDayDetail() {
   panel.setAttribute("aria-hidden", "true");
 }
 
-function clamp(value, min, max) {
-  return Math.max(min, Math.min(max, value));
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function getMaxDay() {
-  return tripData && tripData.days && tripData.days.length
-    ? Math.max(...tripData.days.map(d => d.day))
-    : 0;
-}
-
-function getDayRoutePoints(day) {
-  if (!day) return [];
-
-  const finishCoord = LOCATIONS[day.finish];
-  if (!finishCoord) return [];
-
-  if (day.type === "drive") {
-    return day.roadPoints && day.roadPoints.length > 0
-      ? [...day.roadPoints]
-      : [finishCoord];
-  }
-
-  return [finishCoord];
-}
-
-function polylineDistanceMeters(points) {
-  if (!map || !points || points.length < 2) return 0;
-
-  let metres = 0;
-
-  for (let i = 1; i < points.length; i++) {
-    metres += map.distance(points[i - 1], points[i]);
-  }
-
-  return metres;
-}
-
-function animationDurationForPoints(points) {
-  const metres = polylineDistanceMeters(points);
-
-  if (metres <= 0) {
-    return MIN_DAY_ANIMATION_MS;
-  }
-
-  const km = metres / 1000;
-  return clamp(km * MS_PER_KM, MIN_DAY_ANIMATION_MS, MAX_DAY_ANIMATION_MS);
-}
-
-function resolveAnimationWaiters() {
-  if (!animationResolvers.length) return;
-
-  const resolvers = animationResolvers.splice(0);
-  resolvers.forEach(resolve => resolve());
-}
-
-function waitForCurrentAnimation() {
-  if (!isAnimating || animationQueue.length === 0) {
-    return Promise.resolve();
-  }
-
-  return new Promise(resolve => {
-    animationResolvers.push(resolve);
-  });
-}
-
-function finishCurrentAnimation() {
-  if (!isAnimating) return;
-
-  isAnimating = false;
-
-  if (activeLineLayer && paintedPoints.length) {
-    activeLineLayer.setLatLngs(paintedPoints);
-  }
-
-  resolveAnimationWaiters();
-}
-
-function cancelCurrentAnimation() {
-  animationQueue = [];
-  paintedPoints = [];
-  isAnimating = false;
-  resolveAnimationWaiters();
-
-  if (activeLineLayer) {
-    activeLineLayer.setLatLngs([]);
-  }
-}
-
-function findTimelineSlider() {
-  return (
-    document.getElementById("day-slider") ||
-    document.getElementById("timeline-slider") ||
-    document.getElementById("timeline") ||
-    document.querySelector('input[type="range"]')
-  );
-}
-
-function findPlayButton() {
-  return (
-    document.getElementById("play-button") ||
-    document.getElementById("play-pause") ||
-    document.getElementById("playPause") ||
-    document.getElementById("play")
-  );
-}
-
-function setPlayButtonState(playing) {
-  const button = findPlayButton();
-  if (!button) return;
-
-  button.textContent = playing ? "❚❚" : "▶";
-  button.setAttribute("aria-label", playing ? "Pause animation" : "Play animation");
-}
-
-function syncTimelineUI(dayNumber) {
-  const maxDay = getMaxDay();
-
-  const slider = findTimelineSlider();
-
-  if (slider) {
-    slider.min = 0;
-    slider.max = maxDay;
-    slider.value = dayNumber;
-  }
-
-  const dayLabel =
-    document.getElementById("day-label") ||
-    document.getElementById("current-day") ||
-    document.getElementById("timeline-day") ||
-    document.querySelector("[data-current-day]");
-
-  if (dayLabel) {
-    dayLabel.textContent = `Day ${dayNumber} / ${maxDay}`;
-  }
-}
-
-async function playTrip() {
-  if (!tripData || isAutoPlaying) return;
-
-  isAutoPlaying = true;
-  const runId = ++playbackRunId;
-  setPlayButtonState(true);
-
-  const maxDay = getMaxDay();
-
-  // If already at the end, restart from the beginning.
-  if (currentRenderedDay >= maxDay) {
-    renderRoute(0, { instant: true });
-    await sleep(150);
-  }
-
-  while (isAutoPlaying && runId === playbackRunId && currentRenderedDay < maxDay) {
-    const nextDay = currentRenderedDay + 1;
-
-    renderRoute(nextDay, { forceAnimate: true });
-    await waitForCurrentAnimation();
-
-    if (!isAutoPlaying || runId !== playbackRunId) break;
-
-    await sleep(DAY_PAUSE_MS);
-  }
-
-  if (runId === playbackRunId) {
-    isAutoPlaying = false;
-    setPlayButtonState(false);
-  }
-}
-
-function pauseTrip() {
-  isAutoPlaying = false;
-  playbackRunId++;
-  setPlayButtonState(false);
-}
-
-function setupTimelineControls() {
-  const maxDay = getMaxDay();
-
-  let slider = findTimelineSlider();
-
-  if (slider) {
-    slider.min = 0;
-    slider.max = maxDay;
-    slider.value = currentRenderedDay;
-
-    const cleanSlider = slider.cloneNode(true);
-    cleanSlider.removeAttribute("oninput");
-    cleanSlider.removeAttribute("onchange");
-    slider.parentNode.replaceChild(cleanSlider, slider);
-    slider = cleanSlider;
-
-    slider.addEventListener("input", () => {
-      pauseTrip();
-      renderRoute(Number(slider.value), { instant: true });
-    });
-  }
-
-  let button = findPlayButton();
-
-  if (button) {
-    const cleanButton = button.cloneNode(true);
-    cleanButton.removeAttribute("onclick");
-    button.parentNode.replaceChild(cleanButton, button);
-    button = cleanButton;
-
-    button.addEventListener("click", () => {
-      if (isAutoPlaying) {
-        pauseTrip();
-      } else {
-        playTrip();
-      }
-    });
-
-    setPlayButtonState(false);
-  }
-
-  syncTimelineUI(currentRenderedDay);
-}
-
-// --- DISTANCE-BASED PHYSICS ENGINE ---
+// --- THE DISTANCE-BASED PHYSICS ENGINE ---
 function engineLoop(timestamp) {
   if (!lastEngineTime) lastEngineTime = timestamp;
 
@@ -491,7 +284,7 @@ function engineLoop(timestamp) {
   lastEngineTime = timestamp;
 
   if (animationQueue.length > 0 && carCurrentPos) {
-    let distanceToTravel = currentCarSpeed * (dt / 1000);
+    let distanceToTravel = CAR_SPEED * (dt / 1000);
 
     while (distanceToTravel > 0 && animationQueue.length > 0) {
       const targetPos = animationQueue[0];
@@ -526,29 +319,31 @@ function engineLoop(timestamp) {
     if (activeLineLayer) {
       activeLineLayer.setLatLngs([...paintedPoints, carCurrentPos]);
     }
-  }
 
-  if (isAnimating && animationQueue.length === 0) {
-    finishCurrentAnimation();
+    finishRouteAnimationIfComplete();
   }
 
   requestAnimationFrame(engineLoop);
 }
 
 function renderRoute(upToDay, options = {}) {
-  upToDay = Number(upToDay) || 0;
+  const isPlaying =
+    options.forceAnimate === true ||
+    (!options.instant && upToDay === lastUpToDay + 1);
 
-  const maxDay = getMaxDay();
-  upToDay = clamp(upToDay, 0, maxDay);
-
-  const isSequentialStep = upToDay === lastUpToDay + 1;
-  const isPlayingStep = options.forceAnimate === true || (isSequentialStep && !options.instant);
-
-  cancelCurrentAnimation();
+  // If something was waiting for a previous animation, release it before replacing the route.
+  if (isRouteAnimating) {
+    isRouteAnimating = false;
+    resolveRouteAnimationWaiters();
+  }
 
   lastUpToDay = upToDay;
-  currentRenderedDay = upToDay;
-  syncTimelineUI(upToDay);
+
+  const currentDayEl = document.getElementById("current-day");
+  if (currentDayEl) currentDayEl.textContent = upToDay;
+
+  const sliderEl = document.getElementById("timeline-slider");
+  if (sliderEl) sliderEl.value = upToDay;
 
   if (routeLayer) routeLayer.remove();
   if (flightLayer) flightLayer.remove();
@@ -571,9 +366,11 @@ function renderRoute(upToDay, options = {}) {
         flightSegments.push([LOCATIONS[day.start], coord]);
       }
     } else {
-      const pts = getDayRoutePoints(day);
+      let pts = day.roadPoints && day.roadPoints.length > 0
+        ? [...day.roadPoints]
+        : [coord];
 
-      if (day.day === upToDay && isPlayingStep) {
+      if (day.day === upToDay && isPlaying) {
         animatePoints = pts;
 
         if (staticPoints.length > 0) {
@@ -607,31 +404,24 @@ function renderRoute(upToDay, options = {}) {
     }).addTo(map);
   }
 
-  if (isPlayingStep && animatePoints.length > 0) {
+  if (isPlaying && animatePoints.length > 0) {
     carCurrentPos = animatePoints[0];
     paintedPoints = [carCurrentPos];
     animationQueue = animatePoints.slice(1);
     activeLineLayer.setLatLngs([carCurrentPos]);
 
-    const metres = polylineDistanceMeters(animatePoints);
-    const durationMs = animationDurationForPoints(animatePoints);
+    isRouteAnimating = animationQueue.length > 0;
 
-    currentCarSpeed = metres > 0
-      ? metres / (durationMs / 1000)
-      : DEFAULT_CAR_SPEED;
-
-    isAnimating = animationQueue.length > 0 && metres > 0;
-
-    if (!isAnimating) {
-      finishCurrentAnimation();
+    if (!isRouteAnimating) {
+      resolveRouteAnimationWaiters();
     }
   } else {
     animationQueue = [];
     paintedPoints = [];
     activeLineLayer.setLatLngs([]);
     carCurrentPos = staticPoints.length ? staticPoints[staticPoints.length - 1] : null;
-    isAnimating = false;
-    resolveAnimationWaiters();
+    isRouteAnimating = false;
+    resolveRouteAnimationWaiters();
   }
 
   if (carCurrentPos) {
@@ -681,13 +471,6 @@ function renderRoute(upToDay, options = {}) {
       }))
     ).addTo(map);
   }
-
-  return {
-    day: upToDay,
-    isAnimating,
-    durationMs: isPlayingStep ? animationDurationForPoints(animatePoints) : 0,
-    distanceMeters: isPlayingStep ? polylineDistanceMeters(animatePoints) : 0
-  };
 }
 
 async function loadRealisticRoads() {
@@ -784,7 +567,6 @@ async function init() {
   document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
 
   renderRoute(93, { instant: true });
-  setupTimelineControls();
 
   const allCoords = tripData.days.map(d => LOCATIONS[d.finish]).filter(Boolean);
 
@@ -800,9 +582,10 @@ async function init() {
 
   window.RT2K15 = {
     renderRoute,
-    playTrip,
-    pauseTrip,
-    tripData
+    waitForRouteAnimation,
+    isRouteAnimating: () => isRouteAnimating,
+    tripData,
+    carSpeed: CAR_SPEED
   };
 }
 
