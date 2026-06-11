@@ -103,7 +103,7 @@ style.innerHTML = `
     text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
   }
   
-  /* Static profile wrapper for the CX-5 (Removed transition to allow strict JS control) */
+  /* Static profile wrapper for the CX-5 */
   .cx5-car {
     width: 56px;
     height: 32px;
@@ -187,7 +187,6 @@ function closeDayDetail() {
 }
 
 function renderRoute(upToDay) {
-  // Clear everything out to redraw
   if (animationFrame) cancelAnimationFrame(animationFrame);
   if (routeLayer) routeLayer.remove();
   if (activeLineLayer) activeLineLayer.remove();
@@ -200,7 +199,6 @@ function renderRoute(upToDay) {
   let isMoving = false;
   const flightSegments = [];
 
-  // Parse days into static history (already drawn) and the current day (to animate)
   for (const day of tripData.days) {
     if (day.day > upToDay) break;
     const coord = LOCATIONS[day.finish];
@@ -230,14 +228,7 @@ function renderRoute(upToDay) {
     allMarkers.push(marker);
   }
 
-  // Draw the historical route instantly
-  if (staticPoints.length > 1) {
-    routeLayer = L.polyline(staticPoints, {
-      color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
-    }).addTo(map);
-  }
-
-  // Ensure the animation picks up exactly where the static line ended
+  // Ensure animation path connects seamlessly to the historical path
   if (isMoving && animatePoints.length > 1 && staticPoints.length > 0) {
     const lastStatic = staticPoints[staticPoints.length - 1];
     if (lastStatic[0] !== animatePoints[0][0] || lastStatic[1] !== animatePoints[0][1]) {
@@ -245,7 +236,13 @@ function renderRoute(upToDay) {
     }
   }
 
-  // Determine starting position of the car
+  // DRAW FULL STATIC LINE IMMEDIATELY (REMOVES JITTER)
+  if (staticPoints.length > 1) {
+    routeLayer = L.polyline(staticPoints, {
+      color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
+    }).addTo(map);
+  }
+
   const startPos = isMoving ? animatePoints[0] : (staticPoints.length ? staticPoints[staticPoints.length - 1] : null);
 
   const carHtml = `
@@ -276,9 +273,10 @@ function renderRoute(upToDay) {
     }
   }
 
-  // --- THE NEW CUSTOM JAVASCRIPT ANIMATION ENGINE ---
+  // --- SMOOTH JAVASCRIPT ANIMATION ---
   if (isMoving && animatePoints.length > 1) {
-    activeLineLayer = L.polyline([animatePoints[0]], {
+    // Lay down the route line instantly so the browser doesn't have to redraw it 60 times a second
+    activeLineLayer = L.polyline(animatePoints, {
       color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
     }).addTo(map);
 
@@ -289,8 +287,9 @@ function renderRoute(upToDay) {
       pathDistances.push(runDist);
     }
 
-    // Speed greatly reduced (3x slower than previous iteration)
-    const durationMs = Math.max(2500, Math.min(20000, (runDist / 100000) * 2000));
+    // New Speed: Vastly Slower (~25,000 meters per second of animation)
+    // Limits animation to a minimum of 4s and maximum of 30s for a very long drive
+    const durationMs = Math.max(4000, Math.min(30000, (runDist / 25000) * 1000));
     const startTime = performance.now();
 
     function step(timestamp) {
@@ -303,7 +302,6 @@ function renderRoute(upToDay) {
 
       if (i >= animatePoints.length - 1) {
         carMarker.setLatLng(animatePoints[animatePoints.length - 1]);
-        activeLineLayer.setLatLngs(animatePoints);
         return; 
       }
 
@@ -314,10 +312,9 @@ function renderRoute(upToDay) {
 
       const lat = p1[0] + (p2[0] - p1[0]) * segProgress;
       const lng = p1[1] + (p2[1] - p1[1]) * segProgress;
-      const currentPos = [lat, lng];
 
-      carMarker.setLatLng(currentPos);
-      activeLineLayer.setLatLngs([...animatePoints.slice(0, i + 1), currentPos]);
+      // Update ONLY the car coordinates. Zero line redrawing.
+      carMarker.setLatLng([lat, lng]);
 
       if (progress < 1) {
         animationFrame = requestAnimationFrame(step);
