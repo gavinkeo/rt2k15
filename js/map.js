@@ -1,9 +1,6 @@
 // Geocoded coordinates for every location on the trip.
 // [lat, lng]
 const LOCATIONS = {
-  "Cork": [51.8985, -8.4756],
-  "London Heathrow": [51.4700, -0.4543],
-  "London": [51.5074, -0.1278],
   "San Francisco Airport": [37.6213, -122.3790],
   "San Francisco": [37.7749, -122.4194],
   "Chowchilla": [37.1230, -120.2602],
