@@ -213,27 +213,5 @@ async function init() {
     subdomains: "abcd", maxZoom: 19
   }).addTo(map);
 
-  const res = await fetch("data/trip.json");
-  tripData = await res.json();
-
-  // Populate stats
-  document.getElementById("stat-days").textContent = tripData.stats.days;
-  document.getElementById("stat-miles").textContent = tripData.stats.milesDriven.toLocaleString();
-  document.getElementById("stat-states").textContent = tripData.stats.states;
-  document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
-
-  renderRoute(93);
-
-  // Fit map to the full route once loaded
-  const allCoords = tripData.days.map(d => LOCATIONS[d.finish]).filter(Boolean);
-  if (allCoords.length) {
-    map.fitBounds(L.latLngBounds(allCoords), { padding: [60, 60] });
-  }
-
-  document.getElementById("close-detail").addEventListener("click", closeDayDetail);
-
-  // Expose for timeline.js
-  window.RT2K15 = { renderRoute, tripData };
-}
-
-init();
+  // --- NEW CODE: FETCH AND DRAW STATE BOUNDARIES ---
+  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us
