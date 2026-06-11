@@ -74,6 +74,7 @@ const STATE_CODES = {
 const MANUAL_PROVINCE_LABELS = {
   "British Columbia": [53.7, -125.2],
   "Ontario": [49.8, -84.8],
+  "Quebec": [52.7, -71.8],
   "Newfoundland and Labrador": [53.3, -60.8]
 };
 
