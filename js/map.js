@@ -65,14 +65,14 @@ const EVENT_ICONS = {
   "Concert": "🎤", "Comedy": "🎭", "Show": "📺"
 };
 
-let map, routeLayer, flightLayer, allMarkers = [];
+let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let carMarker = null; 
 let tripData = null;
+let animationFrame = null;
 
 // --- DYNAMIC STYLING ---
 const style = document.createElement('style');
 style.innerHTML = `
-  /* Glowing minimalist markers for the satellite map */
   .marker-dot {
     background-color: #FFFFFF;
     border: 2px solid #00E5FF;
@@ -92,7 +92,6 @@ style.innerHTML = `
   .marker-event { background-color: #FF00FF; border-color: #FFF; font-size: 14px; box-shadow: 0 0 10px #FF00FF; }
   .marker-airport { background-color: #FFEB3B; border-color: #111; font-size: 12px; box-shadow: 0 0 10px #FFEB3B; }
   
-  /* Transparent map labels for state initials */
   .leaflet-tooltip.state-label {
     background: transparent !important;
     border: none !important;
@@ -104,7 +103,7 @@ style.innerHTML = `
     text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
   }
   
-  /* Static profile wrapper for the CX-5 */
+  /* Static profile wrapper for the CX-5 (Removed transition to allow strict JS control) */
   .cx5-car {
     width: 56px;
     height: 32px;
@@ -152,13 +151,7 @@ function createMarker(day, latlng) {
     size = 22;
   }
 
-  const icon = L.divIcon({
-    className: className,
-    html: html,
-    iconSize: [size, size],
-    iconAnchor: [size / 2, size / 2]
-  });
-
+  const icon = L.divIcon({ className: className, html: html, iconSize: [size, size], iconAnchor: [size / 2, size / 2] });
   const marker = L.marker(latlng, { icon: icon });
   marker.on("click", () => showDayDetail(day));
   marker.bindTooltip(`Day ${day.day} · ${day.finish}`, { direction: "top", offset: [0, -size / 2] });
@@ -194,14 +187,20 @@ function closeDayDetail() {
 }
 
 function renderRoute(upToDay) {
+  // Clear everything out to redraw
+  if (animationFrame) cancelAnimationFrame(animationFrame);
   if (routeLayer) routeLayer.remove();
+  if (activeLineLayer) activeLineLayer.remove();
   if (flightLayer) flightLayer.remove();
   allMarkers.forEach(m => m.remove());
   allMarkers = [];
 
-  const drivePoints = [];
+  const staticPoints = [];
+  let animatePoints = [];
+  let isMoving = false;
   const flightSegments = [];
 
+  // Parse days into static history (already drawn) and the current day (to animate)
   for (const day of tripData.days) {
     if (day.day > upToDay) break;
     const coord = LOCATIONS[day.finish];
@@ -210,66 +209,121 @@ function renderRoute(upToDay) {
     if (day.type === "flight") {
       const startCoord = LOCATIONS[day.start];
       if (startCoord) flightSegments.push([startCoord, coord]);
-    } else if (day.roadPoints && day.roadPoints.length > 0) {
-      drivePoints.push(...day.roadPoints);
     } else {
-      const last = drivePoints[drivePoints.length - 1];
-      if (!last || last[0] !== coord[0] || last[1] !== coord[1]) {
-        drivePoints.push(coord);
+      let pts = [];
+      if (day.roadPoints && day.roadPoints.length > 0) {
+        pts = day.roadPoints;
+      } else {
+        const last = staticPoints.length ? staticPoints[staticPoints.length - 1] : coord;
+        pts = [last, coord];
+      }
+
+      if (day.day === upToDay && pts.length > 1 && day.type === "drive") {
+        animatePoints = pts;
+        isMoving = true;
+      } else {
+        staticPoints.push(...pts);
       }
     }
-
     const marker = createMarker(day, coord);
     marker.addTo(map);
     allMarkers.push(marker);
   }
 
-  if (drivePoints.length > 1) {
-    routeLayer = L.polyline(drivePoints, {
+  // Draw the historical route instantly
+  if (staticPoints.length > 1) {
+    routeLayer = L.polyline(staticPoints, {
       color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
     }).addTo(map);
+  }
 
-    const lastPoint = drivePoints[drivePoints.length - 1];
-    const prevPoint = drivePoints[drivePoints.length - 2];
+  // Ensure the animation picks up exactly where the static line ended
+  if (isMoving && animatePoints.length > 1 && staticPoints.length > 0) {
+    const lastStatic = staticPoints[staticPoints.length - 1];
+    if (lastStatic[0] !== animatePoints[0][0] || lastStatic[1] !== animatePoints[0][1]) {
+      animatePoints.unshift(lastStatic);
+    }
+  }
 
-    // Calculate distance and slow down animation speed to 1/3rd of previous value
-    const distanceMeters = map.distance(prevPoint, lastPoint);
-    const duration = Math.max(1.8, Math.min(10.5, (distanceMeters / 250000) * 3));
+  // Determine starting position of the car
+  const startPos = isMoving ? animatePoints[0] : (staticPoints.length ? staticPoints[staticPoints.length - 1] : null);
 
-    // Side profile SVG view of a crossover SUV (No Rotation)
-    const carHtml = `
-      <div class="cx5-car">
-        <svg viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
-          <ellipse cx="90" cy="82" rx="75" ry="10" fill="rgba(0,0,0,0.4)" filter="blur(3px)"/>
-          <circle cx="45" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
-          <circle cx="45" cy="75" r="7" fill="#555"/>
-          <circle cx="135" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
-          <circle cx="135" cy="75" r="7" fill="#555"/>
-          <path d="M 15 65 Q 12 55 20 45 L 45 42 L 75 25 Q 95 22 135 25 L 160 45 Q 168 55 165 65 Q 160 70 150 70 L 148 68 Q 135 58 122 68 L 58 68 Q 45 58 32 68 L 20 70 Z" fill="#181818" stroke="#444" stroke-width="1.5"/>
-          <path d="M 52 40 L 74 27 L 102 27 L 108 40 Z" fill="#080808"/>
-          <path d="M 112 40 L 105 27 L 132 27 L 145 40 Z" fill="#080808"/>
-          <path d="M 160 46 L 165 48 L 162 54 Z" fill="#FFFFEE"/>
-          <path d="M 20 46 L 15 48 L 17 54 Z" fill="#FF2222"/>
-        </svg>
-      </div>
-    `;
+  const carHtml = `
+    <div class="cx5-car">
+      <svg viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="90" cy="82" rx="75" ry="10" fill="rgba(0,0,0,0.4)" filter="blur(3px)"/>
+        <circle cx="45" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
+        <circle cx="45" cy="75" r="7" fill="#555"/>
+        <circle cx="135" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
+        <circle cx="135" cy="75" r="7" fill="#555"/>
+        <path d="M 15 65 Q 12 55 20 45 L 45 42 L 75 25 Q 95 22 135 25 L 160 45 Q 168 55 165 65 Q 160 70 150 70 L 148 68 Q 135 58 122 68 L 58 68 Q 45 58 32 68 L 20 70 Z" fill="#181818" stroke="#444" stroke-width="1.5"/>
+        <path d="M 52 40 L 74 27 L 102 27 L 108 40 Z" fill="#080808"/>
+        <path d="M 112 40 L 105 27 L 132 27 L 145 40 Z" fill="#080808"/>
+        <path d="M 160 46 L 165 48 L 162 54 Z" fill="#FFFFEE"/>
+        <path d="M 20 46 L 15 48 L 17 54 Z" fill="#FF2222"/>
+      </svg>
+    </div>
+  `;
 
+  if (startPos) {
     if (!carMarker) {
-      carMarker = L.marker(lastPoint, {
+      carMarker = L.marker(startPos, {
         icon: L.divIcon({ className: 'moving-car-icon', html: carHtml, iconSize: [0, 0] }),
         zIndexOffset: 1000 
       }).addTo(map);
     } else {
-      const markerEl = carMarker.getElement();
-      if (markerEl) {
-        markerEl.style.transition = `transform ${duration}s linear`; 
-        carMarker.setLatLng(lastPoint);
-        carMarker.setIcon(L.divIcon({ className: 'moving-car-icon', html: carHtml, iconSize: [0, 0] }));
+      carMarker.setLatLng(startPos);
+    }
+  }
+
+  // --- THE NEW CUSTOM JAVASCRIPT ANIMATION ENGINE ---
+  if (isMoving && animatePoints.length > 1) {
+    activeLineLayer = L.polyline([animatePoints[0]], {
+      color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
+    }).addTo(map);
+
+    let pathDistances = [0];
+    let runDist = 0;
+    for (let i = 0; i < animatePoints.length - 1; i++) {
+      runDist += map.distance(animatePoints[i], animatePoints[i+1]);
+      pathDistances.push(runDist);
+    }
+
+    // Speed greatly reduced (3x slower than previous iteration)
+    const durationMs = Math.max(2500, Math.min(20000, (runDist / 100000) * 2000));
+    const startTime = performance.now();
+
+    function step(timestamp) {
+      const elapsed = timestamp - startTime;
+      let progress = Math.min(elapsed / durationMs, 1);
+      const targetDist = progress * runDist;
+
+      let i = 0;
+      while (i < pathDistances.length - 1 && pathDistances[i+1] <= targetDist) { i++; }
+
+      if (i >= animatePoints.length - 1) {
+        carMarker.setLatLng(animatePoints[animatePoints.length - 1]);
+        activeLineLayer.setLatLngs(animatePoints);
+        return; 
+      }
+
+      const p1 = animatePoints[i];
+      const p2 = animatePoints[i+1];
+      const segDist = pathDistances[i+1] - pathDistances[i];
+      const segProgress = segDist === 0 ? 1 : (targetDist - pathDistances[i]) / segDist;
+
+      const lat = p1[0] + (p2[0] - p1[0]) * segProgress;
+      const lng = p1[1] + (p2[1] - p1[1]) * segProgress;
+      const currentPos = [lat, lng];
+
+      carMarker.setLatLng(currentPos);
+      activeLineLayer.setLatLngs([...animatePoints.slice(0, i + 1), currentPos]);
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(step);
       }
     }
-  } else if (carMarker) {
-    carMarker.remove();
-    carMarker = null;
+    animationFrame = requestAnimationFrame(step);
   }
 
   if (flightSegments.length) {
@@ -313,7 +367,6 @@ async function init() {
     maxZoom: 19
   }).addTo(map);
 
-  // FETCH US STATES
   fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
     .then(res => res.json())
     .then(geoData => {
@@ -327,7 +380,6 @@ async function init() {
       }).addTo(map);
     });
 
-  // FETCH CANADIAN PROVINCES
   fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
     .then(res => res.json())
     .then(geoData => {
