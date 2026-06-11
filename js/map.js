@@ -55,22 +55,41 @@ const LOCATIONS = {
 };
 
 const STATE_CODES = {
-  "Alabama": "AL", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE", "Florida": "FL", "Georgia": "GA", "Idaho": "ID", "Illinois": "IL", "Indiana": "IN", "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA", "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN", "Mississippi": "MS", "Missouri": "MO", "Montana": "MT", "Nebraska": "NE", "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC", "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT", "Virginia": "VA", "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY",
-  "Alberta": "AB", "British Columbia": "BC", "Manitoba": "MB", "New Brunswick": "NB", "Newfoundland and Labrador": "NL", "Nova Scotia": "NS", "Ontario": "ON", "Prince Edward Island": "PE", "Quebec": "QC", "Saskatchewan": "SK"
+  "Alabama": "AL", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO",
+  "Connecticut": "CT", "Delaware": "DE", "Florida": "FL", "Georgia": "GA", "Idaho": "ID",
+  "Illinois": "IL", "Indiana": "IN", "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY",
+  "Louisiana": "LA", "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI",
+  "Minnesota": "MN", "Mississippi": "MS", "Missouri": "MO", "Montana": "MT", "Nebraska": "NE",
+  "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY",
+  "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR",
+  "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC", "South Dakota": "SD",
+  "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT", "Virginia": "VA",
+  "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY",
+  "Alberta": "AB", "British Columbia": "BC", "Manitoba": "MB", "New Brunswick": "NB",
+  "Newfoundland and Labrador": "NL", "Nova Scotia": "NS", "Ontario": "ON",
+  "Prince Edward Island": "PE", "Quebec": "QC", "Saskatchewan": "SK"
 };
 
 const EVENT_ICONS = {
-  "MLB": "⚾", "NFL": "🏈", "MLS": "⚽", "NCAAF": "🏈", "MotoGP": "🏁",
-  "UFC": "🥊", "Boxing": "🥊", "WWE": "🤼", "Tennis": "🎾",
-  "Concert": "🎤", "Comedy": "🎭", "Show": "📺"
+  "MLB": "⚾",
+  "NFL": "🏈",
+  "MLS": "⚽",
+  "NCAAF": "🏈",
+  "MotoGP": "🏁",
+  "UFC": "🥊",
+  "Boxing": "🥊",
+  "WWE": "🤼",
+  "Tennis": "🎾",
+  "Concert": "🎤",
+  "Comedy": "🎭",
+  "Show": "📺"
 };
 
-// Global Tracking Variables
+// Global tracking variables
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
-let eventsModeActive = false;
 
-// --- DECOUPLED PHYSICS ENGINE VARIABLES ---
+// Animation engine variables
 let carMarker = null;
 let lastUpToDay = -1;
 let animationQueue = [];
@@ -78,16 +97,18 @@ let paintedPoints = [];
 let carCurrentPos = null;
 let lastEngineTime = null;
 
-// These let timeline.js wait until the car/line has finished the current day.
+// Timeline.js waits on these so long drives are not interrupted.
 let isRouteAnimating = false;
 let routeAnimationResolvers = [];
 
-// SPEED CONTROLLER: Metres per second.
-// Bigger number = faster car.
-// Smaller number = slower car.
+// Event mode
+let eventsModeActive = false;
+
+// SPEED CONTROLLER: metres per second.
+// Lower = slower. Higher = faster.
 const CAR_SPEED = 250000;
 
-// --- DYNAMIC STYLING ---
+// Dynamic styling
 const style = document.createElement("style");
 style.innerHTML = `
   .marker-dot {
@@ -112,7 +133,7 @@ style.innerHTML = `
     background-color: #FF00FF;
     border-color: #FFF;
     font-size: 14px;
-    box-shadow: 0 0 10px #FF00FF;
+    box-shadow: 0 0 12px #FF00FF;
   }
 
   .marker-airport {
@@ -133,15 +154,195 @@ style.innerHTML = `
     text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
   }
 
-  /* The CX-5 Side Profile */
   .cx5-car {
     width: 56px;
     height: 32px;
     margin-left: -28px;
     margin-top: -16px;
   }
+
+  .trip-menu {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 700;
+    width: 280px;
+    background: rgba(250, 250, 247, 0.96);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(20, 20, 20, 0.12);
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.14);
+    overflow: hidden;
+    color: #111;
+  }
+
+  .trip-menu-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    color: #111;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    cursor: pointer;
+  }
+
+  .trip-menu-toggle:hover {
+    background: rgba(0,0,0,0.035);
+  }
+
+  .trip-menu-chevron {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+  }
+
+  .trip-menu.open .trip-menu-chevron {
+    transform: rotate(180deg);
+  }
+
+  .trip-menu-content {
+    display: none;
+    padding: 0 16px 16px;
+  }
+
+  .trip-menu.open .trip-menu-content {
+    display: block;
+  }
+
+  .trip-menu .subtitle {
+    font-size: 13px;
+    color: rgba(0,0,0,0.62);
+    margin: 0 0 14px;
+  }
+
+  .trip-menu .stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .trip-menu .stat {
+    border: 1px solid rgba(0,0,0,0.10);
+    border-radius: 8px;
+    padding: 8px;
+    background: rgba(255,255,255,0.62);
+  }
+
+  .trip-menu .stat-value {
+    display: block;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .trip-menu .stat-label {
+    display: block;
+    margin-top: 4px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(0,0,0,0.54);
+  }
+
+  .menu-section {
+    border-top: 1px solid rgba(0,0,0,0.10);
+    padding-top: 14px;
+  }
+
+  .menu-action-btn {
+    width: 100%;
+    border: 1px solid #111;
+    background: #111;
+    color: #FAFAF7;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .menu-action-btn:hover {
+    background: #000;
+  }
+
+  .menu-action-btn.active {
+    background: #FF00FF;
+    border-color: #FF00FF;
+    color: #fff;
+  }
+
+  .events-list {
+    margin-top: 12px;
+    display: none;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 2px;
+  }
+
+  .trip-menu.events-open .events-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .event-list-item {
+    width: 100%;
+    text-align: left;
+    border: 1px solid rgba(0,0,0,0.12);
+    background: rgba(255,255,255,0.72);
+    border-radius: 8px;
+    padding: 9px 10px;
+    cursor: pointer;
+    color: #111;
+  }
+
+  .event-list-item:hover {
+    border-color: #FF00FF;
+  }
+
+  .event-list-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .event-list-meta {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    color: rgba(0,0,0,0.58);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @media (max-width: 640px) {
+    .trip-menu {
+      top: 10px;
+      left: 10px;
+      width: min(280px, calc(100% - 20px));
+    }
+
+    .trip-menu-toggle {
+      padding: 10px 12px;
+      font-size: 16px;
+    }
+  }
 `;
 document.head.appendChild(style);
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 
 function greatCircleArc(start, end, segments = 64) {
   const [lat1, lon1] = start.map(d => d * Math.PI / 180);
@@ -203,7 +404,9 @@ function createMarker(day, latlng) {
   let html = "";
   let size = 12;
 
-  if (day.event) {
+  const shouldHighlightEvent = eventsModeActive && day.event;
+
+  if (shouldHighlightEvent) {
     className = "marker-dot marker-event";
     html = EVENT_ICONS[day.event.type] || "★";
     size = 24;
@@ -244,26 +447,26 @@ function showDayDetail(day) {
     year: "numeric"
   });
 
-  let html = `<h2>Day ${day.day}</h2><h3>${day.finish}</h3><p class="detail-date">${dateStr}</p>`;
+  let html = `<h2>Day ${day.day}</h2><h3>${escapeHtml(day.finish)}</h3><p class="detail-date">${dateStr}</p>`;
 
   if (day.type === "drive" && day.miles) {
-    html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${day.miles} mi · ${day.drivingTime}</div></div>`;
+    html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime)}</div></div>`;
 
     if (day.start !== day.finish) {
-      html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${day.start}${day.via ? " → " + day.via : ""} → ${day.finish}</div></div>`;
+      html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${escapeHtml(day.start)}${day.via ? " → " + escapeHtml(day.via) : ""} → ${escapeHtml(day.finish)}</div></div>`;
     }
   }
 
   if (day.event) {
-    html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${day.event.type}</span>${day.event.name}</div></div>`;
+    html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${escapeHtml(day.event.type)}</span>${escapeHtml(day.event.name)}</div></div>`;
   }
 
   if (day.attractions && day.attractions.length) {
-    html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${a}</li>`).join("")}</ul></div>`;
+    html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${escapeHtml(a)}</li>`).join("")}</ul></div>`;
   }
 
   if (day.hotel) {
-    html += `<div class="detail-section"><div class="detail-label">Hotel</div><div class="detail-value">${day.hotel}</div></div>`;
+    html += `<div class="detail-section"><div class="detail-label">Hotel</div><div class="detail-value">${escapeHtml(day.hotel)}</div></div>`;
   }
 
   content.innerHTML = html;
@@ -277,7 +480,171 @@ function closeDayDetail() {
   panel.setAttribute("aria-hidden", "true");
 }
 
-// --- THE DISTANCE-BASED PHYSICS ENGINE ---
+function getMaxDay() {
+  if (!tripData || !tripData.days || !tripData.days.length) return 93;
+  return Math.max(...tripData.days.map(day => Number(day.day)));
+}
+
+function getEventDays() {
+  if (!tripData || !tripData.days) return [];
+  return tripData.days.filter(day => day.event);
+}
+
+function setEventsMode(active) {
+  eventsModeActive = Boolean(active);
+
+  const menu = document.getElementById("trip-menu");
+  const button = document.getElementById("events-toggle");
+
+  if (menu) {
+    menu.classList.toggle("events-open", eventsModeActive);
+  }
+
+  if (button) {
+    button.classList.toggle("active", eventsModeActive);
+    button.setAttribute("aria-pressed", eventsModeActive ? "true" : "false");
+    button.textContent = eventsModeActive ? "Hide events" : "Highlight events";
+  }
+
+  const targetDay = eventsModeActive ? getMaxDay() : lastUpToDay;
+  renderRoute(targetDay, { instant: true });
+
+  if (eventsModeActive) {
+    const eventCoords = getEventDays()
+      .map(day => LOCATIONS[day.finish])
+      .filter(Boolean);
+
+    if (eventCoords.length) {
+      map.fitBounds(L.latLngBounds(eventCoords), {
+        padding: [80, 80]
+      });
+    }
+  }
+}
+
+function setupTripMenu() {
+  let menu = document.getElementById("trip-menu");
+
+  if (!menu) {
+    const oldPanel = document.querySelector(".panel-info");
+
+    if (oldPanel) {
+      menu = oldPanel;
+      menu.id = "trip-menu";
+      menu.className = "trip-menu";
+    } else {
+      menu = document.createElement("div");
+      menu.id = "trip-menu";
+      menu.className = "trip-menu";
+      document.body.appendChild(menu);
+    }
+
+    menu.innerHTML = `
+      <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
+        <span>RT2K15</span>
+        <span class="trip-menu-chevron">▾</span>
+      </button>
+
+      <div class="trip-menu-content" id="trip-menu-content">
+        <p class="subtitle">San Francisco → Miami, the long way</p>
+
+        <div class="stats">
+          <div class="stat"><span class="stat-value" id="stat-days">—</span><span class="stat-label">days</span></div>
+          <div class="stat"><span class="stat-value" id="stat-miles">—</span><span class="stat-label">miles</span></div>
+          <div class="stat"><span class="stat-value" id="stat-states">—</span><span class="stat-label">states</span></div>
+          <div class="stat"><span class="stat-value" id="stat-provinces">—</span><span class="stat-label">provinces</span></div>
+        </div>
+
+        <div class="menu-section">
+          <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
+            Highlight events
+          </button>
+
+          <div class="events-list" id="events-list"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  const toggle = document.getElementById("trip-menu-toggle");
+  const eventsToggle = document.getElementById("events-toggle");
+  const eventsList = document.getElementById("events-list");
+
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      const isOpen = menu.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+  }
+
+  const eventDays = getEventDays();
+
+  if (eventsList) {
+    if (!eventDays.length) {
+      eventsList.innerHTML = `<div class="event-list-meta">No events logged yet.</div>`;
+    } else {
+      eventsList.innerHTML = eventDays.map(day => {
+        const type = day.event?.type || "Event";
+        const name = day.event?.name || "Event";
+        const finish = day.finish || "";
+        const date = day.date
+          ? new Date(day.date).toLocaleDateString("en-GB", {
+              day: "numeric",
+              month: "short"
+            })
+          : "";
+
+        return `
+          <button class="event-list-item" data-event-day="${day.day}">
+            <span class="event-list-title">${escapeHtml(type)} · ${escapeHtml(name)}</span>
+            <span class="event-list-meta">Day ${escapeHtml(day.day)} · ${escapeHtml(date)} · ${escapeHtml(finish)}</span>
+          </button>
+        `;
+      }).join("");
+    }
+
+    eventsList.addEventListener("click", event => {
+      const item = event.target.closest("[data-event-day]");
+      if (!item) return;
+
+      const dayNumber = Number(item.dataset.eventDay);
+      const day = tripData.days.find(d => Number(d.day) === dayNumber);
+
+      if (!day) return;
+
+      eventsModeActive = true;
+
+      const button = document.getElementById("events-toggle");
+      if (button) {
+        button.classList.add("active");
+        button.setAttribute("aria-pressed", "true");
+        button.textContent = "Hide events";
+      }
+
+      menu.classList.add("events-open");
+
+      renderRoute(dayNumber, { instant: true });
+
+      const coord = LOCATIONS[day.finish];
+
+      if (coord) {
+        map.setView(coord, 7, {
+          animate: true
+        });
+      }
+
+      showDayDetail(day);
+    });
+  }
+
+  if (eventsToggle) {
+    eventsToggle.addEventListener("click", () => {
+      setEventsMode(!eventsModeActive);
+    });
+  }
+}
+
+// Distance-based animation engine
 function engineLoop(timestamp) {
   if (!lastEngineTime) lastEngineTime = timestamp;
 
@@ -328,11 +695,12 @@ function engineLoop(timestamp) {
 }
 
 function renderRoute(upToDay, options = {}) {
+  upToDay = Number(upToDay) || 0;
+
   const isPlaying =
     options.forceAnimate === true ||
     (!options.instant && upToDay === lastUpToDay + 1);
 
-  // If something was waiting for a previous animation, release it before replacing the route.
   if (isRouteAnimating) {
     isRouteAnimating = false;
     resolveRouteAnimationWaiters();
@@ -562,6 +930,8 @@ async function init() {
 
   await loadRealisticRoads();
 
+  setupTripMenu();
+
   document.getElementById("stat-days").textContent = tripData.stats.days;
   document.getElementById("stat-miles").textContent = tripData.stats.milesDriven.toLocaleString();
   document.getElementById("stat-states").textContent = tripData.stats.states;
@@ -585,6 +955,7 @@ async function init() {
     renderRoute,
     waitForRouteAnimation,
     isRouteAnimating: () => isRouteAnimating,
+    setEventsMode,
     tripData,
     carSpeed: CAR_SPEED
   };
