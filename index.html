@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RT2K15 — San Francisco to Miami, the long way</title>
+  <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+  <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap)" rel="stylesheet">
+  <link rel="stylesheet" href="[unpkg.com](https://unpkg.com/leaflet@1.9.4/dist/leaflet.css)" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="map"></div>
+
+  <div class="panel panel-info">
+    <h1>RT2K15</h1>
+    <p class="subtitle">San Francisco → Miami, the long way</p>
+    <div class="stats">
+      <div class="stat"><span class="stat-value" id="stat-days">—</span><span class="stat-label">days</span></div>
+      <div class="stat"><span class="stat-value" id="stat-miles">—</span><span class="stat-label">miles</span></div>
+      <div class="stat"><span class="stat-value" id="stat-states">—</span><span class="stat-label">states</span></div>
+      <div class="stat"><span class="stat-value" id="stat-provinces">—</span><span class="stat-label">provinces</span></div>
+    </div>
+  </div>
+
+  <aside class="day-detail" id="day-detail" aria-hidden="true">
+    <button class="close-btn" id="close-detail" aria-label="Close">×</button>
+    <div class="detail-content" id="detail-content"></div>
+  </aside>
+
+  <div class="timeline">
+    <button class="play-btn" id="play-btn" aria-label="Play">▶</button>
+    <div class="timeline-track">
+      <input type="range" id="timeline-slider" min="1" max="93" value="93" step="1" />
+      <div class="timeline-labels">
+        <span>Jun 17</span>
+        <span>Jul</span>
+        <span>Aug</span>
+        <span>Sep 17</span>
+      </div>
+    </div>
+    <div class="day-counter">Day <span id="current-day">93</span> / 93</div>
+  </div>
+
+  <script src="[unpkg.com](https://unpkg.com/leaflet@1.9.4/dist/leaflet.js)"></script>
+  <script src="js/map.js"></script>
+  <script src="js/timeline.js"></script>
+</body>
+</html>
