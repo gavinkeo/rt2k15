@@ -54,7 +54,11 @@ const LOCATIONS = {
   "Fort Lauderdale Airport": [26.0742, -80.1506]
 };
 
-// Event type → icon character
+const STATE_CODES = {
+  "Alabama": "AL", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO", "Connecticut": "CT", "Delaware": "DE", "Florida": "FL", "Georgia": "GA", "Idaho": "ID", "Illinois": "IL", "Indiana": "IN", "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA", "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN", "Mississippi": "MS", "Missouri": "MO", "Montana": "MT", "Nebraska": "NE", "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY", "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC", "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT", "Virginia": "VA", "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY",
+  "Alberta": "AB", "British Columbia": "BC", "Manitoba": "MB", "New Brunswick": "NB", "Newfoundland and Labrador": "NL", "Nova Scotia": "NS", "Ontario": "ON", "Prince Edward Island": "PE", "Quebec": "QC", "Saskatchewan": "SK"
+};
+
 const EVENT_ICONS = {
   "MLB": "⚾", "NFL": "🏈", "MLS": "⚽", "NCAAF": "🏈", "MotoGP": "🏁",
   "UFC": "🥊", "Boxing": "🥊", "WWE": "🤼", "Tennis": "🎾",
@@ -62,26 +66,54 @@ const EVENT_ICONS = {
 };
 
 let map, routeLayer, flightLayer, allMarkers = [];
-let carMarker = null; // Our new Mazda CX-5
+let carMarker = null; 
 let tripData = null;
 
-// Inject CSS for smooth car driving
+// --- DYNAMIC STYLING ---
 const style = document.createElement('style');
 style.innerHTML = `
-  .moving-car-icon {
-    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  /* Glowing minimalist markers for the satellite map */
+  .marker-dot {
+    background-color: #FFFFFF;
+    border: 2px solid #00E5FF;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(0, 229, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #111;
+    font-size: 10px;
+    transition: all 0.2s ease;
   }
+  .marker-dot:hover {
+    transform: scale(1.3);
+    box-shadow: 0 0 12px rgba(0, 229, 255, 1);
+  }
+  .marker-event { background-color: #FF00FF; border-color: #FFF; font-size: 14px; box-shadow: 0 0 10px #FF00FF; }
+  .marker-airport { background-color: #FFEB3B; border-color: #111; font-size: 12px; box-shadow: 0 0 10px #FFEB3B; }
+  
+  /* Transparent map labels for state initials */
+  .leaflet-tooltip.state-label {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
+  }
+  
+  /* The sleek CX-5 */
   .cx5-car {
-    width: 28px;
-    height: 48px;
-    margin-left: -14px;
-    margin-top: -24px;
-    transition: transform 0.4s ease-out;
+    width: 32px;
+    height: 56px;
+    margin-left: -16px;
+    margin-top: -28px;
   }
 `;
 document.head.appendChild(style);
 
-// Build a great-circle arc between two points (for flights)
 function greatCircleArc(start, end, segments = 64) {
   const [lat1, lon1] = start.map(d => d * Math.PI / 180);
   const [lat2, lon2] = end.map(d => d * Math.PI / 180);
@@ -102,7 +134,6 @@ function greatCircleArc(start, end, segments = 64) {
   return points;
 }
 
-// Calculate the heading angle for the car
 function getBearing(start, end) {
   const lat1 = start[0] * Math.PI / 180;
   const lon1 = start[1] * Math.PI / 180;
@@ -117,7 +148,7 @@ function getBearing(start, end) {
 function createMarker(day, latlng) {
   let className = "marker-dot";
   let html = "";
-  let size = 10;
+  let size = 12;
 
   if (day.event) {
     className = "marker-dot marker-event";
@@ -125,11 +156,11 @@ function createMarker(day, latlng) {
     size = 24;
   } else if (day.type === "stay") {
     className = "marker-dot marker-stay";
-    size = 12;
+    size = 14;
   } else if (day.type === "flight") {
     className = "marker-dot marker-airport";
     html = "✈";
-    size = 20;
+    size = 22;
   }
 
   const icon = L.divIcon({
@@ -148,10 +179,8 @@ function createMarker(day, latlng) {
 function showDayDetail(day) {
   const panel = document.getElementById("day-detail");
   const content = document.getElementById("detail-content");
-
   const dateObj = new Date(day.date);
   const dateStr = dateObj.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-
   let html = `<h2>Day ${day.day}</h2><h3>${day.finish}</h3><p class="detail-date">${dateStr}</p>`;
 
   if (day.type === "drive" && day.miles) {
@@ -160,18 +189,9 @@ function showDayDetail(day) {
       html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${day.start}${day.via ? " → " + day.via : ""} → ${day.finish}</div></div>`;
     }
   }
-
-  if (day.event) {
-    html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${day.event.type}</span>${day.event.name}</div></div>`;
-  }
-
-  if (day.attractions && day.attractions.length) {
-    html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${a}</li>`).join("")}</ul></div>`;
-  }
-
-  if (day.hotel) {
-    html += `<div class="detail-section"><div class="detail-label">Hotel</div><div class="detail-value">${day.hotel}</div></div>`;
-  }
+  if (day.event) { html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${day.event.type}</span>${day.event.name}</div></div>`; }
+  if (day.attractions && day.attractions.length) { html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${a}</li>`).join("")}</ul></div>`; }
+  if (day.hotel) { html += `<div class="detail-section"><div class="detail-label">Hotel</div><div class="detail-value">${day.hotel}</div></div>`; }
 
   content.innerHTML = html;
   panel.classList.add("open");
@@ -218,45 +238,50 @@ function renderRoute(upToDay) {
   if (drivePoints.length > 1) {
     // ELECTRIC NEON CYAN LINE
     routeLayer = L.polyline(drivePoints, {
-      color: "#00E5FF", 
-      weight: 4, 
-      opacity: 0.9, 
-      lineJoin: "round"
+      color: "#00E5FF", weight: 4, opacity: 0.9, lineJoin: "round"
     }).addTo(map);
 
-    // THE MAZDA CX-5 LOGIC
     const lastPoint = drivePoints[drivePoints.length - 1];
     const prevPoint = drivePoints[drivePoints.length - 2];
     const bearing = getBearing(prevPoint, lastPoint);
 
+    // Calculate duration based on distance so speed is visually consistent
+    const distanceMeters = map.distance(prevPoint, lastPoint);
+    // Limits animation to be between 0.6 seconds (short hops) and 3.5 seconds (long cross-country drives)
+    const duration = Math.max(0.6, Math.min(3.5, distanceMeters / 250000));
+
+    // Sleek new Mazda CX-5 SVG
     const carHtml = `
-      <div class="cx5-car" style="transform: rotate(${bearing}deg);">
-        <svg viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg">
-          <rect x="15" y="10" width="70" height="140" rx="18" fill="#111" stroke="#333" stroke-width="2"/>
-          <path d="M22 55 L78 55 L72 35 L28 35 Z" fill="#000" stroke="#444" stroke-width="1"/>
-          <path d="M25 115 L75 115 L70 130 L30 130 Z" fill="#000" stroke="#444" stroke-width="1"/>
-          <ellipse cx="25" cy="16" rx="7" ry="5" fill="#FFFFDD" />
-          <ellipse cx="75" cy="16" rx="7" ry="5" fill="#FFFFDD" />
-          <rect x="18" y="142" width="16" height="6" rx="2" fill="#FF1111"/>
-          <rect x="66" y="142" width="16" height="6" rx="2" fill="#FF1111"/>
+      <div class="cx5-car">
+        <svg viewBox="0 0 100 180" xmlns="http://www.w3.org/2000/svg" style="transform: rotate(${bearing}deg); transition: transform 0.3s ease;">
+          <rect x="18" y="15" width="64" height="150" rx="20" fill="rgba(0,0,0,0.5)" filter="blur(4px)"/>
+          <path d="M 22 30 C 22 15, 78 15, 78 30 L 82 150 C 82 170, 18 170, 18 150 Z" fill="#151515" stroke="#333" stroke-width="1.5"/>
+          <path d="M 28 65 Q 50 55 72 65 L 68 40 Q 50 35 32 40 Z" fill="#0a0a0a" stroke="#222"/>
+          <path d="M 30 65 L 70 65 L 68 135 L 32 135 Z" fill="#111"/>
+          <rect x="38" y="75" width="24" height="30" rx="3" fill="#050505"/>
+          <path d="M 32 135 L 68 135 L 74 155 Q 50 160 26 155 Z" fill="#0a0a0a" stroke="#222"/>
+          <path d="M 22 25 Q 30 20 38 24 L 35 28 Q 28 26 22 30 Z" fill="#E6FFFF"/>
+          <path d="M 78 25 Q 70 20 62 24 L 65 28 Q 72 26 78 30 Z" fill="#E6FFFF"/>
+          <polygon points="22,25 38,24 -15,-50 0,-60" fill="rgba(255,255,255,0.12)"/>
+          <polygon points="78,25 62,24 115,-50 100,-60" fill="rgba(255,255,255,0.12)"/>
+          <path d="M 20 155 Q 30 160 40 157 L 40 153 Q 30 156 22 152 Z" fill="#FF0000"/>
+          <path d="M 80 155 Q 70 160 60 157 L 60 153 Q 70 156 78 152 Z" fill="#FF0000"/>
         </svg>
       </div>
     `;
 
     if (!carMarker) {
       carMarker = L.marker(lastPoint, {
-        icon: L.divIcon({
-          className: 'moving-car-icon',
-          html: carHtml,
-          iconSize: [0, 0] 
-        }),
-        zIndexOffset: 1000 // Always on top
+        icon: L.divIcon({ className: 'moving-car-icon', html: carHtml, iconSize: [0, 0] }),
+        zIndexOffset: 1000 
       }).addTo(map);
     } else {
-      carMarker.setLatLng(lastPoint);
-      const iconDiv = carMarker.getElement().querySelector('.cx5-car');
-      if (iconDiv) {
-        iconDiv.style.transform = `rotate(${bearing}deg)`;
+      const markerEl = carMarker.getElement();
+      if (markerEl) {
+        // Injects dynamic, calculated speed
+        markerEl.style.transition = `transform ${duration}s linear`; 
+        carMarker.setLatLng(lastPoint);
+        carMarker.setIcon(L.divIcon({ className: 'moving-car-icon', html: carHtml, iconSize: [0, 0] }));
       }
     }
   } else if (carMarker) {
@@ -272,16 +297,13 @@ function renderRoute(upToDay) {
   }
 }
 
-// Automatically convert straight drives into highway routing maps
 async function loadRealisticRoads() {
   const promises = tripData.days.map(async (day) => {
     if (day.type === "drive" && day.start !== day.finish) {
       const startCoord = LOCATIONS[day.start];
       const finishCoord = LOCATIONS[day.finish];
-      
       if (startCoord && finishCoord) {
         const url = `https://router.project-osrm.org/route/v1/driving/${startCoord[1]},${startCoord[0]};${finishCoord[1]},${finishCoord[0]}?overview=full&geometries=geojson`;
-        
         try {
           const response = await fetch(url);
           const data = await response.json();
@@ -290,52 +312,57 @@ async function loadRealisticRoads() {
             return;
           }
         } catch (e) {
-          console.warn(`Routing server failed for Day ${day.day}. Reverting to straight connection line.`);
+          console.warn(`Routing failed for Day ${day.day}.`);
         }
       }
     }
     day.roadPoints = [];
   });
-
   await Promise.all(promises);
 }
 
 async function init() {
-  map = L.map("map", { zoomControl: true, attributionControl: true }).setView([39.5, -98.5], 4);
-  L.control.zoom({ position: "bottomright" }).remove();
-  L.control.zoom({ position: "topright" }).addTo(map);
+  // Clear all default zoom controls so we can place it bottom-left
+  map = L.map("map", { zoomControl: false, attributionControl: true }).setView([39.5, -98.5], 4);
+  L.control.zoom({ position: "bottomleft" }).addTo(map);
 
-  // --- SATELLITE MAP LAYER ---
   L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP',
     maxZoom: 19
   }).addTo(map);
 
-  // --- FETCH AND DRAW CLEAN WHITE STATE BOUNDARIES ---
+  // FETCH US STATES
   fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
     .then(res => res.json())
     .then(geoData => {
-      geoData.features = geoData.features.filter(feature => 
-        !["Alaska", "Hawaii", "Puerto Rico"].includes(feature.properties.name)
-      );
-
+      geoData.features = geoData.features.filter(feature => !["Alaska", "Hawaii", "Puerto Rico"].includes(feature.properties.name));
       L.geoJSON(geoData, {
-        style: {
-          color: "#FFFFFF",      
-          weight: 1,             
-          fillOpacity: 0         
+        style: { color: "rgba(255,255,255,0.4)", weight: 1.2, fillOpacity: 0 },
+        onEachFeature: function (feature, layer) {
+          let code = STATE_CODES[feature.properties.name];
+          if (code) layer.bindTooltip(code, { permanent: true, direction: "center", className: "state-label" });
         }
       }).addTo(map);
-    })
-    .catch(err => console.error("Could not render state lines:", err));
+    });
+
+  // FETCH CANADIAN PROVINCES
+  fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
+    .then(res => res.json())
+    .then(geoData => {
+      L.geoJSON(geoData, {
+        style: { color: "rgba(255,255,255,0.4)", weight: 1.2, fillOpacity: 0 },
+        onEachFeature: function (feature, layer) {
+          let code = STATE_CODES[feature.properties.name];
+          if (code) layer.bindTooltip(code, { permanent: true, direction: "center", className: "state-label" });
+        }
+      }).addTo(map);
+    });
 
   const res = await fetch("data/trip.json");
   tripData = await res.json();
 
-  // Load actual driving layouts right before building timeline
   await loadRealisticRoads();
 
-  // Populate stats
   document.getElementById("stat-days").textContent = tripData.stats.days;
   document.getElementById("stat-miles").textContent = tripData.stats.milesDriven.toLocaleString();
   document.getElementById("stat-states").textContent = tripData.stats.states;
@@ -343,15 +370,10 @@ async function init() {
 
   renderRoute(93);
 
-  // Fit map to the full route once loaded
   const allCoords = tripData.days.map(d => LOCATIONS[d.finish]).filter(Boolean);
-  if (allCoords.length) {
-    map.fitBounds(L.latLngBounds(allCoords), { padding: [60, 60] });
-  }
+  if (allCoords.length) { map.fitBounds(L.latLngBounds(allCoords), { padding: [60, 60] }); }
 
   document.getElementById("close-detail").addEventListener("click", closeDayDetail);
-
-  // Expose for timeline.js
   window.RT2K15 = { renderRoute, tripData };
 }
 
