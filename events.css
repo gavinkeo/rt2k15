@@ -636,3 +636,174 @@ body {
     font-size: 11px;
   }
 }
+
+/* Phase 2: more realistic ticket details */
+
+.ticket {
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255,255,255,0.55), transparent 17%),
+    radial-gradient(circle at 80% 82%, rgba(0,0,0,0.045), transparent 22%),
+    linear-gradient(90deg, #fbf7e9 0%, #fbf7e9 70%, #eee1c1 70%, #eee1c1 100%);
+}
+
+.ticket-main {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.2;
+  background-image:
+    linear-gradient(90deg, rgba(17,17,17,0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(17,17,17,0.025) 1px, transparent 1px);
+  background-size: 7px 7px;
+  mix-blend-mode: multiply;
+}
+
+.ticket-topline {
+  margin-bottom: 18px;
+}
+
+.ticket h2 {
+  max-width: 95%;
+}
+
+.ticket-extra-grid {
+  margin-top: 15px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.ticket-extra-cell {
+  border-top: 1px solid rgba(17,17,17,0.16);
+  padding-top: 6px;
+  min-width: 0;
+}
+
+.ticket-extra-cell span {
+  display: block;
+  margin-bottom: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.45);
+}
+
+.ticket-extra-cell strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticket-fineprint {
+  margin-top: auto;
+  padding-top: 16px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.52);
+}
+
+.ticket-stub {
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.35), transparent 30%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(17,17,17,0.025) 0,
+      rgba(17,17,17,0.025) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+}
+
+.ticket-stub::before,
+.ticket-stub::after {
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.16),
+    inset 0 0 0 1px rgba(0,0,0,0.3);
+}
+
+.stub-seat-info {
+  width: 100%;
+  display: grid;
+  gap: 7px;
+  margin: 8px 0 10px;
+  padding: 8px 6px;
+  border-top: 1px solid rgba(17,17,17,0.16);
+  border-bottom: 1px solid rgba(17,17,17,0.16);
+  text-align: center;
+}
+
+.stub-seat-label {
+  display: block;
+  margin-bottom: 2px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: rgba(17,17,17,0.48);
+}
+
+.stub-seat-value {
+  display: block;
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+
+.barcode {
+  opacity: 0.86;
+}
+
+.barcode::after {
+  content: "RT2K15 0618 0915";
+}
+
+@media (max-width: 700px) {
+  .ticket-extra-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ticket-extra-cell strong {
+    font-size: 10.5px;
+  }
+
+  .ticket-fineprint {
+    padding-top: 14px;
+    font-size: 6.8px;
+    gap: 8px;
+  }
+
+  .stub-seat-info {
+    gap: 6px;
+    padding: 7px 4px;
+  }
+
+  .stub-seat-label {
+    font-size: 6.5px;
+  }
+
+  .stub-seat-value {
+    font-size: 15px;
+  }
+}
