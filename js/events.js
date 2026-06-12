@@ -236,15 +236,6 @@ function renderEvents() {
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
         <div class="ticket-main">
-<div class="ticket-topline ticket-topline-compact">
-  <span class="ticket-mini-label">RT2K15</span>
-
-  <span class="${brandClass}">
-    ${logoMarkup}
-    <span class="event-type">${escapeHtml(type)}</span>
-  </span>
-</div>
-
           <h2>${escapeHtml(item.name)}</h2>
 
           <div class="ticket-meta">
