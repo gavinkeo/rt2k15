@@ -1021,8 +1021,30 @@ function renderRoute(upToDay, options = {}) {
 async function loadRealisticRoads() {
   const promises = tripData.days.map(async day => {
     if (day.type === "drive" && day.start !== day.finish) {
-      if (LOCATIONS[day.start] && LOCATIONS[day.finish]) {
-        const url = `https://router.project-osrm.org/route/v1/driving/${LOCATIONS[day.start][1]},${LOCATIONS[day.start][0]};${LOCATIONS[day.finish][1]},${LOCATIONS[day.finish][0]}?overview=full&geometries=geojson`;
+      const routePlaces = [
+        day.start,
+        ...(day.viaStops || []),
+        day.finish
+      ].filter(Boolean);
+
+      const coords = routePlaces
+        .map(place => {
+          const coord = LOCATIONS[place];
+
+          if (!coord) {
+            console.warn(`Missing coordinates for: ${place}`);
+          }
+
+          return coord;
+        })
+        .filter(Boolean);
+
+      if (coords.length >= 2) {
+        const coordString = coords
+          .map(([lat, lng]) => `${lng},${lat}`)
+          .join(";");
+
+        const url = `https://router.project-osrm.org/route/v1/driving/${coordString}?overview=full&geometries=geojson`;
 
         try {
           const res = await fetch(url);
