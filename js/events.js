@@ -46,7 +46,11 @@ function filterGroup(type) {
   const normalised = normaliseType(type);
 
   if (["Boxing", "UFC", "WWE"].includes(normalised)) return "Combat";
-  if (["MLB", "NFL", "NCAAF", "MLS", "NHL", "Tennis", "MotoGP"].includes(normalised)) return normalised;
+
+  if (["MLB", "NFL", "NCAAF", "MLS", "NHL", "Tennis", "MotoGP"].includes(normalised)) {
+    return normalised;
+  }
+
   if (normalised === "Concert") return "Concert";
 
   return "Other";
@@ -97,7 +101,7 @@ function buildEventList(tripData) {
       event: day.event,
       type: normaliseType(day.event.type),
       group: filterGroup(day.event.type),
-      name: day.event.name,
+      name: day.event.name || "Untitled event",
       venue: getVenue(day),
       location: getEventLocation(day),
       date: day.event.date || day.date,
@@ -123,6 +127,8 @@ function eventMatchesFilter(item) {
 }
 
 function renderEvents() {
+  if (!ticketGrid || !summary) return;
+
   const visibleEvents = allEvents.filter(eventMatchesFilter);
 
   if (!visibleEvents.length) {
@@ -145,6 +151,7 @@ function renderEvents() {
 
     const ticketCode = getTicketCode(day, type, ticket);
     const admission = ticket.admission || ticket.type || "Admit One";
+
     const section = ticket.section || ticket.sec || "";
     const row = ticket.row || "";
     const seat = ticket.seat || "";
@@ -152,9 +159,6 @@ function renderEvents() {
     const eventTime = ticket.eventTime || ticket.time || "";
     const price = ticket.price || "";
     const entry = ticket.entry || "";
-
-    const hasSeatInfo = Boolean(section || row || seat);
-    const hasExtraInfo = Boolean(doors || eventTime || price || entry);
 
     const showYoutube = Boolean(item.youtube);
     const showBoxscore = type === "MLB" && Boolean(item.boxscore);
@@ -172,47 +176,34 @@ function renderEvents() {
         >`
       : "";
 
-    const seatInfoMarkup = hasSeatInfo
+    const middleBrandMarkup = `
+      <div class="ticket-middle-brand ${brandClass}">
+        ${logoMarkup}
+        <span class="event-type">${escapeHtml(type)}</span>
+      </div>
+    `;
+
+    const extraInfoMarkup = (section || row || seat || entry || doors || eventTime || price)
       ? `
-        <div class="stub-seat-info">
+        <div class="ticket-extra-grid">
           ${section ? `
-            <div>
-              <span class="stub-seat-label">SEC</span>
-              <span class="stub-seat-value">${escapeHtml(section)}</span>
+            <div class="ticket-extra-cell">
+              <span>Sec</span>
+              <strong>${escapeHtml(section)}</strong>
             </div>
           ` : ""}
 
           ${row ? `
-            <div>
-              <span class="stub-seat-label">ROW</span>
-              <span class="stub-seat-value">${escapeHtml(row)}</span>
+            <div class="ticket-extra-cell">
+              <span>Row</span>
+              <strong>${escapeHtml(row)}</strong>
             </div>
           ` : ""}
 
           ${seat ? `
-            <div>
-              <span class="stub-seat-label">SEAT</span>
-              <span class="stub-seat-value">${escapeHtml(seat)}</span>
-            </div>
-          ` : ""}
-        </div>
-      `
-      : "";
-
-    const extraInfoMarkup = hasExtraInfo
-      ? `
-        <div class="ticket-extra-grid">
-          ${entry ? `
             <div class="ticket-extra-cell">
-              <span>Entry</span>
-              <strong>${escapeHtml(entry)}</strong>
-            </div>
-          ` : ""}
-
-          ${doors ? `
-            <div class="ticket-extra-cell">
-              <span>Doors</span>
-              <strong>${escapeHtml(doors)}</strong>
+              <span>Seat</span>
+              <strong>${escapeHtml(seat)}</strong>
             </div>
           ` : ""}
 
@@ -229,20 +220,36 @@ function renderEvents() {
               <strong>${escapeHtml(price)}</strong>
             </div>
           ` : ""}
+
+          ${doors ? `
+            <div class="ticket-extra-cell">
+              <span>Doors</span>
+              <strong>${escapeHtml(doors)}</strong>
+            </div>
+          ` : ""}
+
+          ${entry ? `
+            <div class="ticket-extra-cell">
+              <span>Entry</span>
+              <strong>${escapeHtml(entry)}</strong>
+            </div>
+          ` : ""}
         </div>
       `
       : "";
 
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
-<div class="ticket-main">
-  <h2>${escapeHtml(item.name)}</h2>
+        <div class="ticket-main">
+          <h2>${escapeHtml(item.name)}</h2>
 
           <div class="ticket-meta">
             ${venue ? `<div><strong>Venue:</strong> ${escapeHtml(venue)}</div>` : ""}
             ${location ? `<div><strong>Location:</strong> ${escapeHtml(location)}</div>` : ""}
             ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
           </div>
+
+          ${middleBrandMarkup}
 
           ${extraInfoMarkup}
 
@@ -274,31 +281,24 @@ function renderEvents() {
             </div>
           ` : ""}
 
-<div class="ticket-fineprint">
-  <span>${escapeHtml(admission)}</span>
-  <span>Event Code ${escapeHtml(ticketCode)}</span>
-  <span>No refunds · No exchanges</span>
-</div>
+          <div class="ticket-fineprint">
+            <span>${escapeHtml(admission)}</span>
+            <span>Event Code ${escapeHtml(ticketCode)}</span>
+            <span>No refunds · No exchanges</span>
+          </div>
         </div>
 
-<aside class="ticket-stub">
-  <div class="stub-info-column">
-    <span class="stub-brand ${brandClass}">
-      ${logoMarkup}
-      <span class="event-type">${escapeHtml(type)}</span>
-    </span>
-
-    ${seatInfoMarkup}
-  </div>
-
-  <div class="barcode" aria-hidden="true"></div>
-</aside>
+        <aside class="ticket-stub">
+          <div class="barcode" aria-hidden="true"></div>
+        </aside>
       </article>
     `;
   }).join("");
 }
 
 function renderSummary() {
+  if (!summary) return;
+
   const total = allEvents.length;
   const types = [...new Set(allEvents.map(item => item.type))].sort();
 
@@ -308,7 +308,7 @@ function renderSummary() {
 function setupFilters() {
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
-      activeFilter = button.dataset.filter;
+      activeFilter = button.dataset.filter || "all";
 
       filterButtons.forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
@@ -336,13 +336,17 @@ async function init() {
   } catch (error) {
     console.error(error);
 
-    summary.textContent = "Could not load events.";
+    if (summary) {
+      summary.textContent = "Could not load events.";
+    }
 
-    ticketGrid.innerHTML = `
-      <div class="empty-state">
-        Could not load events from data/trip.json.
-      </div>
-    `;
+    if (ticketGrid) {
+      ticketGrid.innerHTML = `
+        <div class="empty-state">
+          Could not load events from data/trip.json.
+        </div>
+      `;
+    }
   }
 }
 
