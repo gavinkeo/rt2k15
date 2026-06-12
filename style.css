@@ -1420,3 +1420,91 @@ body {
   content: none !important;
   display: none !important;
 }
+
+
+/* FINAL v8: balanced 4-stat menu layout after removing kilometres/miles */
+.trip-menu .stats {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+.trip-menu .stat {
+  min-height: 60px !important;
+  padding: 8px 5px !important;
+  border-radius: 10px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.trip-menu .stat-main-row {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Remove icons/flags from the compact stat strip */
+.trip-menu .stat-icon-emoji,
+.trip-menu .flag-icon {
+  display: none !important;
+}
+
+#stat-days,
+#stat-countries,
+#stat-states,
+#stat-provinces {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.trip-menu .stat-label-row {
+  margin-top: 7px !important;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 7.5px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.10em !important;
+  text-transform: uppercase !important;
+  color: rgba(0,0,0,0.62) !important;
+}
+
+.menu-section {
+  padding-top: 12px !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+
+#trip-menu .menu-page-link,
+.menu-page-link {
+  min-height: 50px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+@media (max-width: 390px) {
+  .trip-menu .stats {
+    gap: 6px !important;
+  }
+
+  #stat-days,
+  #stat-countries,
+  #stat-states,
+  #stat-provinces {
+    font-size: 22px !important;
+  }
+
+  .trip-menu .stat-label-row {
+    font-size: 6.8px !important;
+    letter-spacing: 0.07em !important;
+  }
+}
