@@ -70,8 +70,27 @@ function getVenue(day) {
   return day.event.venue || "";
 }
 
-function getIcon(type) {
-  return EVENT_ICONS[type] || EVENT_ICONS[normaliseType(type)] || "🎟️";
+function getLogoLabel(type) {
+  const normalised = normaliseType(type);
+
+  const logos = {
+    MLB: "MLB",
+    NFL: "NFL",
+    NCAAF: "CFB",
+    CFB: "CFB",
+    MLS: "MLS",
+    Tennis: "US OPEN",
+    Concert: "LIVE",
+    Comedy: "COMEDY",
+    Show: "TV",
+    Boxing: "BOXING",
+    UFC: "UFC",
+    UFC189: "UFC",
+    WWE: "WWE",
+    MotoGP: "MOTO GP"
+  };
+
+  return logos[type] || logos[normalised] || "EVENT";
 }
 
 function tiltForIndex(index) {
