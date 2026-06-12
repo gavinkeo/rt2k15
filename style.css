@@ -729,3 +729,68 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Desktop compact menu now that we have multiple page links */
+
+@media (min-width: 641px) {
+  .trip-menu {
+    width: 300px !important;
+  }
+
+  .trip-menu-toggle {
+    padding: 10px 14px !important;
+    font-size: 17px !important;
+  }
+
+  .trip-menu-content {
+    padding: 0 14px 13px !important;
+  }
+
+  .trip-menu .stats {
+    gap: 7px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .trip-menu .stat {
+    min-height: 50px !important;
+    padding: 8px 10px !important;
+    border-radius: 8px !important;
+  }
+
+  .trip-menu .stat-value {
+    font-size: 21px !important;
+    line-height: 1 !important;
+  }
+
+  .stat-label-row {
+    margin-top: 6px !important;
+    font-size: 8.5px !important;
+    letter-spacing: 0.11em !important;
+  }
+
+  .stat-main-row {
+    gap: 6px !important;
+  }
+
+  .stat-icon-emoji {
+    font-size: 18px !important;
+  }
+
+  .flag-icon {
+    width: 27px !important;
+    height: 18px !important;
+  }
+
+  .menu-section {
+    padding-top: 12px !important;
+    display: grid !important;
+    gap: 8px !important;
+  }
+
+  .menu-page-link {
+    padding: 9px 12px !important;
+    font-size: 13px !important;
+    border-radius: 8px !important;
+    margin-bottom: 0 !important;
+  }
+}
