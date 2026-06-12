@@ -93,7 +93,11 @@ const LOCATIONS = {
   "New Haven": [41.3083, -72.9279],
   "Delaware": [39.7391, -75.5398],
   "Baltimore": [39.2904, -76.6122],
-  "Harpers Ferry": [39.3254, -77.7389]
+  "Harpers Ferry": [39.3254, -77.7389],
+
+  // Optional event-location overrides
+  "Arlington": [32.7357, -97.1081],
+  "East Rutherford": [40.8336, -74.0971]
 };
 
 const STATE_CODES = {
@@ -112,7 +116,6 @@ const STATE_CODES = {
   "Prince Edward Island": "PE", "Quebec": "QC", "Saskatchewan": "SK"
 };
 
-// Manual label positions for provinces where Leaflet's centre point looks visually wrong.
 const MANUAL_PROVINCE_LABELS = {
   "British Columbia": [53.7, -125.2],
   "Ontario": [49.8, -84.8],
@@ -137,11 +140,9 @@ const EVENT_ICONS = {
   "Show": "📺"
 };
 
-// Global tracking variables
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
 
-// Animation engine variables
 let carMarker = null;
 let lastUpToDay = -1;
 let animationQueue = [];
@@ -149,23 +150,17 @@ let paintedPoints = [];
 let carCurrentPos = null;
 let lastEngineTime = null;
 
-// timeline.js waits on these so long drives are not interrupted.
 let isRouteAnimating = false;
 let routeAnimationResolvers = [];
 
-// Event mode
 let eventsModeActive = false;
 
-// SPEED CONTROLLER: metres per second.
-// Lower = slower. Higher = faster.
 const CAR_SPEED = 250000;
 
-// Distance display settings
 const LOCAL_DRIVING_MARKUP = 1.10;
 const MILES_TO_KM = 1.609344;
 const COUNTRIES_VISITED = 2;
 
-// Dynamic styling
 const style = document.createElement("style");
 style.innerHTML = `
   .marker-dot {
@@ -211,11 +206,18 @@ style.innerHTML = `
     text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
   }
 
+  .moving-car-icon {
+    z-index: 99999 !important;
+  }
+
   .cx5-car {
     width: 56px;
     height: 32px;
     margin-left: -28px;
     margin-top: -16px;
+    position: relative;
+    z-index: 99999;
+    pointer-events: none;
   }
 
   .trip-menu {
@@ -283,10 +285,6 @@ style.innerHTML = `
     margin-bottom: 16px;
   }
 
-  .trip-menu.events-open .stats {
-    display: none;
-  }
-
   .stats-compact {
     display: none;
     margin-bottom: 12px;
@@ -299,10 +297,6 @@ style.innerHTML = `
     color: rgba(0,0,0,0.66);
     font-weight: 750;
     letter-spacing: 0.01em;
-  }
-
-  .trip-menu.events-open .stats-compact {
-    display: block;
   }
 
   .trip-menu .stat {
@@ -410,11 +404,6 @@ style.innerHTML = `
     padding-top: 14px;
   }
 
-  .trip-menu.events-open .menu-section {
-    padding-top: 0;
-    border-top: none;
-  }
-
   .menu-page-link {
     display: block;
     width: 100%;
@@ -429,79 +418,13 @@ style.innerHTML = `
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
-    margin-bottom: 8px;
+    margin-bottom: 0;
   }
 
   .menu-page-link:hover {
     background: #000;
     color: #FAFAF7;
     text-decoration: none;
-  }
-
-  .menu-action-btn {
-    width: 100%;
-    border: 1px solid #111;
-    background: #111;
-    color: #FAFAF7;
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-  }
-
-  .menu-action-btn:hover {
-    background: #000;
-  }
-
-  .menu-action-btn.active {
-    background: #FF00FF;
-    border-color: #FF00FF;
-    color: #fff;
-  }
-
-  .events-list {
-    margin-top: 12px;
-    display: none;
-    max-height: 310px;
-    overflow-y: auto;
-    padding-right: 2px;
-  }
-
-  .trip-menu.events-open .events-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .event-list-item {
-    width: 100%;
-    text-align: left;
-    border: 1px solid rgba(0,0,0,0.12);
-    background: rgba(255,255,255,0.72);
-    border-radius: 8px;
-    padding: 9px 10px;
-    cursor: pointer;
-    color: #111;
-  }
-
-  .event-list-item:hover {
-    border-color: #FF00FF;
-  }
-
-  .event-list-title {
-    display: block;
-    font-size: 13px;
-    font-weight: 700;
-    color: #111;
-  }
-
-  .event-list-meta {
-    display: block;
-    margin-top: 3px;
-    font-size: 11px;
-    color: rgba(0,0,0,0.58);
-    font-family: 'JetBrains Mono', monospace;
   }
 
   .detail-subvalue {
@@ -532,10 +455,6 @@ style.innerHTML = `
     .trip-menu .stat-value {
       font-size: 22px;
     }
-
-    .events-list {
-      max-height: 290px;
-    }
   }
 `;
 document.head.appendChild(style);
@@ -551,9 +470,7 @@ function escapeHtml(value) {
 
 function formatFullStat(value) {
   const number = Number(value);
-
   if (!Number.isFinite(number)) return "—";
-
   return Math.round(number).toLocaleString();
 }
 
@@ -567,6 +484,14 @@ function formatDate(dateString) {
     month: "short",
     year: "numeric"
   });
+}
+
+function setupCarPane() {
+  if (!map.getPane("carPane")) {
+    const pane = map.createPane("carPane");
+    pane.style.zIndex = 900;
+    pane.style.pointerEvents = "none";
+  }
 }
 
 function greatCircleArc(start, end, segments = 64) {
@@ -868,16 +793,13 @@ function setupTripMenu() {
         <span id="compact-miles">—</span> mi
       </div>
 
-<div class="menu-section">
-  <a class="menu-page-link" href="events.html">Sports & Events</a>
-</div>
+      <div class="menu-section">
+        <a class="menu-page-link" href="events.html">Sports & Events</a>
       </div>
     </div>
   `;
 
   const toggle = document.getElementById("trip-menu-toggle");
-  const eventsToggle = document.getElementById("events-toggle");
-  const eventsList = document.getElementById("events-list");
 
   if (toggle) {
     toggle.addEventListener("click", () => {
@@ -885,56 +807,8 @@ function setupTripMenu() {
       toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
     });
   }
-
-  const eventDays = getEventDays();
-
-  if (eventsList) {
-    if (!eventDays.length) {
-      eventsList.innerHTML = `<div class="event-list-meta">No events logged yet.</div>`;
-    } else {
-      eventsList.innerHTML = eventDays.map(day => {
-        const type = day.event?.type || "Event";
-        const name = day.event?.name || "Event";
-        const venue = day.event?.venue ? ` · ${day.event.venue}` : "";
-        const finish = day.event?.location || day.finish || "";
-        const date = day.event?.date || day.date
-          ? formatDate(day.event?.date || day.date)
-          : "";
-
-        return `
-          <button class="event-list-item" data-event-day="${day.day}">
-            <span class="event-list-title">${escapeHtml(type)} · ${escapeHtml(name)}</span>
-            <span class="event-list-meta">Day ${escapeHtml(day.day)} · ${escapeHtml(date)} · ${escapeHtml(finish)}${escapeHtml(venue)}</span>
-          </button>
-        `;
-      }).join("");
-    }
-
-    eventsList.addEventListener("click", event => {
-      const item = event.target.closest("[data-event-day]");
-      if (!item) return;
-
-      const dayNumber = Number(item.dataset.eventDay);
-      const day = tripData.days.find(d => Number(d.day) === dayNumber);
-
-      if (!day) return;
-
-      eventsModeActive = true;
-      updateEventsModeUi();
-      renderRoute(dayNumber, { instant: true });
-      focusDay(day);
-      showDayDetail(day);
-    });
-  }
-
-  if (eventsToggle) {
-    eventsToggle.addEventListener("click", () => {
-      setEventsMode(!eventsModeActive);
-    });
-  }
 }
 
-// Distance-based animation engine
 function engineLoop(timestamp) {
   if (!lastEngineTime) lastEngineTime = timestamp;
 
@@ -1115,12 +989,14 @@ function renderRoute(upToDay, options = {}) {
       `;
 
       carMarker = L.marker(carCurrentPos, {
+        pane: "carPane",
+        interactive: false,
         icon: L.divIcon({
           className: "moving-car-icon",
           html: carHtml,
           iconSize: [0, 0]
         }),
-        zIndexOffset: 1000
+        zIndexOffset: 5000
       }).addTo(map);
     } else {
       carMarker.setLatLng(carCurrentPos);
@@ -1263,7 +1139,7 @@ function applyTimelineMax() {
 
   const slider = document.getElementById("timeline-slider");
   if (slider) {
-    slider.min = 0;
+    slider.min = 1;
     slider.max = maxDay;
   }
 
@@ -1296,6 +1172,8 @@ async function init() {
     zoomControl: false,
     attributionControl: true
   }).setView([39.5, -98.5], 4);
+
+  setupCarPane();
 
   L.control.zoom({ position: "bottomleft" }).addTo(map);
 
@@ -1342,7 +1220,6 @@ async function init() {
 
           if (!code) return;
 
-          // Awkwardly shaped provinces get manual labels instead.
           if (MANUAL_PROVINCE_LABELS[name]) return;
 
           l.bindTooltip(code, {
