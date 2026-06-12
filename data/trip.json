@@ -7,7 +7,7 @@
     "drivingHours": "228:36",
     "states": 48,
     "provinces": 4,
-    "events": 22,
+    "events": 26,
     "flights": 0
   },
   "days": [
@@ -586,21 +586,30 @@
       "day": 54,
       "date": "2015-08-10",
       "start": "Indianapolis",
-      "finish": "Kansas City",
-      "type": "drive",
-      "via": "St Louis",
-      "viaStops": [
-        "St Louis"
-      ],
-      "miles": 475,
-      "drivingTime": "6:48"
+      "finish": "Indianapolis",
+      "type": "stay",
+      "event": {
+        "type": "NFL",
+        "name": "Colts Training Camp"
+      }
     },
     {
       "day": 55,
       "date": "2015-08-11",
-      "start": "Kansas City",
+      "start": "Indianapolis",
       "finish": "Kansas City",
-      "type": "stay"
+      "type": "drive",
+      "via": "Lucas Oil Stadium / St Louis",
+      "viaStops": [
+        "Lucas Oil Stadium",
+        "St Louis"
+      ],
+      "miles": 475,
+      "drivingTime": "6:48",
+      "event": {
+        "type": "NFL",
+        "name": "Lucas Oil Stadium Tour"
+      }
     },
     {
       "day": 56,
@@ -648,10 +657,10 @@
       "start": "Chicago",
       "finish": "Windsor",
       "type": "drive",
-      "via": "Notre Dame / Detroit",
+      "via": "University of Notre Dame / Michigan Stadium",
       "viaStops": [
-        "Notre Dame",
-        "Detroit"
+        "University of Notre Dame",
+        "Michigan Stadium"
       ],
       "miles": 326,
       "drivingTime": "5:19"
@@ -674,7 +683,16 @@
       "date": "2015-08-18",
       "start": "Toronto",
       "finish": "Toronto",
-      "type": "stay"
+      "type": "stay",
+      "via": "Hockey Hall of Fame / Toronto Island Park",
+      "viaStops": [
+        "Hockey Hall of Fame",
+        "Toronto Island Park"
+      ],
+      "event": {
+        "type": "NHL",
+        "name": "Hockey Hall of Fame"
+      }
     },
     {
       "day": 63,
@@ -815,10 +833,8 @@
       "start": "Philadelphia",
       "finish": "Washington",
       "type": "drive",
-      "via": "Delaware / Baltimore / Harpers Ferry",
+      "via": "Harpers Ferry",
       "viaStops": [
-        "Delaware",
-        "Baltimore",
         "Harpers Ferry"
       ],
       "miles": 228,
@@ -857,6 +873,10 @@
       "start": "Charlotte",
       "finish": "Opelika",
       "type": "drive",
+      "via": "Atlanta",
+      "viaStops": [
+        "Atlanta"
+      ],
       "miles": 396,
       "drivingTime": "5:53"
     },
@@ -874,7 +894,11 @@
       "date": "2015-09-06",
       "start": "Gainesville",
       "finish": "Gainesville",
-      "type": "stay"
+      "type": "stay",
+      "event": {
+        "type": "CFB",
+        "name": "Ben Hill Griffin Stadium"
+      }
     },
     {
       "day": 82,
