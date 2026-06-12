@@ -870,3 +870,114 @@ body {
     grid-column: 1 / -1 !important;
   }
 }
+
+/* Desktop: 4 menu links as a clean 2x2 grid, no controller overlap */
+
+@media (min-width: 641px) {
+  .menu-section {
+    padding-top: 9px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 7px !important;
+  }
+
+  .menu-page-link,
+  .menu-page-link:nth-child(3),
+  .menu-page-link:nth-child(4) {
+    grid-column: auto !important;
+    margin: 0 !important;
+    min-height: 40px !important;
+    padding: 9px 8px !important;
+    border-radius: 8px !important;
+    font-size: 12px !important;
+    line-height: 1.1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .trip-menu .stats {
+    margin-bottom: 9px !important;
+  }
+
+  .trip-menu-content {
+    padding-bottom: 10px !important;
+  }
+}
+
+/* Mobile: compact opened menu + 2x2 page links */
+
+@media (max-width: 640px) {
+  .trip-menu {
+    top: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    border-radius: 16px !important;
+  }
+
+  .trip-menu-toggle {
+    padding: 11px 16px !important;
+    font-size: 18px !important;
+  }
+
+  .trip-menu-content {
+    padding: 0 16px 14px !important;
+  }
+
+  .trip-menu .stats {
+    gap: 8px !important;
+    margin-bottom: 11px !important;
+  }
+
+  .trip-menu .stat {
+    min-height: 64px !important;
+    padding: 10px 12px !important;
+    border-radius: 10px !important;
+  }
+
+  .trip-menu .stat-value {
+    font-size: 24px !important;
+    line-height: 1 !important;
+  }
+
+  .trip-menu .stat-label-row {
+    margin-top: 7px !important;
+    font-size: 9px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .trip-menu .stat-icon-emoji {
+    font-size: 21px !important;
+  }
+
+  .trip-menu .flag-icon {
+    width: 31px !important;
+    height: 21px !important;
+  }
+
+  .menu-section {
+    padding-top: 11px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+
+  .menu-page-link,
+  .menu-page-link:nth-child(3),
+  .menu-page-link:nth-child(4) {
+    grid-column: auto !important;
+    margin: 0 !important;
+    min-height: 46px !important;
+    padding: 9px 8px !important;
+    border-radius: 10px !important;
+    font-size: 13.5px !important;
+    line-height: 1.1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}
