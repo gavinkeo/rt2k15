@@ -1478,3 +1478,66 @@ input[type="range"]::-moz-range-thumb {
   align-items: center !important;
   line-height: 1 !important;
 }
+
+/* Keep Bebas Neue only on the Road Trip title */
+
+.trip-menu-toggle {
+  font-family: "Bebas Neue", sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.045em !important;
+  font-weight: 400 !important;
+  color: #083c4d !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+}
+
+/* Restore normal UI font everywhere else inside the menu/controller */
+
+.trip-menu .stat,
+.trip-menu .stat *,
+.menu-page-link,
+.menu-page-link *,
+.playback-controller,
+.playback-controller *,
+.timeline-stat-box,
+.timeline-stat-box *,
+.day-label,
+.day-number {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Keep menu buttons looking like buttons, not title text */
+
+.menu-page-link {
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 850 !important;
+}
+
+/* Keep stat labels as small UI labels */
+
+.trip-menu .stat-label-row,
+.timeline-stat-label {
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 800 !important;
+}
+
+/* Optional tiny car mark beside the title */
+
+.trip-menu-toggle::after {
+  content: "";
+  width: 42px;
+  height: 18px;
+  margin-left: auto;
+  margin-right: 14px;
+  background: url("assets/mazda-cx5-side.png") center / contain no-repeat;
+  opacity: 0.92;
+}
+
