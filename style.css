@@ -1458,3 +1458,35 @@ input[type="range"]::-moz-range-thumb {
     font-size: 26px !important;
   }
 }
+
+/* Centre Road Trip 2K15 title vertically in menu header */
+
+.trip-menu-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+}
+
+.trip-menu-toggle span:first-child,
+.trip-menu-toggle .trip-title,
+.trip-menu-title {
+  display: flex !important;
+  align-items: center !important;
+  line-height: 1 !important;
+}
+
+/* Optional tiny car mark beside the title */
+
+.trip-menu-toggle::after {
+  content: "";
+  width: 42px;
+  height: 18px;
+  margin-left: auto;
+  margin-right: 14px;
+  background: url("assets/mazda-cx5-side.png") center / contain no-repeat;
+  opacity: 0.92;
+}
