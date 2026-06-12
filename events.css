@@ -706,3 +706,91 @@ body {
     font-size: 11px;
   }
 }
+
+.stub-brand {
+  width: 100%;
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 2px;
+}
+
+.stub-brand .event-logo {
+  max-width: 74px;
+  max-height: 44px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.14));
+  transform: translateX(-2px);
+}
+
+/* Custom event artwork gets much more room */
+.stub-brand .event-logo-custom {
+  max-width: 92px;
+  max-height: 118px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+  transform: translateX(-2px);
+}
+
+/* Existing bigger category logos */
+.stub-brand .event-logo-ncaaf,
+.stub-brand .event-logo-nfl,
+.stub-brand .event-logo-nhl,
+.stub-brand .event-logo-comedy,
+.stub-brand .event-logo-mls {
+  max-width: 94px;
+  max-height: 60px;
+}
+
+.stub-brand .event-logo-wwe {
+  max-width: 111px;
+  max-height: 48px;
+}
+
+.stub-brand .event-logo-ufc {
+  max-width: 86px;
+  max-height: 52px;
+}
+
+@media (max-width: 700px) {
+  .stub-brand {
+    min-height: 46px;
+  }
+
+  .stub-brand .event-logo {
+    max-width: 58px;
+    max-height: 32px;
+    transform: translateX(-1px);
+  }
+
+  .stub-brand .event-logo-custom {
+    max-width: 78px;
+    max-height: 96px;
+    transform: translateX(-1px);
+  }
+
+  .stub-brand .event-logo-ncaaf,
+  .stub-brand .event-logo-nfl,
+  .stub-brand .event-logo-nhl,
+  .stub-brand .event-logo-comedy,
+  .stub-brand .event-logo-mls {
+    max-width: 72px;
+    max-height: 46px;
+  }
+
+  .stub-brand .event-logo-wwe {
+    max-width: 87px;
+    max-height: 36px;
+  }
+
+  .stub-brand .event-logo-ufc {
+    max-width: 66px;
+    max-height: 40px;
+  }
+}
