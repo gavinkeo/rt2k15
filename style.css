@@ -1579,3 +1579,26 @@ input[type="range"]::-moz-range-thumb {
   font-size: 13px !important;
   letter-spacing: 0 !important;
 }
+
+/* Bigger CX-5 beside ROAD TRIP 2K15 */
+
+.trip-menu-toggle::after {
+  content: "" !important;
+  width: 84px !important;
+  height: 36px !important;
+  margin-left: auto !important;
+  margin-right: 12px !important;
+  background: url("assets/mazda-cx5-side.png") center / contain no-repeat !important;
+  opacity: 0.95 !important;
+  flex: 0 0 auto !important;
+  order: 2 !important;
+}
+
+.trip-menu-title-text,
+.trip-menu-toggle > span:first-child {
+  order: 1 !important;
+}
+
+.trip-menu-chevron {
+  order: 3 !important;
+}
