@@ -717,3 +717,91 @@ body.gallery-open {
     letter-spacing: 0.1em;
   }
 }
+
+/* Page-specific colour themes */
+
+/* Parks & Nature: green / earthy theme */
+body[data-place-type="park"],
+body[data-page="parks"] {
+  --accent: #27e36f;
+  --accent-2: #9cff6a;
+  --accent-3: #f0c85a;
+
+  background:
+    radial-gradient(circle at top left, rgba(39, 227, 111, 0.24), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(156, 255, 106, 0.16), transparent 32rem),
+    radial-gradient(circle at 72% 12%, rgba(240, 200, 90, 0.10), transparent 24rem),
+    linear-gradient(135deg, #07120b 0%, #122016 48%, #050805 100%);
+}
+
+body[data-place-type="park"] .place-tile,
+body[data-page="parks"] .place-tile {
+  background:
+    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.14), transparent 24%),
+    linear-gradient(135deg, rgba(39, 227, 111, 0.28), rgba(156, 255, 106, 0.14)),
+    #101810;
+}
+
+body[data-place-type="park"] .place-tile:hover,
+body[data-place-type="park"] .place-tile:focus-visible,
+body[data-page="parks"] .place-tile:hover,
+body[data-page="parks"] .place-tile:focus-visible {
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.48),
+    0 0 26px rgba(39, 227, 111, 0.18),
+    0 0 34px rgba(156, 255, 106, 0.12);
+}
+
+body[data-place-type="park"] .place-type-pill,
+body[data-page="parks"] .place-type-pill {
+  border-color: rgba(156, 255, 106, 0.32);
+  background: rgba(10, 54, 24, 0.46);
+}
+
+body[data-place-type="park"] .gallery-backdrop,
+body[data-page="parks"] .gallery-backdrop {
+  background:
+    radial-gradient(circle at top left, rgba(39, 227, 111, 0.18), transparent 28rem),
+    radial-gradient(circle at bottom right, rgba(156, 255, 106, 0.13), transparent 30rem),
+    rgba(0, 0, 0, 0.86);
+}
+
+body[data-place-type="park"] .gallery-panel,
+body[data-page="parks"] .gallery-panel {
+  box-shadow:
+    0 28px 90px rgba(0, 0, 0, 0.60),
+    0 0 40px rgba(39, 227, 111, 0.13),
+    0 0 42px rgba(156, 255, 106, 0.08);
+}
+
+body[data-place-type="park"] .gallery-close:hover,
+body[data-page="parks"] .gallery-close:hover {
+  background: #27e36f;
+  border-color: #27e36f;
+  color: #07120b;
+}
+
+
+/* Big Cities: keep purple / neon city theme */
+body[data-place-type="city"],
+body[data-page="cities"] {
+  --accent: #b000ff;
+  --accent-2: #00d9ff;
+  --accent-3: #ff00c8;
+
+  background:
+    radial-gradient(circle at top left, rgba(176, 0, 255, 0.24), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(0, 217, 255, 0.17), transparent 32rem),
+    radial-gradient(circle at 72% 12%, rgba(255, 0, 200, 0.12), transparent 24rem),
+    linear-gradient(135deg, #101010 0%, #18111f 48%, #070707 100%);
+}
+
+body[data-place-type="city"] .place-tile:hover,
+body[data-place-type="city"] .place-tile:focus-visible,
+body[data-page="cities"] .place-tile:hover,
+body[data-page="cities"] .place-tile:focus-visible {
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.48),
+    0 0 26px rgba(176, 0, 255, 0.18),
+    0 0 34px rgba(0, 217, 255, 0.10);
+}
