@@ -39,7 +39,7 @@
         "venue": "Oakland Coliseum",
         "location": "Oakland",
         "ticket": {
-          "section": "Bleacher General Admission",
+          "section": "Bleacher GA",
           "eventTime": "6:35 PM",
           "price": "$16.50"
         }
@@ -748,7 +748,7 @@
         "venue": "U.S. Cellular Field",
         "location": "Chicago",
         "ticket": {
-          "section": "Lower Corner 155",
+          "section": "LC155",
           "row": "16",
           "seat": "11",
           "eventTime": "3:10 PM",
@@ -839,7 +839,7 @@
         "venue": "Fenway Park",
         "location": "Boston",
         "ticket": {
-          "section": "Right Field Box 94",
+          "section": "RF Box 94",
           "row": "XX",
           "seat": "25",
           "eventTime": "7:10 PM",
@@ -866,7 +866,7 @@
         "venue": "MetLife Stadium",
         "location": "East Rutherford",
         "ticket": {
-          "section": "Mezzanine Club 207C",
+          "section": "Club 207C",
           "row": "8",
           "seat": "3",
           "eventTime": "7:30 PM",
