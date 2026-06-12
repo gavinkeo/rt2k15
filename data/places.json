@@ -7,7 +7,6 @@
       "slug": "la-jolla",
       "folder": "assets/places/la-jolla",
       "cover": "assets/places/la-jolla/cover.jpg",
-      "photoCount": 0,
       "note": "Pacific coastline and sea caves"
     },
     {
@@ -17,7 +16,6 @@
       "slug": "yosemite",
       "folder": "assets/places/yosemite",
       "cover": "assets/places/yosemite/cover.jpg",
-      "photoCount": 0,
       "note": "Valley views, granite walls and waterfalls"
     },
     {
@@ -27,7 +25,6 @@
       "slug": "sequoia",
       "folder": "assets/places/sequoia",
       "cover": "assets/places/sequoia/cover.jpg",
-      "photoCount": 0,
       "note": "Giant trees and mountain roads"
     },
     {
@@ -37,7 +34,6 @@
       "slug": "white-sands",
       "folder": "assets/places/white-sands",
       "cover": "assets/places/white-sands/cover.jpg",
-      "photoCount": 0,
       "note": "Bright gypsum dunes in the desert"
     },
     {
@@ -47,7 +43,6 @@
       "slug": "antelope-canyon",
       "folder": "assets/places/antelope-canyon",
       "cover": "assets/places/antelope-canyon/cover.jpg",
-      "photoCount": 0,
       "note": "Slot canyon light beams and red rock"
     },
     {
@@ -57,7 +52,6 @@
       "slug": "grand-canyon",
       "folder": "assets/places/grand-canyon",
       "cover": "assets/places/grand-canyon/cover.jpg",
-      "photoCount": 0,
       "note": "One of the headline stops of the route"
     },
     {
@@ -67,7 +61,6 @@
       "slug": "yellowstone",
       "folder": "assets/places/yellowstone",
       "cover": "assets/places/yellowstone/cover.jpg",
-      "photoCount": 0,
       "note": "Geysers, wildlife and huge landscapes"
     },
     {
@@ -77,7 +70,6 @@
       "slug": "multnomah-falls",
       "folder": "assets/places/multnomah-falls",
       "cover": "assets/places/multnomah-falls/cover.jpg",
-      "photoCount": 0,
       "note": "Classic Columbia River Gorge stop"
     },
     {
@@ -87,7 +79,6 @@
       "slug": "banff",
       "folder": "assets/places/banff",
       "cover": "assets/places/banff/cover.jpg",
-      "photoCount": 0,
       "note": "Canadian Rockies scenery"
     },
     {
@@ -97,7 +88,6 @@
       "slug": "mount-rushmore",
       "folder": "assets/places/mount-rushmore",
       "cover": "assets/places/mount-rushmore/cover.jpg",
-      "photoCount": 0,
       "note": "Black Hills landmark"
     },
     {
@@ -107,7 +97,6 @@
       "slug": "niagara-falls",
       "folder": "assets/places/niagara-falls",
       "cover": "assets/places/niagara-falls/cover.jpg",
-      "photoCount": 0,
       "note": "Border-crossing waterfall stop"
     },
     {
@@ -117,7 +106,6 @@
       "slug": "harpers-ferry",
       "folder": "assets/places/harpers-ferry",
       "cover": "assets/places/harpers-ferry/cover.jpg",
-      "photoCount": 0,
       "note": "Historic riverside town and views"
     },
     {
@@ -127,7 +115,6 @@
       "slug": "key-west",
       "folder": "assets/places/key-west",
       "cover": "assets/places/key-west/cover.jpg",
-      "photoCount": 0,
       "note": "End-of-the-road island stop"
     },
     {
@@ -137,7 +124,6 @@
       "slug": "san-francisco",
       "folder": "assets/places/san-francisco",
       "cover": "assets/places/san-francisco/cover.jpg",
-      "photoCount": 0,
       "note": "Starting point on the Pacific"
     },
     {
@@ -147,7 +133,6 @@
       "slug": "los-angeles",
       "folder": "assets/places/los-angeles",
       "cover": "assets/places/los-angeles/cover.jpg",
-      "photoCount": 0,
       "note": "West Coast sprawl and Hollywood stops"
     },
     {
@@ -157,7 +142,6 @@
       "slug": "san-diego",
       "folder": "assets/places/san-diego",
       "cover": "assets/places/san-diego/cover.jpg",
-      "photoCount": 0,
       "note": "Southern California coast"
     },
     {
@@ -167,7 +151,6 @@
       "slug": "phoenix",
       "folder": "assets/places/phoenix",
       "cover": "assets/places/phoenix/cover.jpg",
-      "photoCount": 0,
       "note": "Desert city stop"
     },
     {
@@ -177,7 +160,6 @@
       "slug": "albuquerque",
       "folder": "assets/places/albuquerque",
       "cover": "assets/places/albuquerque/cover.jpg",
-      "photoCount": 0,
       "note": "Route west through New Mexico"
     },
     {
@@ -187,7 +169,6 @@
       "slug": "las-vegas",
       "folder": "assets/places/las-vegas",
       "cover": "assets/places/las-vegas/cover.jpg",
-      "photoCount": 0,
       "note": "Big fight weekend and desert nights"
     },
     {
@@ -197,7 +178,6 @@
       "slug": "portland",
       "folder": "assets/places/portland",
       "cover": "assets/places/portland/cover.jpg",
-      "photoCount": 0,
       "note": "Pacific Northwest city stop"
     },
     {
@@ -207,7 +187,6 @@
       "slug": "seattle",
       "folder": "assets/places/seattle",
       "cover": "assets/places/seattle/cover.jpg",
-      "photoCount": 0,
       "note": "Sounders, skyline and the northwest"
     },
     {
@@ -217,7 +196,6 @@
       "slug": "vancouver",
       "folder": "assets/places/vancouver",
       "cover": "assets/places/vancouver/cover.jpg",
-      "photoCount": 0,
       "note": "First major Canadian city stop"
     },
     {
@@ -227,7 +205,6 @@
       "slug": "calgary",
       "folder": "assets/places/calgary",
       "cover": "assets/places/calgary/cover.jpg",
-      "photoCount": 0,
       "note": "Gateway from the Rockies"
     },
     {
@@ -237,7 +214,6 @@
       "slug": "denver",
       "folder": "assets/places/denver",
       "cover": "assets/places/denver/cover.jpg",
-      "photoCount": 0,
       "note": "Mile High city stop"
     },
     {
@@ -247,7 +223,6 @@
       "slug": "dallas",
       "folder": "assets/places/dallas",
       "cover": "assets/places/dallas/cover.jpg",
-      "photoCount": 0,
       "note": "Texas stadium and city stop"
     },
     {
@@ -257,7 +232,6 @@
       "slug": "houston",
       "folder": "assets/places/houston",
       "cover": "assets/places/houston/cover.jpg",
-      "photoCount": 0,
       "note": "Gulf-side Texas stop"
     },
     {
@@ -267,7 +241,6 @@
       "slug": "new-orleans",
       "folder": "assets/places/new-orleans",
       "cover": "assets/places/new-orleans/cover.jpg",
-      "photoCount": 0,
       "note": "Music, streets and the Deep South"
     },
     {
@@ -277,7 +250,6 @@
       "slug": "memphis",
       "folder": "assets/places/memphis",
       "cover": "assets/places/memphis/cover.jpg",
-      "photoCount": 0,
       "note": "Music city on the Mississippi"
     },
     {
@@ -287,7 +259,6 @@
       "slug": "nashville",
       "folder": "assets/places/nashville",
       "cover": "assets/places/nashville/cover.jpg",
-      "photoCount": 0,
       "note": "Country music capital stop"
     },
     {
@@ -297,7 +268,6 @@
       "slug": "louisville",
       "folder": "assets/places/louisville",
       "cover": "assets/places/louisville/cover.jpg",
-      "photoCount": 0,
       "note": "Kentucky route stop"
     },
     {
@@ -307,7 +277,6 @@
       "slug": "cincinnati",
       "folder": "assets/places/cincinnati",
       "cover": "assets/places/cincinnati/cover.jpg",
-      "photoCount": 0,
       "note": "Ohio River and stadium stop"
     },
     {
@@ -317,7 +286,6 @@
       "slug": "indianapolis",
       "folder": "assets/places/indianapolis",
       "cover": "assets/places/indianapolis/cover.jpg",
-      "photoCount": 0,
       "note": "Midwest city and stadium stop"
     },
     {
@@ -327,7 +295,6 @@
       "slug": "st-louis",
       "folder": "assets/places/st-louis",
       "cover": "assets/places/st-louis/cover.jpg",
-      "photoCount": 0,
       "note": "Gateway Arch city stop"
     },
     {
@@ -337,7 +304,6 @@
       "slug": "kansas-city",
       "folder": "assets/places/kansas-city",
       "cover": "assets/places/kansas-city/cover.jpg",
-      "photoCount": 0,
       "note": "Plains city stop"
     },
     {
@@ -347,7 +313,6 @@
       "slug": "chicago",
       "folder": "assets/places/chicago",
       "cover": "assets/places/chicago/cover.jpg",
-      "photoCount": 0,
       "note": "Major Midwest stop"
     },
     {
@@ -357,7 +322,6 @@
       "slug": "toronto",
       "folder": "assets/places/toronto",
       "cover": "assets/places/toronto/cover.jpg",
-      "photoCount": 0,
       "note": "Big Canadian city stop"
     },
     {
@@ -367,7 +331,6 @@
       "slug": "ottawa",
       "folder": "assets/places/ottawa",
       "cover": "assets/places/ottawa/cover.jpg",
-      "photoCount": 0,
       "note": "Capital city stop"
     },
     {
@@ -377,7 +340,6 @@
       "slug": "montreal",
       "folder": "assets/places/montreal",
       "cover": "assets/places/montreal/cover.jpg",
-      "photoCount": 0,
       "note": "French Canada city stop"
     },
     {
@@ -387,7 +349,6 @@
       "slug": "boston",
       "folder": "assets/places/boston",
       "cover": "assets/places/boston/cover.jpg",
-      "photoCount": 0,
       "note": "Fenway and East Coast history"
     },
     {
@@ -397,7 +358,6 @@
       "slug": "new-york",
       "folder": "assets/places/new-york",
       "cover": "assets/places/new-york/cover.jpg",
-      "photoCount": 0,
       "note": "The biggest city stop of the trip"
     },
     {
@@ -407,7 +367,6 @@
       "slug": "philadelphia",
       "folder": "assets/places/philadelphia",
       "cover": "assets/places/philadelphia/cover.jpg",
-      "photoCount": 0,
       "note": "East Coast city and comedy stop"
     },
     {
@@ -417,7 +376,6 @@
       "slug": "washington",
       "folder": "assets/places/washington",
       "cover": "assets/places/washington/cover.jpg",
-      "photoCount": 0,
       "note": "Capital landmarks and monuments"
     },
     {
@@ -427,7 +385,6 @@
       "slug": "atlanta",
       "folder": "assets/places/atlanta",
       "cover": "assets/places/atlanta/cover.jpg",
-      "photoCount": 0,
       "note": "Southern city stop"
     },
     {
@@ -437,7 +394,6 @@
       "slug": "orlando",
       "folder": "assets/places/orlando",
       "cover": "assets/places/orlando/cover.jpg",
-      "photoCount": 0,
       "note": "Theme parks and Florida heat"
     },
     {
@@ -447,7 +403,6 @@
       "slug": "miami",
       "folder": "assets/places/miami",
       "cover": "assets/places/miami/cover.jpg",
-      "photoCount": 0,
       "note": "Final major city stop"
     }
   ]
