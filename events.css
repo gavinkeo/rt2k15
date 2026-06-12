@@ -178,7 +178,7 @@ body {
 .ticket {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 92px;
+  grid-template-columns: minmax(0, 1fr) 98px;
   min-height: 190px;
   color: var(--ink);
   background:
@@ -240,39 +240,11 @@ body {
   padding: 16px 24px 16px;
 }
 
-.ticket-corner-brand {
-  position: absolute;
-  top: 14px;
-  right: 18px;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  max-width: 88px;
-  min-height: 28px;
-}
-
-.ticket-corner-brand .event-logo {
-  max-width: 82px;
-  max-height: 30px;
-  object-fit: contain;
-}
-
-.ticket-corner-brand.has-logo .event-type {
-  display: none;
-}
-
-.ticket-corner-brand.has-logo.logo-missing .event-type,
-.ticket-corner-brand.no-logo .event-type {
-  display: inline-flex;
-}
-
 .ticket h2 {
   margin: 0;
-  padding-right: 96px;
   max-width: 100%;
-  font-size: clamp(27px, 3.1vw, 34px);
-  line-height: 0.96;
+  font-size: clamp(25px, 2.7vw, 32px);
+  line-height: 0.98;
   letter-spacing: -0.055em;
   font-weight: 950;
 }
@@ -291,11 +263,35 @@ body {
   font-weight: 950;
 }
 
+.ticket-middle-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 10px 0 8px;
+}
+
+.ticket-middle-brand .event-logo {
+  max-width: 128px;
+  max-height: 46px;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.16));
+}
+
+.ticket-middle-brand.has-logo .event-type {
+  display: none;
+}
+
+.ticket-middle-brand.has-logo.logo-missing .event-type,
+.ticket-middle-brand.no-logo .event-type {
+  display: inline-flex;
+}
+
 .ticket-extra-grid {
-  margin-top: 12px;
+  margin-top: 10px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .ticket-extra-cell {
@@ -317,7 +313,7 @@ body {
 
 .ticket-extra-cell strong {
   display: block;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 900;
   color: var(--ink);
   white-space: nowrap;
@@ -378,12 +374,11 @@ body {
 .ticket-stub {
   position: relative;
   z-index: 1;
-  padding: 16px 12px;
+  padding: 5px 4px;
   border-left: 2px dashed rgba(17,17,17,0.24);
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   background:
     radial-gradient(circle at 50% 20%, rgba(255,255,255,0.35), transparent 30%),
     repeating-linear-gradient(
@@ -417,51 +412,12 @@ body {
   bottom: -12px;
 }
 
-.day-number {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  font-weight: 900;
-  text-transform: uppercase;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  letter-spacing: 0.12em;
-}
-
-.stub-seat-info {
-  width: 100%;
-  display: grid;
-  gap: 7px;
-  margin: 8px 0 10px;
-  padding: 8px 6px;
-  border-top: 1px solid rgba(17,17,17,0.16);
-  border-bottom: 1px solid rgba(17,17,17,0.16);
-  text-align: center;
-}
-
-.stub-seat-label {
-  display: block;
-  margin-bottom: 2px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 7px;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  color: rgba(17,17,17,0.48);
-}
-
-.stub-seat-value {
-  display: block;
-  font-size: 17px;
-  line-height: 1;
-  font-weight: 950;
-  letter-spacing: -0.05em;
-  color: var(--ink);
-}
-
 .barcode {
   position: relative;
-  width: 128px;
-  height: 52px;
-  margin: 20px 0 24px;
+  width: 38px;
+  height: 96%;
+  margin: 0;
+  transform: none;
   background:
     repeating-linear-gradient(
       to right,
@@ -486,34 +442,21 @@ body {
       transparent 19px,
       transparent 22px
     );
-  background-size: 128px 52px;
-  opacity: 0.86;
-  transform: rotate(90deg);
-  transform-origin: center;
+  background-size: 38px 100%;
+  background-repeat: repeat;
+  opacity: 0.9;
 }
 
 .barcode::before {
   content: "";
   position: absolute;
-  inset: -5px -6px;
+  inset: -4px;
   border: 1px solid rgba(17,17,17,0.18);
   border-radius: 3px;
 }
 
 .barcode::after {
-  content: "RT2K15 0618 0915";
-  position: absolute;
-  left: 50%;
-  bottom: -14px;
-  transform: translateX(-50%);
-  width: max-content;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 7px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: rgba(17,17,17,0.78);
-  background: rgba(250, 247, 236, 0.82);
-  padding: 0 3px;
+  content: none;
 }
 
 .ticket-brand {
@@ -533,11 +476,15 @@ body {
   filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
 }
 
-.event-logo-ufc,
+.event-logo-ufc {
+  max-width: 150px;
+  max-height: 56px;
+}
+
 .event-logo-wwe,
 .event-logo-nfl,
 .event-logo-mlb {
-  max-height: 34px;
+  max-height: 38px;
 }
 
 .event-logo-tennis {
@@ -664,7 +611,7 @@ body {
   }
 
   .ticket {
-    grid-template-columns: minmax(0, 1fr) 74px;
+    grid-template-columns: minmax(0, 1fr) 76px;
     min-height: 184px;
     border-radius: 16px;
     transform: none !important;
@@ -678,21 +625,9 @@ body {
     padding: 15px 18px 15px;
   }
 
-  .ticket-corner-brand {
-    top: 13px;
-    right: 14px;
-    max-width: 64px;
-  }
-
-  .ticket-corner-brand .event-logo {
-    max-width: 60px;
-    max-height: 26px;
-  }
-
   .ticket h2 {
-    padding-right: 68px;
-    font-size: 25px;
-    line-height: 0.98;
+    font-size: 23px;
+    line-height: 1;
   }
 
   .ticket-meta {
@@ -701,10 +636,29 @@ body {
     font-size: 13px;
   }
 
+  .ticket-middle-brand {
+    min-height: 36px;
+    margin: 8px 0 7px;
+  }
+
+  .ticket-middle-brand .event-logo {
+    max-width: 88px;
+    max-height: 30px;
+  }
+
+  .event-logo-ufc {
+    max-width: 104px;
+    max-height: 40px;
+  }
+
   .ticket-extra-grid {
     margin-top: 11px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .ticket-extra-cell span {
+    font-size: 7px;
   }
 
   .ticket-extra-cell strong {
@@ -729,332 +683,18 @@ body {
   }
 
   .ticket-stub {
-    padding: 15px 10px;
-  }
-
-  .day-number {
-    font-size: 11px;
-  }
-
-  .stub-seat-info {
-    gap: 6px;
-    padding: 7px 4px;
-  }
-
-  .stub-seat-label {
-    font-size: 6.5px;
-  }
-
-  .stub-seat-value {
-    font-size: 15px;
+    padding: 4px 3px;
   }
 
   .barcode {
-    width: 112px;
-    height: 44px;
-    margin: 18px 0 22px;
-    background-size: 112px 44px;
-  }
-
-  .barcode::after {
-    font-size: 6px;
-    bottom: -12px;
+    width: 30px;
+    height: 96%;
+    background-size: 30px 100%;
   }
 
   .event-type {
     min-width: 50px;
     padding: 6px 9px;
     font-size: 11px;
-  }
-}
-
-/* Remove Day XX from stub and rebalance spacing */
-
-.ticket-stub {
-  justify-content: center;
-  gap: 16px;
-}
-
-.stub-seat-info {
-  margin: 0;
-}
-
-.barcode {
-  margin: 12px 0 18px;
-}
-
-@media (max-width: 700px) {
-  .ticket-stub {
-    gap: 13px;
-  }
-
-  .barcode {
-    margin: 10px 0 16px;
-  }
-}
-
-/* Stub redesign: logo, seat info, full-height barcode */
-
-.ticket h2 {
-  padding-right: 0;
-}
-
-.ticket-stub {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 34px;
-  align-items: stretch;
-  justify-content: initial;
-  gap: 9px;
-  padding: 12px 10px;
-}
-
-.stub-info-column {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-width: 0;
-  gap: 9px;
-}
-
-.stub-brand {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 34px;
-  max-width: 64px;
-}
-
-.stub-brand .event-logo {
-  max-width: 62px;
-  max-height: 32px;
-  object-fit: contain;
-}
-
-.stub-brand.has-logo .event-type {
-  display: none;
-}
-
-.stub-brand.has-logo.logo-missing .event-type,
-.stub-brand.no-logo .event-type {
-  display: inline-flex;
-}
-
-.stub-brand .event-type {
-  min-width: 0;
-  max-width: 64px;
-  padding: 5px 7px;
-  font-size: 9.5px;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.stub-seat-info {
-  width: 100%;
-  margin: 0;
-  padding: 7px 4px;
-  gap: 6px;
-}
-
-.stub-seat-label {
-  font-size: 6.5px;
-}
-
-.stub-seat-value {
-  font-size: 15px;
-}
-
-.barcode {
-  width: 34px;
-  height: 100%;
-  min-height: 160px;
-  margin: 0;
-  align-self: stretch;
-  transform: none;
-  background-size: 34px 100%;
-}
-
-.barcode::before {
-  inset: -4px;
-}
-
-.barcode::after {
-  writing-mode: vertical-rl;
-  transform: translateY(-50%) rotate(180deg);
-  left: -13px;
-  top: 50%;
-  bottom: auto;
-  font-size: 6px;
-  letter-spacing: 0.12em;
-}
-
-@media (max-width: 700px) {
-  .ticket-stub {
-    grid-template-columns: minmax(0, 1fr) 30px;
-    gap: 7px;
-    padding: 11px 8px;
-  }
-
-  .stub-info-column {
-    gap: 7px;
-  }
-
-  .stub-brand {
-    min-height: 30px;
-    max-width: 52px;
-  }
-
-  .stub-brand .event-logo {
-    max-width: 50px;
-    max-height: 27px;
-  }
-
-  .stub-seat-value {
-    font-size: 14px;
-  }
-
-  .barcode {
-    width: 30px;
-    min-height: 145px;
-    background-size: 30px 100%;
-  }
-
-  .barcode::after {
-    left: -12px;
-    font-size: 5.5px;
-  }
-}
-
-/* New layout: centered logo, seat info in lower info grid, rotated barcode */
-
-.ticket-middle-brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 44px;
-  margin: 10px 0 8px;
-}
-
-.ticket-middle-brand .event-logo {
-  max-width: 120px;
-  max-height: 42px;
-  object-fit: contain;
-}
-
-.ticket-middle-brand.has-logo .event-type {
-  display: none;
-}
-
-.ticket-middle-brand.has-logo.logo-missing .event-type,
-.ticket-middle-brand.no-logo .event-type {
-  display: inline-flex;
-}
-
-.ticket-extra-grid {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 10px;
-}
-
-.ticket-extra-cell strong {
-  font-size: 12px;
-}
-
-.ticket-stub {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 8px;
-}
-
-.barcode {
-  position: relative;
-  width: 158px;
-  height: 34px;
-  margin: 0;
-  transform: rotate(90deg);
-  transform-origin: center;
-  background:
-    repeating-linear-gradient(
-      to right,
-      #111 0px,
-      #111 1px,
-      transparent 1px,
-      transparent 3px,
-      #111 3px,
-      #111 5px,
-      transparent 5px,
-      transparent 8px,
-      #111 8px,
-      #111 9px,
-      transparent 9px,
-      transparent 13px,
-      #111 13px,
-      #111 16px,
-      transparent 16px,
-      transparent 18px,
-      #111 18px,
-      #111 19px,
-      transparent 19px,
-      transparent 22px
-    );
-  background-size: 158px 34px;
-  opacity: 0.9;
-}
-
-.barcode::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 1px solid rgba(17,17,17,0.18);
-  border-radius: 3px;
-}
-
-.barcode::after {
-  content: "RT2K15 0618 0915";
-  position: absolute;
-  left: 50%;
-  bottom: -13px;
-  transform: translateX(-50%);
-  width: max-content;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 6px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  color: rgba(17,17,17,0.78);
-  background: rgba(250, 247, 236, 0.82);
-  padding: 0 3px;
-}
-
-@media (max-width: 700px) {
-  .ticket-middle-brand {
-    min-height: 36px;
-    margin: 8px 0 7px;
-  }
-
-  .ticket-middle-brand .event-logo {
-    max-width: 88px;
-    max-height: 30px;
-  }
-
-  .ticket-extra-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 7px;
-  }
-
-  .ticket-stub {
-    padding: 8px 6px;
-  }
-
-  .barcode {
-    width: 132px;
-    height: 28px;
-    background-size: 132px 28px;
-  }
-
-  .barcode::after {
-    font-size: 5px;
-    bottom: -11px;
   }
 }
