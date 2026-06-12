@@ -1767,8 +1767,6 @@ async function init() {
   setupLabelsPane();
   setupBoundaryPane();
 
-  L.control.zoom({ position: "bottomleft" }).addTo(map);
-
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
     attribution: "Tiles &copy; Esri",
     maxZoom: 19,
