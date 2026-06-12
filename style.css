@@ -677,3 +677,55 @@ body {
     display: none;
   }
 }
+
+/* Keep map detail panel on the right side */
+
+#day-detail,
+.day-detail {
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  left: auto;
+  bottom: auto;
+  width: 360px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100dvh - 48px);
+  overflow-y: auto;
+  z-index: 1200;
+
+  transform: translateX(calc(100% + 32px));
+  opacity: 0;
+  pointer-events: none;
+
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
+}
+
+#day-detail.open,
+.day-detail.open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile: keep it as a bottom sheet instead of blocking the map */
+@media (max-width: 640px) {
+  #day-detail,
+  .day-detail {
+    top: auto;
+    right: 12px;
+    left: 12px;
+    bottom: 92px;
+    width: auto;
+    max-width: none;
+    max-height: 45dvh;
+
+    transform: translateY(calc(100% + 24px));
+  }
+
+  #day-detail.open,
+  .day-detail.open {
+    transform: translateY(0);
+  }
+}
