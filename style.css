@@ -1319,3 +1319,17 @@ input[type="range"]::-moz-range-thumb {
   fill: #ffffff !important;
   color: #ffffff !important;
 }
+
+/* Align Events top nav with Parks / Cities / Soundtrack */
+
+.events-page {
+  padding-top: 22px !important;
+}
+
+.events-hero {
+  padding-top: 0 !important;
+}
+
+.events-hero .section-nav {
+  margin-top: 0 !important;
+}
