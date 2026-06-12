@@ -1,12 +1,9 @@
-const eventsList = document.getElementById("events-list");
-const eventsTotal = document.getElementById("events-total");
-const eventsVisibleCount = document.getElementById("events-visible-count");
-const searchInput = document.getElementById("events-search");
+const ticketGrid = document.getElementById("ticket-grid");
+const summary = document.getElementById("event-summary");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
 let allEvents = [];
 let activeFilter = "all";
-let activeSearch = "";
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -33,17 +30,27 @@ function normaliseType(type) {
   if (!type) return "Other";
 
   if (type === "UFC189") return "UFC";
-  if (type === "NCAAF") return "CFB";
+  if (type === "CFB") return "NCAAF";
 
   return type;
 }
 
-function getVenue(day) {
-  return day.event?.venue || day.event?.stadium || day.venue || day.stadium || "";
+function filterGroup(type) {
+  const normalised = normaliseType(type);
+
+  if (["Boxing", "UFC", "WWE"].includes(normalised)) return "Combat";
+  if (["MLB", "NFL", "NCAAF", "MLS", "Tennis", "MotoGP"].includes(normalised)) return normalised;
+  if (normalised === "Concert") return "Concert";
+
+  return "Other";
 }
 
 function getEventLocation(day) {
   return day.event?.location || day.finish || "";
+}
+
+function getVenue(day) {
+  return day.event?.venue || day.event?.stadium || day.venue || day.stadium || "";
 }
 
 function getLogoPath(type) {
@@ -52,215 +59,167 @@ function getLogoPath(type) {
   const logos = {
     MLB: "assets/logos/mlb.svg",
     NFL: "assets/logos/nfl.svg",
-    CFB: "assets/logos/ncaa.svg",
     NCAAF: "assets/logos/ncaa.svg",
+    CFB: "assets/logos/ncaa.svg",
     MLS: "assets/logos/mls.svg",
-    NHL: "assets/logos/nhl.svg",
     Tennis: "assets/logos/us-open.svg",
     UFC: "assets/logos/ufc.svg",
     UFC189: "assets/logos/ufc.svg",
-    Boxing: "assets/logos/boxing.svg",
     WWE: "assets/logos/wwe.svg",
-    MotoGP: "assets/logos/motogp.svg",
-    Concert: "",
-    Comedy: "",
-    "TV Show": ""
+    MotoGP: "assets/logos/motogp.svg"
   };
 
   return logos[type] || logos[normalised] || "";
 }
 
-function getFallbackEmoji(type) {
-  const normalised = normaliseType(type);
-
-  const emojis = {
-    MLB: "⚾",
-    NFL: "🏈",
-    CFB: "🏈",
-    NCAAF: "🏈",
-    MLS: "⚽",
-    NHL: "🏒",
-    Tennis: "🎾",
-    UFC: "🥊",
-    Boxing: "🥊",
-    WWE: "🤼",
-    MotoGP: "🏁",
-    Concert: "🎤",
-    Comedy: "🎭",
-    "TV Show": "📺",
-    Other: "★"
-  };
-
-  return emojis[normalised] || emojis[type] || "★";
+function tiltForIndex(index) {
+  const tilts = ["-1.2deg", "0.8deg", "-0.5deg", "1.1deg", "-0.8deg", "0.4deg"];
+  return tilts[index % tilts.length];
 }
 
 function buildEventList(tripData) {
   return tripData.days
     .filter(day => day.event)
-    .map(day => {
-      const type = normaliseType(day.event.type);
-
-      return {
-        day,
-        event: day.event,
-        type,
-        name: day.event.name || "Untitled event",
-        venue: getVenue(day),
-        location: getEventLocation(day),
-        date: day.event.date || day.date,
-        logo: day.event.logo || getLogoPath(day.event.type),
-        emoji: getFallbackEmoji(day.event.type),
-        youtube: day.event.youtube || day.event.youtubeUrl || "",
-        boxscore: day.event.boxscore || day.event.boxScore || day.event.boxscoreUrl || ""
-      };
-    });
+    .map(day => ({
+      day,
+      event: day.event,
+      type: normaliseType(day.event.type),
+      group: filterGroup(day.event.type),
+      name: day.event.name,
+      venue: getVenue(day),
+      location: getEventLocation(day),
+      date: day.event.date || day.date,
+      logo: day.event.logo || getLogoPath(day.event.type),
+      youtube: day.event.youtube || day.event.youtubeUrl || "",
+      boxscore: day.event.boxscore || day.event.boxScore || day.event.boxscoreUrl || ""
+    }));
 }
 
 function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
 
-  return item.type === activeFilter;
-}
+  if (activeFilter === "Combat") {
+    return item.group === "Combat";
+  }
 
-function eventMatchesSearch(item) {
-  if (!activeSearch) return true;
+  if (activeFilter === "Other") {
+    return item.group === "Other";
+  }
 
-  const haystack = [
-    item.type,
-    item.name,
-    item.venue,
-    item.location,
-    item.date,
-    `Day ${item.day.day}`
-  ].join(" ").toLowerCase();
-
-  return haystack.includes(activeSearch);
+  return item.type === activeFilter || item.group === activeFilter;
 }
 
 function renderEvents() {
-  if (!eventsList) return;
-
-  const visibleEvents = allEvents.filter(item => {
-    return eventMatchesFilter(item) && eventMatchesSearch(item);
-  });
-
-  if (eventsVisibleCount) {
-    eventsVisibleCount.textContent = visibleEvents.length;
-  }
+  const visibleEvents = allEvents.filter(eventMatchesFilter);
 
   if (!visibleEvents.length) {
-    eventsList.innerHTML = `
-      <div class="events-loading">
-        No events found.
+    ticketGrid.innerHTML = `
+      <div class="empty-state">
+        No events found for this filter.
       </div>
     `;
     return;
   }
 
-  eventsList.innerHTML = visibleEvents.map(item => {
+  ticketGrid.innerHTML = visibleEvents.map((item, index) => {
     const day = item.day;
+    const type = item.type;
+    const venue = item.venue;
+    const location = item.location;
     const date = formatDate(item.date);
+    const logo = item.logo;
+
     const showYoutube = Boolean(item.youtube);
-    const showBoxscore = item.type === "MLB" && Boolean(item.boxscore);
+    const showBoxscore = type === "MLB" && Boolean(item.boxscore);
     const showActions = showYoutube || showBoxscore;
 
-    const logoMarkup = item.logo
-      ? `
-        <img
-          class="event-logo event-logo-${escapeHtml(item.type.toLowerCase())}"
-          src="${escapeHtml(item.logo)}"
-          alt="${escapeHtml(item.type)} logo"
+    const brandClass = logo ? "ticket-brand has-logo" : "ticket-brand no-logo";
+
+    const logoMarkup = logo
+      ? `<img
+          class="event-logo event-logo-${escapeHtml(type.toLowerCase())}"
+          src="${escapeHtml(logo)}"
+          alt="${escapeHtml(type)} logo"
           loading="lazy"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-flex';"
-        >
-        <span class="event-logo-fallback" style="display:none;">${escapeHtml(item.emoji)}</span>
-      `
-      : `<span class="event-logo-fallback">${escapeHtml(item.emoji)}</span>`;
+          onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');"
+        >`
+      : "";
 
     return `
-      <article class="event-card">
-        <div class="event-card-main">
-          <div class="event-card-topline">
-            <span class="event-day">Day ${escapeHtml(day.day)}</span>
-            <span class="event-type-pill">${escapeHtml(item.type)}</span>
+      <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
+        <div class="ticket-main">
+          <div class="ticket-topline">
+            <span class="admit">Admit One</span>
+
+            <span class="${brandClass}">
+              ${logoMarkup}
+              <span class="event-type">${escapeHtml(type)}</span>
+            </span>
           </div>
 
-          <div class="event-card-body">
-            <div class="event-logo-wrap">
-              ${logoMarkup}
-            </div>
+          <h2>${escapeHtml(item.name)}</h2>
 
-            <div class="event-info">
-              <h2>${escapeHtml(item.name)}</h2>
+          <div class="ticket-meta">
+            ${venue ? `<div><strong>Venue:</strong> ${escapeHtml(venue)}</div>` : ""}
+            ${location ? `<div><strong>Location:</strong> ${escapeHtml(location)}</div>` : ""}
+            ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
+          </div>
 
-              <div class="event-meta">
-                ${item.venue ? `<div><strong>Venue:</strong> ${escapeHtml(item.venue)}</div>` : ""}
-                ${item.location ? `<div><strong>Location:</strong> ${escapeHtml(item.location)}</div>` : ""}
-                ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
-              </div>
+          ${showActions ? `
+            <div class="ticket-actions">
+              ${showYoutube ? `
+                <a
+                  class="ticket-action youtube-link"
+                  href="${escapeHtml(item.youtube)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Watch ${escapeHtml(item.name)} highlights on YouTube"
+                >
+                  ▶ YouTube
+                </a>
+              ` : ""}
 
-              ${showActions ? `
-                <div class="event-actions">
-                  ${showYoutube ? `
-                    <a
-                      class="event-action"
-                      href="${escapeHtml(item.youtube)}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      ▶ YouTube
-                    </a>
-                  ` : ""}
-
-                  ${showBoxscore ? `
-                    <a
-                      class="event-action"
-                      href="${escapeHtml(item.boxscore)}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Box Score
-                    </a>
-                  ` : ""}
-                </div>
+              ${showBoxscore ? `
+                <a
+                  class="ticket-action boxscore-link"
+                  href="${escapeHtml(item.boxscore)}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View box score for ${escapeHtml(item.name)}"
+                >
+                  Box Score
+                </a>
               ` : ""}
             </div>
-          </div>
+          ` : ""}
         </div>
+
+        <aside class="ticket-stub">
+          <div class="day-number">Day ${escapeHtml(day.day)}</div>
+          <div class="barcode" aria-hidden="true"></div>
+        </aside>
       </article>
     `;
   }).join("");
 }
 
-function updateSummary() {
-  if (eventsTotal) {
-    eventsTotal.textContent = allEvents.length;
-  }
+function renderSummary() {
+  const total = allEvents.length;
+  const types = [...new Set(allEvents.map(item => item.type))].sort();
 
-  if (eventsVisibleCount) {
-    eventsVisibleCount.textContent = allEvents.length;
-  }
+  summary.textContent = `${total} events · ${types.join(" / ")}`;
 }
 
 function setupFilters() {
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
-      activeFilter = button.dataset.filter || "all";
+      activeFilter = button.dataset.filter;
 
       filterButtons.forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
 
       renderEvents();
     });
-  });
-}
-
-function setupSearch() {
-  if (!searchInput) return;
-
-  searchInput.addEventListener("input", () => {
-    activeSearch = searchInput.value.trim().toLowerCase();
-    renderEvents();
   });
 }
 
@@ -276,28 +235,19 @@ async function init() {
 
     allEvents = buildEventList(tripData);
 
-    updateSummary();
+    renderSummary();
     setupFilters();
-    setupSearch();
     renderEvents();
   } catch (error) {
     console.error(error);
 
-    if (eventsTotal) {
-      eventsTotal.textContent = "—";
-    }
+    summary.textContent = "Could not load events.";
 
-    if (eventsVisibleCount) {
-      eventsVisibleCount.textContent = "0";
-    }
-
-    if (eventsList) {
-      eventsList.innerHTML = `
-        <div class="events-loading">
-          Could not load events from data/trip.json.
-        </div>
-      `;
-    }
+    ticketGrid.innerHTML = `
+      <div class="empty-state">
+        Could not load events from data/trip.json.
+      </div>
+    `;
   }
 }
 
