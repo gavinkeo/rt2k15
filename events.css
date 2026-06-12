@@ -188,8 +188,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: 14px;
   margin-bottom: 18px;
+  min-height: 38px;
 }
 
 .admit {
@@ -198,10 +199,48 @@ body {
   font-weight: 900;
   letter-spacing: 0.18em;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.ticket-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 68px;
+  max-width: 108px;
+  min-height: 34px;
+}
+
+.event-logo {
+  max-width: 96px;
+  max-height: 38px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+}
+
+.event-logo-ufc,
+.event-logo-wwe,
+.event-logo-nfl,
+.event-logo-mlb {
+  max-height: 34px;
+}
+
+.event-logo-tennis {
+  max-width: 86px;
+  max-height: 36px;
+}
+
+.ticket-brand.has-logo .event-type {
+  display: none;
+}
+
+.ticket-brand.has-logo.logo-missing .event-type,
+.ticket-brand.no-logo .event-type {
+  display: inline-flex;
 }
 
 .event-type {
-  display: inline-flex;
   align-items: center;
   justify-content: center;
   min-width: 54px;
@@ -215,63 +254,6 @@ body {
   background: #111;
   color: var(--paper);
   box-shadow: 2px 2px 0 rgba(17,17,17,0.18);
-}
-
-.event-type-mlb {
-  background: #0b2f6b;
-  color: #fff;
-}
-
-.event-type-nfl {
-  background: #102a54;
-  color: #fff;
-}
-
-.event-type-ufc {
-  background: #111;
-  color: #fff;
-  font-family: Impact, "Arial Black", sans-serif;
-  font-size: 16px;
-  letter-spacing: -0.06em;
-}
-
-.event-type-wwe {
-  background: #111;
-  color: #fff;
-  font-family: Impact, "Arial Black", sans-serif;
-  font-size: 15px;
-}
-
-.event-type-tennis {
-  background: #174f2f;
-  color: #fff;
-  font-size: 11px;
-}
-
-.event-type-concert {
-  background: #7a1fa2;
-  color: #fff;
-}
-
-.event-type-comedy {
-  background: #c2410c;
-  color: #fff;
-}
-
-.event-type-show {
-  background: #374151;
-  color: #fff;
-}
-
-.event-type-mls {
-  background: #153e2f;
-  color: #fff;
-}
-
-.event-type-ncaaf,
-.event-type-cfb {
-  background: #7c2d12;
-  color: #fff;
 }
 
 .ticket h2 {
@@ -295,31 +277,6 @@ body {
   color: var(--ink);
 }
 
-.ticket-actions {
-  margin-top: 18px;
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-}
-
-.ticket-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border: 1px solid var(--ink);
-  color: var(--ink);
-  border-radius: 999px;
-  padding: 9px 12px;
-  font-size: 12px;
-  font-weight: 900;
-}
-
-.ticket-link:hover {
-  background: var(--ink);
-  color: var(--paper);
-}
-
 .day-number {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
@@ -330,49 +287,9 @@ body {
   letter-spacing: 0.12em;
 }
 
-.ticket-icon {
-  font-size: 30px;
-}
-
-.logo-ufc {
-  font-family: Impact, "Arial Black", sans-serif;
-  font-size: 22px;
-  letter-spacing: -0.08em;
-}
-
-.logo-mlb {
-  font-size: 19px;
-}
-
-.logo-nfl {
-  font-size: 20px;
-}
-
-.logo-wwe {
-  font-family: Impact, "Arial Black", sans-serif;
-  font-size: 22px;
-}
-
-.logo-tennis {
-  font-size: 10px;
-  letter-spacing: -0.03em;
-}
-
-.logo-concert {
-  font-size: 18px;
-}
-
-.logo-comedy {
-  font-size: 11px;
-}
-
-.logo-motogp {
-  font-size: 10px;
-}
-
 .barcode {
   width: 48px;
-  height: 74px;
+  height: 82px;
   background:
     repeating-linear-gradient(
       to right,
@@ -437,7 +354,18 @@ body {
     font-size: 24px;
   }
 
+  .ticket-brand {
+    min-width: 54px;
+    max-width: 86px;
+  }
+
+  .event-logo {
+    max-width: 78px;
+    max-height: 32px;
+  }
+
   .barcode {
     width: 40px;
+    height: 76px;
   }
 }
