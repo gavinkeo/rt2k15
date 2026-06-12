@@ -559,20 +559,23 @@
       }
     },
     {
-      "day": 52,
-      "date": "2015-08-08",
-      "start": "Louisville",
-      "finish": "Indianapolis",
-      "type": "drive",
-      "via": "Cincinnatti",
-      "viaStops": [
-        "Cincinnati"
-      ],
-      "miles": 212,
-      "drivingTime": "3:49",
-      "event": {
-        "type": "NFL",
-        "name": "Paul Brown Stadium"
+  "day": 52,
+  "date": "2015-08-08",
+  "start": "Louisville",
+  "finish": "Indianapolis",
+  "type": "drive",
+  "via": "Cincinnati / Paul Brown Stadium",
+  "viaStops": [
+    "Cincinnati",
+    "Paul Brown Stadium"
+  ],
+  "miles": 212,
+  "drivingTime": "3:49",
+  "event": {
+    "type": "NFL",
+    "name": "Paul Brown Stadium Tour",
+    "venue": "Paul Brown Stadium",
+    "location": "Cincinnati"
       }
     },
     {
