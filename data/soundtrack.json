@@ -1,50 +1,8 @@
 {
-  "title": "Road Trip 2K15 Soundtrack",
-  "playlistId": "PLmZr_pajUD6XcMtiW5lgR32SbYm9zrf7k",
+  "title": "The songs from the summer",
+  "description": "The full 42-song YouTube Music playlist from Road Trip 2K15.",
+  "playlistId": "PASTE_YOUR_PLAYLIST_ID_HERE",
+  "youtubeMusicUrl": "",
   "playlistUrl": "",
-  "trackCount": 42,
-  "featuredMemories": [
-    {
-      "track": 1,
-      "title": "Shut Up and Dance",
-      "artist": "WALK THE MOON",
-      "location": "Summer 2015",
-      "memory": "Big obvious road-trip energy. Swap this for one of your actual playlist tracks if needed."
-    },
-    {
-      "track": 7,
-      "title": "Can't Feel My Face",
-      "artist": "The Weeknd",
-      "location": "Radio everywhere",
-      "memory": "A proper 2015 timestamp \u2014 the kind of song that instantly places the trip in that summer."
-    },
-    {
-      "track": 14,
-      "title": "Lean On",
-      "artist": "Major Lazer & DJ Snake feat. M\u00d8",
-      "location": "West Coast",
-      "memory": "Good fit for the long sunny stretches through California and the desert."
-    },
-    {
-      "track": 22,
-      "title": "The Nights",
-      "artist": "Avicii",
-      "location": "Open road",
-      "memory": "Feels like a travel montage song. Very on-theme for a 90-day trip."
-    },
-    {
-      "track": 35,
-      "title": "Renegades",
-      "artist": "X Ambassadors",
-      "location": "National parks",
-      "memory": "Works well for the parks and wide-open-road side of the site."
-    },
-    {
-      "track": 42,
-      "title": "See You Again",
-      "artist": "Wiz Khalifa feat. Charlie Puth",
-      "location": "Final stretch",
-      "memory": "A natural closing-track vibe for the end of the trip."
-    }
-  ]
+  "trackCount": 42
 }
