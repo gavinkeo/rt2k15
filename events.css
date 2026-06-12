@@ -282,15 +282,15 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
-.youtube-link {
+.ticket-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   text-decoration: none;
   border: 2px solid #111;
-  background: #ff0000;
   color: #fff;
   border-radius: 999px;
   padding: 8px 12px;
@@ -300,8 +300,16 @@ body {
   box-shadow: 2px 2px 0 rgba(17,17,17,0.22);
 }
 
-.youtube-link:hover {
+.youtube-link {
+  background: #ff0000;
+}
+
+.boxscore-link {
   background: #111;
+}
+
+.ticket-action:hover {
+  background: var(--accent);
   color: #fff;
 }
 
@@ -390,6 +398,16 @@ body {
   .event-logo {
     max-width: 78px;
     max-height: 32px;
+  }
+
+  .ticket-actions {
+    margin-top: 16px;
+    gap: 8px;
+  }
+
+  .ticket-action {
+    padding: 8px 10px;
+    font-size: 11px;
   }
 
   .barcode {
