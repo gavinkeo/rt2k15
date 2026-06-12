@@ -38,7 +38,7 @@
         "name": "Oakland Athletics v Los Angeles Angels",
         "venue": "Oakland Coliseum",
         "location": "Oakland",
-        "logo": "assets/logos/oaklaa.png",
+  "stubGraphic": "assets/logos/events/athletics-angels.png",
         "ticket": {
           "section": "Bleacher GA",
           "eventTime": "6:35 PM",
