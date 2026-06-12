@@ -1,97 +1,951 @@
 {
   "title": "Road Trip 2K15",
-  "subtitle": "San Fran → Miami, 18 Jun → 16 Sep",
-  "stats": {"days": 90, "milesDriven": 14372, "drivingHours": "228:36", "states": 48, "provinces": 4, "events": 22, "flights": 0},
+  "subtitle": "San Francisco Airport → Fort Lauderdale, 18 Jun → 15 Sep",
+  "stats": {
+    "days": 90,
+    "milesDriven": 14372,
+    "drivingHours": "228:36",
+    "states": 48,
+    "provinces": 4,
+    "events": 22,
+    "flights": 0
+  },
   "days": [
-    {"day": 1, "date": "2015-06-18", "start": "San Francisco Airport", "finish": "Oakland", "type": "drive", "via": "San Mateo Hayward Bridge", "viaStops": ["San Mateo Hayward Bridge"]},
-    {"day": 2, "date": "2015-06-19", "start": "Oakland", "finish": "Oakland", "type": "stay", "via": "Richmond / San Rafael Bridge", "viaStops": ["Richmond", "San Rafael Bridge"], "event": {"type": "MLB", "name": "Oakland Athletics v Los Angeles Angels", "venue": "O.co Coliseum", "boxscore": "https://www.baseball-reference.com/boxes/OAK/OAK201506190.shtml"}},
-    {"day": 3, "date": "2015-06-20", "start": "Oakland", "finish": "Oakland", "type": "stay", "via": "Golden Gate Bridge", "viaStops": ["Golden Gate Bridge"], "event": {"type": "Boxing", "name": "Andre Ward v Paul Smith", "venue": "Oracle Arena"}},
-    {"day": 4, "date": "2015-06-21", "start": "Oakland", "finish": "Oakland", "type": "stay"},
-    {"day": 5, "date": "2015-06-22", "start": "Oakland", "finish": "Chowchilla", "type": "drive", "via": "Yosemite NP", "viaStops": ["Yosemite NP"], "miles": 313, "drivingTime": "7:19"},
-    {"day": 6, "date": "2015-06-23", "start": "Chowchilla", "finish": "San Luis Obispo", "type": "drive", "via": "Monterey / Carmel", "viaStops": ["Monterey", "Carmel"], "miles": 222, "drivingTime": "4:45"},
-    {"day": 7, "date": "2015-06-24", "start": "San Luis Obispo", "finish": "Santa Barbara", "type": "drive", "miles": 95, "drivingTime": "1:41"},
-    {"day": 8, "date": "2015-06-25", "start": "Santa Barbara", "finish": "Los Angeles", "type": "drive", "via": "Santa Monica / Venice Beach", "viaStops": ["Santa Monica", "Venice Beach"], "miles": 207, "drivingTime": "1:10", "event": {"type": "Concert", "name": "Ed Sheeran", "venue": "Hollywood Bowl"}},
-    {"day": 9, "date": "2015-06-26", "start": "Los Angeles", "finish": "Los Angeles", "type": "stay", "event": {"type": "TV Show", "name": "ESPN Sports Nation", "venue": "ESPN Los Angeles Studio"}},
-    {"day": 10, "date": "2015-06-27", "start": "Los Angeles", "finish": "Los Angeles", "type": "stay"},
-    {"day": 11, "date": "2015-06-28", "start": "Los Angeles", "finish": "Los Angeles", "type": "stay"},
-    {"day": 12, "date": "2015-06-29", "start": "Los Angeles", "finish": "San Diego", "type": "drive", "via": "Long Beach / La Jolla", "viaStops": ["Long Beach", "La Jolla"], "miles": 140, "drivingTime": "2:50"},
-    {"day": 13, "date": "2015-06-30", "start": "San Diego", "finish": "San Diego", "type": "stay", "event": {"type": "MLB", "name": "San Diego Padres v Seattle Mariners", "venue": "Petco Park", "boxscore": "https://www.baseball-reference.com/boxes/SDN/SDN201506300.shtml"}},
-    {"day": 14, "date": "2015-07-01", "start": "San Diego", "finish": "Palm Springs", "type": "drive", "miles": 141, "drivingTime": "2:08"},
-    {"day": 15, "date": "2015-07-02", "start": "Palm Springs", "finish": "Phoenix", "type": "drive", "miles": 269, "drivingTime": "3:30"},
-    {"day": 16, "date": "2015-07-03", "start": "Phoenix", "finish": "Phoenix", "type": "stay", "event": {"type": "MLB", "name": "Arizona Diamondbacks v Colorado Rockies", "venue": "Chase Field", "boxscore": "https://www.baseball-reference.com/boxes/ARI/ARI201507030.shtml"}},
-    {"day": 17, "date": "2015-07-04", "start": "Phoenix", "finish": "Alamogordo", "type": "drive", "via": "Las Cruces", "viaStops": ["Las Cruces"], "miles": 460, "drivingTime": "6:17"},
-    {"day": 18, "date": "2015-07-05", "start": "Alamogordo", "finish": "Albuquerque", "type": "drive", "miles": 210, "drivingTime": "3:01"},
-    {"day": 19, "date": "2015-07-06", "start": "Albuquerque", "finish": "Page", "type": "drive", "miles": 418, "drivingTime": "6:42"},
-    {"day": 20, "date": "2015-07-07", "start": "Page", "finish": "Las Vegas", "type": "drive", "via": "Grand Canyon", "viaStops": ["Grand Canyon"], "miles": 413, "drivingTime": "6:35"},
-    {"day": 21, "date": "2015-07-08", "start": "Las Vegas", "finish": "Las Vegas", "type": "stay"},
-    {"day": 22, "date": "2015-07-09", "start": "Las Vegas", "finish": "Las Vegas", "type": "stay"},
-    {"day": 23, "date": "2015-07-10", "start": "Las Vegas", "finish": "Las Vegas", "type": "stay"},
-    {"day": 24, "date": "2015-07-11", "start": "Las Vegas", "finish": "Las Vegas", "type": "stay", "event": {"type": "UFC", "name": "UFC189: McGregor v Mendes", "venue": "MGM Grand Garden Arena", "youtube": "https://www.youtube.com/watch?v=QcKNi8jjcQo"}},
-    {"day": 25, "date": "2015-07-12", "start": "Las Vegas", "finish": "Beaver", "type": "drive", "via": "Cedar City", "viaStops": ["Cedar City"], "miles": 323, "drivingTime": "5:47"},
-    {"day": 26, "date": "2015-07-13", "start": "Beaver", "finish": "Rexburg", "type": "drive", "via": "Salt Lake City", "viaStops": ["Salt Lake City"], "miles": 435, "drivingTime": "5:42"},
-    {"day": 27, "date": "2015-07-14", "start": "Rexburg", "finish": "Rexburg", "type": "drive", "via": "Yellowstone NP", "viaStops": ["Yellowstone NP"], "miles": 346, "drivingTime": "8:27"},
-    {"day": 28, "date": "2015-07-15", "start": "Rexburg", "finish": "Boise", "type": "drive", "via": "Idaho Falls / Twin Falls", "viaStops": ["Idaho Falls", "Twin Falls"], "miles": 305, "drivingTime": "3:58"},
-    {"day": 29, "date": "2015-07-16", "start": "Boise", "finish": "Portland", "type": "drive", "miles": 430, "drivingTime": "6:15"},
-    {"day": 30, "date": "2015-07-17", "start": "Portland", "finish": "Portland", "type": "stay"},
-    {"day": 31, "date": "2015-07-18", "start": "Portland", "finish": "Seattle", "type": "drive", "miles": 157, "drivingTime": "2:23", "event": {"type": "MLS", "name": "Seattle Sounders v Colorado Rapids", "venue": "CenturyLink Field", "youtube": "https://www.youtube.com/watch?v=VE9IMsGbqrE"}},
-    {"day": 32, "date": "2015-07-19", "start": "Seattle", "finish": "Vancouver", "type": "drive", "via": "Seattle", "viaStops": ["Seattle"], "miles": 151, "drivingTime": "2:21"},
-    {"day": 33, "date": "2015-07-20", "start": "Vancouver", "finish": "Vancouver", "type": "stay"},
-    {"day": 34, "date": "2015-07-21", "start": "Vancouver", "finish": "Kamloops", "type": "drive", "miles": 224, "drivingTime": "3:15"},
-    {"day": 35, "date": "2015-07-22", "start": "Kamloops", "finish": "Calgary", "type": "drive", "via": "Lake Louise / Banff", "viaStops": ["Lake Louise", "Banff"], "miles": 382, "drivingTime": "5:59"},
-    {"day": 36, "date": "2015-07-23", "start": "Calgary", "finish": "Calgary", "type": "stay"},
-    {"day": 37, "date": "2015-07-24", "start": "Calgary", "finish": "Great Falls", "type": "drive", "miles": 337, "drivingTime": "4:58"},
-    {"day": 38, "date": "2015-07-25", "start": "Great Falls", "finish": "Glendive", "type": "drive", "miles": 350, "drivingTime": "5:37"},
-    {"day": 39, "date": "2015-07-26", "start": "Glendive", "finish": "Hot Springs", "type": "drive", "via": "Rapid City", "viaStops": ["Rapid City"], "miles": 330, "drivingTime": "5:11"},
-    {"day": 40, "date": "2015-07-27", "start": "Hot Springs", "finish": "Denver", "type": "drive", "via": "Scottsbluff", "viaStops": ["Scottsbluff"], "miles": 337, "drivingTime": "5:20", "event": {"type": "Concert", "name": "Imagine Dragons", "venue": "Pepsi Center"}},
-    {"day": 41, "date": "2015-07-28", "start": "Denver", "finish": "Denver", "type": "stay"},
-    {"day": 42, "date": "2015-07-29", "start": "Denver", "finish": "Amarillo", "type": "drive", "miles": 442, "drivingTime": "6:17"},
-    {"day": 43, "date": "2015-07-30", "start": "Amarillo", "finish": "Dallas", "type": "drive", "via": "Welcome to Oklahoma Sign, Devol OK", "viaStops": ["Welcome to Oklahoma Sign, Devol OK"], "miles": 359, "drivingTime": "5:27", "event": {"type": "NFL", "name": "AT&T Stadium Tour (Field Access)", "venue": "AT&T Stadium"}},
-    {"day": 44, "date": "2015-07-31", "start": "Dallas", "finish": "Dallas", "type": "stay"},
-    {"day": 45, "date": "2015-08-01", "start": "Dallas", "finish": "Dallas", "type": "stay"},
-    {"day": 46, "date": "2015-08-02", "start": "Dallas", "finish": "Houston", "type": "drive", "miles": 268, "drivingTime": "4:46"},
-    {"day": 47, "date": "2015-08-03", "start": "Houston", "finish": "New Orleans", "type": "drive", "miles": 349, "drivingTime": "5:42"},
-    {"day": 48, "date": "2015-08-04", "start": "New Orleans", "finish": "New Orleans", "type": "stay"},
-    {"day": 49, "date": "2015-08-05", "start": "New Orleans", "finish": "West Memphis", "type": "drive", "via": "Jackson", "viaStops": ["Jackson"], "miles": 403, "drivingTime": "5:50"},
-    {"day": 50, "date": "2015-08-06", "start": "West Memphis", "finish": "Louisville", "type": "drive", "via": "Memphis / Nashville", "viaStops": ["Memphis", "Nashville"], "miles": 412, "drivingTime": "7:08"},
-    {"day": 51, "date": "2015-08-07", "start": "Louisville", "finish": "Louisville", "type": "stay", "event": {"type": "CFB", "name": "Cardinal Stadium", "venue": "Cardinal Stadium"}},
-    {"day": 52, "date": "2015-08-08", "start": "Louisville", "finish": "Indianapolis", "type": "drive", "via": "Cincinnatti", "viaStops": ["Cincinnati"], "miles": 212, "drivingTime": "3:49", "event": {"type": "NFL", "name": "Paul Brown Stadium", "venue": "Paul Brown Stadium", "location": "Cincinnati"}},
-    {"day": 53, "date": "2015-08-09", "start": "Indianapolis", "finish": "Indianapolis", "type": "stay"},
-    {"day": 54, "date": "2015-08-10", "start": "Indianapolis", "finish": "Kansas City", "type": "drive", "via": "St Louis", "viaStops": ["St Louis"], "miles": 475, "drivingTime": "6:48"},
-    {"day": 55, "date": "2015-08-11", "start": "Kansas City", "finish": "Kansas City", "type": "stay"},
-    {"day": 56, "date": "2015-08-12", "start": "Kansas City", "finish": "Onalaska", "type": "drive", "miles": 470, "drivingTime": "6:30"},
-    {"day": 57, "date": "2015-08-13", "start": "Onalaska", "finish": "Chicago", "type": "drive", "miles": 265, "drivingTime": "3:52", "event": {"type": "NFL", "name": "Chicago Bears v Miami Dolphins", "venue": "Soldier Field"}},
-    {"day": 58, "date": "2015-08-14", "start": "Chicago", "finish": "Chicago", "type": "stay"},
-    {"day": 59, "date": "2015-08-15", "start": "Chicago", "finish": "Chicago", "type": "stay", "event": {"type": "MLB", "name": "Chicago White Sox v Chicago Cubs", "venue": "U.S. Cellular Field", "boxscore": "https://www.espn.com/mlb/game/_/gameId/350815104/cubs-white-sox"}},
-    {"day": 60, "date": "2015-08-16", "start": "Chicago", "finish": "Windsor", "type": "drive", "via": "Notre Dame / Detroit", "viaStops": ["Notre Dame", "Detroit"], "miles": 326, "drivingTime": "5:19"},
-    {"day": 61, "date": "2015-08-17", "start": "Windsor", "finish": "Toronto", "type": "drive", "via": "Niagara Falls", "viaStops": ["Niagara Falls"], "miles": 332, "drivingTime": "5:35"},
-    {"day": 62, "date": "2015-08-18", "start": "Toronto", "finish": "Toronto", "type": "stay"},
-    {"day": 63, "date": "2015-08-19", "start": "Toronto", "finish": "Montreal", "type": "drive", "via": "Ottawa", "viaStops": ["Ottawa"], "miles": 331, "drivingTime": "4:58"},
-    {"day": 64, "date": "2015-08-20", "start": "Montreal", "finish": "Boston", "type": "drive", "via": "Kittery, ME", "viaStops": ["Kittery, ME"], "miles": 386, "drivingTime": "6:19"},
-    {"day": 65, "date": "2015-08-21", "start": "Boston", "finish": "Boston", "type": "stay", "event": {"type": "MLB", "name": "Boston Red Sox v Kansas City Royals", "venue": "Fenway Park", "boxscore": "https://www.baseball-reference.com/boxes/BOS/BOS201508210.shtml"}},
-    {"day": 66, "date": "2015-08-22", "start": "Boston", "finish": "New York", "type": "drive", "via": "Providence / New Haven", "viaStops": ["Providence", "New Haven"], "miles": 216, "drivingTime": "3:24", "event": {"type": "NFL", "name": "New York Giants v Jacksonville Jaguars", "venue": "MetLife Stadium", "youtube": "https://www.youtube.com/watch?v=Rr_7bAAIk9A"}},
-    {"day": 67, "date": "2015-08-23", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "WWE", "name": "WWE Summerslam", "venue": "Barclays Center", "youtube": "https://www.youtube.com/watch?v=0rm2yBAmLYE"}},
-    {"day": 68, "date": "2015-08-24", "start": "New York", "finish": "New York", "type": "stay"},
-    {"day": 69, "date": "2015-08-25", "start": "New York", "finish": "New York", "type": "stay"},
-    {"day": 70, "date": "2015-08-26", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "MLB", "name": "New York Yankees v Houston Astros", "venue": "Yankee Stadium", "boxscore": "https://www.espn.com/mlb/game/_/gameId/350826110/astros-yankees"}},
-    {"day": 71, "date": "2015-08-27", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "Tennis", "name": "US Open", "venue": "USTA Billie Jean King National Tennis Center"}},
-    {"day": 72, "date": "2015-08-28", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "MLB", "name": "New York Mets v Boston Red Sox", "venue": "Citi Field", "boxscore": "https://www.baseball-reference.com/boxes/NYN/NYN201508280.shtml"}},
-    {"day": 73, "date": "2015-08-29", "start": "New York", "finish": "Philadelphia", "type": "drive", "miles": 120, "drivingTime": "2:00"},
-    {"day": 74, "date": "2015-08-30", "start": "Philadelphia", "finish": "Philadelphia", "type": "stay", "event": {"type": "Comedy", "name": "Kevin Hart", "venue": "Lincoln Financial Field"}},
-    {"day": 75, "date": "2015-08-31", "start": "Philadelphia", "finish": "Washington", "type": "drive", "via": "Delaware / Baltimore / Harpers Ferry", "viaStops": ["Delaware", "Baltimore", "Harpers Ferry"], "miles": 228, "drivingTime": "3:45"},
-    {"day": 76, "date": "2015-09-01", "start": "Washington", "finish": "Washington", "type": "stay"},
-    {"day": 77, "date": "2015-09-02", "start": "Washington", "finish": "Charlotte", "type": "drive", "miles": 398, "drivingTime": "5:41"},
-    {"day": 78, "date": "2015-09-03", "start": "Charlotte", "finish": "Charlotte", "type": "stay", "event": {"type": "CFB", "name": "North Carolina v South Carolina", "venue": "Bank of America Stadium", "youtube": "https://www.youtube.com/watch?v=3ruYBCRipCY"}},
-    {"day": 79, "date": "2015-09-04", "start": "Charlotte", "finish": "Opelika", "type": "drive", "miles": 396, "drivingTime": "5:53"},
-    {"day": 80, "date": "2015-09-05", "start": "Opelika", "finish": "Gainesville", "type": "drive", "miles": 305, "drivingTime": "5:00"},
-    {"day": 81, "date": "2015-09-06", "start": "Gainesville", "finish": "Gainesville", "type": "stay"},
-    {"day": 82, "date": "2015-09-07", "start": "Gainesville", "finish": "Orlando", "type": "drive", "miles": 114, "drivingTime": "2:00"},
-    {"day": 83, "date": "2015-09-08", "start": "Orlando", "finish": "West Palm Beach", "type": "drive", "miles": 171, "drivingTime": "2:36"},
-    {"day": 84, "date": "2015-09-09", "start": "West Palm Beach", "finish": "West Palm Beach", "type": "stay"},
-    {"day": 85, "date": "2015-09-10", "start": "West Palm Beach", "finish": "Key West", "type": "drive", "miles": 229, "drivingTime": "4:45"},
-    {"day": 86, "date": "2015-09-11", "start": "Key West", "finish": "Miami", "type": "drive", "miles": 170, "drivingTime": "4:01"},
-    {"day": 87, "date": "2015-09-12", "start": "Miami", "finish": "Miami", "type": "stay"},
-    {"day": 88, "date": "2015-09-13", "start": "Miami", "finish": "Miami", "type": "stay"},
-    {"day": 89, "date": "2015-09-14", "start": "Miami", "finish": "Miami", "type": "stay"},
-    {"day": 90, "date": "2015-09-15", "start": "Miami", "finish": "Fort Lauderdale", "type": "drive"}
+    {
+      "day": 1,
+      "date": "2015-06-18",
+      "start": "San Francisco Airport",
+      "finish": "Oakland",
+      "type": "drive",
+      "via": "San Mateo Hayward Bridge",
+      "viaStops": [
+        "San Mateo Hayward Bridge"
+      ]
+    },
+    {
+      "day": 2,
+      "date": "2015-06-19",
+      "start": "Oakland",
+      "finish": "Oakland",
+      "type": "stay",
+      "via": "Richmond / San Rafael Bridge",
+      "viaStops": [
+        "Richmond",
+        "San Rafael Bridge"
+      ],
+      "event": {
+        "type": "MLB",
+        "name": "Athletics v Angels"
+      }
+    },
+    {
+      "day": 3,
+      "date": "2015-06-20",
+      "start": "Oakland",
+      "finish": "Oakland",
+      "type": "stay",
+      "via": "Golden Gate Bridge",
+      "viaStops": [
+        "Golden Gate Bridge"
+      ],
+      "event": {
+        "type": "Boxing",
+        "name": "Ward v Smith"
+      }
+    },
+    {
+      "day": 4,
+      "date": "2015-06-21",
+      "start": "Oakland",
+      "finish": "Oakland",
+      "type": "stay"
+    },
+    {
+      "day": 5,
+      "date": "2015-06-22",
+      "start": "San Francisco",
+      "finish": "Chowchilla",
+      "type": "drive",
+      "via": "Yosemite NP",
+      "viaStops": [
+        "Yosemite NP"
+      ],
+      "miles": 313,
+      "drivingTime": "7:19"
+    },
+    {
+      "day": 6,
+      "date": "2015-06-23",
+      "start": "Chowchilla",
+      "finish": "San Luis Obispo",
+      "type": "drive",
+      "via": "17-Mile Drive / Pebble Beach Golf Club / Piedras Blancas Elephant Seal Rookery",
+      "viaStops": [
+        "17-Mile Drive",
+        "Pebble Beach Golf Club",
+        "Piedras Blancas Elephant Seal Rookery"
+      ],
+      "miles": 222,
+      "drivingTime": "4:45"
+    },
+    {
+      "day": 7,
+      "date": "2015-06-24",
+      "start": "San Luis Obispo",
+      "finish": "Santa Barbara",
+      "type": "drive",
+      "miles": 95,
+      "drivingTime": "1:41",
+      "via": "Pacific Coast Highway",
+      "viaStops": []
+    },
+    {
+      "day": 8,
+      "date": "2015-06-25",
+      "start": "Santa Barbara",
+      "finish": "Los Angeles",
+      "type": "drive",
+      "via": "Santa Monica / Venice Beach",
+      "viaStops": [
+        "Santa Monica",
+        "Venice Beach"
+      ],
+      "miles": 207,
+      "drivingTime": "1:10",
+      "event": {
+        "type": "Concert",
+        "name": "Ed Sheeran"
+      }
+    },
+    {
+      "day": 9,
+      "date": "2015-06-26",
+      "start": "Los Angeles",
+      "finish": "Los Angeles",
+      "type": "stay",
+      "event": {
+        "type": "TV Show",
+        "name": "ESPN Sportsnation"
+      }
+    },
+    {
+      "day": 10,
+      "date": "2015-06-27",
+      "start": "Los Angeles",
+      "finish": "Los Angeles",
+      "type": "stay"
+    },
+    {
+      "day": 11,
+      "date": "2015-06-28",
+      "start": "Los Angeles",
+      "finish": "Los Angeles",
+      "type": "stay"
+    },
+    {
+      "day": 12,
+      "date": "2015-06-29",
+      "start": "Los Angeles",
+      "finish": "San Diego",
+      "type": "drive",
+      "via": "Long Beach / La Jolla",
+      "viaStops": [
+        "Long Beach",
+        "La Jolla"
+      ],
+      "miles": 140,
+      "drivingTime": "2:50"
+    },
+    {
+      "day": 13,
+      "date": "2015-06-30",
+      "start": "San Diego",
+      "finish": "San Diego",
+      "type": "stay",
+      "event": {
+        "type": "MLB",
+        "name": "Padres v Mariners"
+      }
+    },
+    {
+      "day": 14,
+      "date": "2015-07-01",
+      "start": "San Diego",
+      "finish": "Palm Springs",
+      "type": "drive",
+      "miles": 141,
+      "drivingTime": "2:08"
+    },
+    {
+      "day": 15,
+      "date": "2015-07-02",
+      "start": "Palm Springs",
+      "finish": "Phoenix",
+      "type": "drive",
+      "miles": 269,
+      "drivingTime": "3:30"
+    },
+    {
+      "day": 16,
+      "date": "2015-07-03",
+      "start": "Phoenix",
+      "finish": "Phoenix",
+      "type": "stay",
+      "event": {
+        "type": "MLB",
+        "name": "D'Backs v Rockies"
+      }
+    },
+    {
+      "day": 17,
+      "date": "2015-07-04",
+      "start": "Phoenix",
+      "finish": "Alamogordo",
+      "type": "drive",
+      "miles": 460,
+      "drivingTime": "6:17"
+    },
+    {
+      "day": 18,
+      "date": "2015-07-05",
+      "start": "Alamogordo",
+      "finish": "Albuquerque",
+      "type": "drive",
+      "miles": 210,
+      "drivingTime": "3:01"
+    },
+    {
+      "day": 19,
+      "date": "2015-07-06",
+      "start": "Albuquerque",
+      "finish": "Page",
+      "type": "drive",
+      "miles": 418,
+      "drivingTime": "6:42",
+      "via": "Four Corners Monument",
+      "viaStops": [
+        "Four Corners Monument"
+      ]
+    },
+    {
+      "day": 20,
+      "date": "2015-07-07",
+      "start": "Page",
+      "finish": "Las Vegas",
+      "type": "drive",
+      "via": "Grand Canyon",
+      "viaStops": [
+        "Grand Canyon"
+      ],
+      "miles": 413,
+      "drivingTime": "6:35"
+    },
+    {
+      "day": 21,
+      "date": "2015-07-08",
+      "start": "Las Vegas",
+      "finish": "Las Vegas",
+      "type": "stay"
+    },
+    {
+      "day": 22,
+      "date": "2015-07-09",
+      "start": "Las Vegas",
+      "finish": "Las Vegas",
+      "type": "stay"
+    },
+    {
+      "day": 23,
+      "date": "2015-07-10",
+      "start": "Las Vegas",
+      "finish": "Las Vegas",
+      "type": "stay"
+    },
+    {
+      "day": 24,
+      "date": "2015-07-11",
+      "start": "Las Vegas",
+      "finish": "Las Vegas",
+      "type": "stay",
+      "event": {
+        "type": "UFC",
+        "name": "UFC 189: McGregor v Mendes / Lawler v MacDonald"
+      }
+    },
+    {
+      "day": 25,
+      "date": "2015-07-12",
+      "start": "Las Vegas",
+      "finish": "Beaver",
+      "type": "drive",
+      "miles": 323,
+      "drivingTime": "5:47"
+    },
+    {
+      "day": 26,
+      "date": "2015-07-13",
+      "start": "Beaver",
+      "finish": "Rexburg",
+      "type": "drive",
+      "via": "Salt Lake City",
+      "viaStops": [
+        "Salt Lake City"
+      ],
+      "miles": 435,
+      "drivingTime": "5:42"
+    },
+    {
+      "day": 27,
+      "date": "2015-07-14",
+      "start": "Rexburg",
+      "finish": "Rexburg",
+      "type": "drive",
+      "via": "Yellowstone NP",
+      "viaStops": [
+        "Yellowstone NP"
+      ],
+      "miles": 346,
+      "drivingTime": "8:27"
+    },
+    {
+      "day": 28,
+      "date": "2015-07-15",
+      "start": "Rexburg",
+      "finish": "Boise",
+      "type": "drive",
+      "via": "Idaho Falls / Twin Falls",
+      "viaStops": [
+        "Idaho Falls",
+        "Twin Falls"
+      ],
+      "miles": 305,
+      "drivingTime": "3:58"
+    },
+    {
+      "day": 29,
+      "date": "2015-07-16",
+      "start": "Boise",
+      "finish": "Portland",
+      "type": "drive",
+      "miles": 430,
+      "drivingTime": "6:15"
+    },
+    {
+      "day": 30,
+      "date": "2015-07-17",
+      "start": "Portland",
+      "finish": "Portland",
+      "type": "stay"
+    },
+    {
+      "day": 31,
+      "date": "2015-07-18",
+      "start": "Portland",
+      "finish": "Seattle",
+      "type": "drive",
+      "miles": 157,
+      "drivingTime": "2:23",
+      "event": {
+        "type": "MLS",
+        "name": "Sounders v Rapids"
+      }
+    },
+    {
+      "day": 32,
+      "date": "2015-07-19",
+      "start": "Seattle",
+      "finish": "Vancouver",
+      "type": "drive",
+      "via": "Seattle",
+      "viaStops": [
+        "Seattle"
+      ],
+      "miles": 151,
+      "drivingTime": "2:21"
+    },
+    {
+      "day": 33,
+      "date": "2015-07-20",
+      "start": "Vancouver",
+      "finish": "Vancouver",
+      "type": "stay"
+    },
+    {
+      "day": 34,
+      "date": "2015-07-21",
+      "start": "Vancouver",
+      "finish": "Kamloops",
+      "type": "drive",
+      "miles": 224,
+      "drivingTime": "3:15"
+    },
+    {
+      "day": 35,
+      "date": "2015-07-22",
+      "start": "Kamloops",
+      "finish": "Calgary",
+      "type": "drive",
+      "via": "Lake Louise / Banff",
+      "viaStops": [
+        "Lake Louise",
+        "Banff"
+      ],
+      "miles": 382,
+      "drivingTime": "5:59"
+    },
+    {
+      "day": 36,
+      "date": "2015-07-23",
+      "start": "Calgary",
+      "finish": "Calgary",
+      "type": "stay"
+    },
+    {
+      "day": 37,
+      "date": "2015-07-24",
+      "start": "Calgary",
+      "finish": "Great Falls",
+      "type": "drive",
+      "miles": 337,
+      "drivingTime": "4:58"
+    },
+    {
+      "day": 38,
+      "date": "2015-07-25",
+      "start": "Great Falls",
+      "finish": "Glendive",
+      "type": "drive",
+      "miles": 350,
+      "drivingTime": "5:37"
+    },
+    {
+      "day": 39,
+      "date": "2015-07-26",
+      "start": "Glendive",
+      "finish": "Hot Springs",
+      "type": "drive",
+      "via": "Rapid City",
+      "viaStops": [
+        "Rapid City"
+      ],
+      "miles": 330,
+      "drivingTime": "5:11"
+    },
+    {
+      "day": 40,
+      "date": "2015-07-27",
+      "start": "Hot Springs",
+      "finish": "Denver",
+      "type": "drive",
+      "via": "Scottsbluff",
+      "viaStops": [
+        "Scottsbluff"
+      ],
+      "miles": 337,
+      "drivingTime": "5:20",
+      "event": {
+        "type": "Concert",
+        "name": "Imagine Dragons"
+      }
+    },
+    {
+      "day": 41,
+      "date": "2015-07-28",
+      "start": "Denver",
+      "finish": "Denver",
+      "type": "stay"
+    },
+    {
+      "day": 42,
+      "date": "2015-07-29",
+      "start": "Denver",
+      "finish": "Amarillo",
+      "type": "drive",
+      "miles": 442,
+      "drivingTime": "6:17"
+    },
+    {
+      "day": 43,
+      "date": "2015-07-30",
+      "start": "Amarillo",
+      "finish": "Dallas",
+      "type": "drive",
+      "via": "Welcome to Oklahoma Sign, Devol OK",
+      "viaStops": [
+        "Welcome to Oklahoma Sign, Devol OK"
+      ],
+      "miles": 359,
+      "drivingTime": "5:27",
+      "event": {
+        "type": "NFL",
+        "name": "AT&T Stadium Tour"
+      }
+    },
+    {
+      "day": 44,
+      "date": "2015-07-31",
+      "start": "Dallas",
+      "finish": "Dallas",
+      "type": "stay"
+    },
+    {
+      "day": 45,
+      "date": "2015-08-01",
+      "start": "Dallas",
+      "finish": "Dallas",
+      "type": "stay"
+    },
+    {
+      "day": 46,
+      "date": "2015-08-02",
+      "start": "Dallas",
+      "finish": "Houston",
+      "type": "drive",
+      "miles": 268,
+      "drivingTime": "4:46"
+    },
+    {
+      "day": 47,
+      "date": "2015-08-03",
+      "start": "Houston",
+      "finish": "New Orleans",
+      "type": "drive",
+      "miles": 349,
+      "drivingTime": "5:42"
+    },
+    {
+      "day": 48,
+      "date": "2015-08-04",
+      "start": "New Orleans",
+      "finish": "New Orleans",
+      "type": "stay"
+    },
+    {
+      "day": 49,
+      "date": "2015-08-05",
+      "start": "New Orleans",
+      "finish": "West Memphis",
+      "type": "drive",
+      "via": "Jackson",
+      "viaStops": [
+        "Jackson"
+      ],
+      "miles": 403,
+      "drivingTime": "5:50"
+    },
+    {
+      "day": 50,
+      "date": "2015-08-06",
+      "start": "West Memphis",
+      "finish": "Louisville",
+      "type": "drive",
+      "via": "Memphis / Nashville",
+      "viaStops": [
+        "Memphis",
+        "Nashville"
+      ],
+      "miles": 412,
+      "drivingTime": "7:08"
+    },
+    {
+      "day": 51,
+      "date": "2015-08-07",
+      "start": "Louisville",
+      "finish": "Louisville",
+      "type": "stay",
+      "event": {
+        "type": "CFB",
+        "name": "Cardinal Stadium"
+      }
+    },
+    {
+      "day": 52,
+      "date": "2015-08-08",
+      "start": "Louisville",
+      "finish": "Indianapolis",
+      "type": "drive",
+      "via": "Cincinnatti",
+      "viaStops": [
+        "Cincinnati"
+      ],
+      "miles": 212,
+      "drivingTime": "3:49",
+      "event": {
+        "type": "NFL",
+        "name": "Paul Brown Stadium"
+      }
+    },
+    {
+      "day": 53,
+      "date": "2015-08-09",
+      "start": "Indianapolis",
+      "finish": "Indianapolis",
+      "type": "stay"
+    },
+    {
+      "day": 54,
+      "date": "2015-08-10",
+      "start": "Indianapolis",
+      "finish": "Kansas City",
+      "type": "drive",
+      "via": "St Louis",
+      "viaStops": [
+        "St Louis"
+      ],
+      "miles": 475,
+      "drivingTime": "6:48"
+    },
+    {
+      "day": 55,
+      "date": "2015-08-11",
+      "start": "Kansas City",
+      "finish": "Kansas City",
+      "type": "stay"
+    },
+    {
+      "day": 56,
+      "date": "2015-08-12",
+      "start": "Kansas City",
+      "finish": "Onalaska",
+      "type": "drive",
+      "miles": 470,
+      "drivingTime": "6:30"
+    },
+    {
+      "day": 57,
+      "date": "2015-08-13",
+      "start": "Onalaska",
+      "finish": "Chicago",
+      "type": "drive",
+      "miles": 265,
+      "drivingTime": "3:52",
+      "event": {
+        "type": "NFL",
+        "name": "Bears v Dolphins"
+      }
+    },
+    {
+      "day": 58,
+      "date": "2015-08-14",
+      "start": "Chicago",
+      "finish": "Chicago",
+      "type": "stay"
+    },
+    {
+      "day": 59,
+      "date": "2015-08-15",
+      "start": "Chicago",
+      "finish": "Chicago",
+      "type": "stay",
+      "event": {
+        "type": "MLB",
+        "name": "White Sox v Cubs"
+      }
+    },
+    {
+      "day": 60,
+      "date": "2015-08-16",
+      "start": "Chicago",
+      "finish": "Windsor",
+      "type": "drive",
+      "via": "Notre Dame / Detroit",
+      "viaStops": [
+        "Notre Dame",
+        "Detroit"
+      ],
+      "miles": 326,
+      "drivingTime": "5:19"
+    },
+    {
+      "day": 61,
+      "date": "2015-08-17",
+      "start": "Windsor",
+      "finish": "Toronto",
+      "type": "drive",
+      "via": "Niagara Falls",
+      "viaStops": [
+        "Niagara Falls"
+      ],
+      "miles": 332,
+      "drivingTime": "5:35"
+    },
+    {
+      "day": 62,
+      "date": "2015-08-18",
+      "start": "Toronto",
+      "finish": "Toronto",
+      "type": "stay"
+    },
+    {
+      "day": 63,
+      "date": "2015-08-19",
+      "start": "Toronto",
+      "finish": "Montreal",
+      "type": "drive",
+      "via": "Ottawa",
+      "viaStops": [
+        "Ottawa"
+      ],
+      "miles": 331,
+      "drivingTime": "4:58"
+    },
+    {
+      "day": 64,
+      "date": "2015-08-20",
+      "start": "Montreal",
+      "finish": "Boston",
+      "type": "drive",
+      "via": "Kittery, ME",
+      "viaStops": [
+        "Kittery, ME"
+      ],
+      "miles": 386,
+      "drivingTime": "6:19"
+    },
+    {
+      "day": 65,
+      "date": "2015-08-21",
+      "start": "Boston",
+      "finish": "Boston",
+      "type": "stay",
+      "event": {
+        "type": "MLB",
+        "name": "Red Sox v Royals"
+      }
+    },
+    {
+      "day": 66,
+      "date": "2015-08-22",
+      "start": "Boston",
+      "finish": "New York",
+      "type": "drive",
+      "via": "Providence / New Haven",
+      "viaStops": [
+        "Providence",
+        "New Haven"
+      ],
+      "miles": 216,
+      "drivingTime": "3:24",
+      "event": {
+        "type": "NFL",
+        "name": "Giants v Jaguars"
+      }
+    },
+    {
+      "day": 67,
+      "date": "2015-08-23",
+      "start": "New York",
+      "finish": "New York",
+      "type": "stay",
+      "event": {
+        "type": "WWE",
+        "name": "Summerslam"
+      }
+    },
+    {
+      "day": 68,
+      "date": "2015-08-24",
+      "start": "New York",
+      "finish": "New York",
+      "type": "stay"
+    },
+    {
+      "day": 69,
+      "date": "2015-08-25",
+      "start": "New York",
+      "finish": "New York",
+      "type": "stay"
+    },
+    {
+      "day": 70,
+      "date": "2015-08-26",
+      "start": "New York",
+      "finish": "New York",
+      "type": "stay",
+      "event": {
+        "type": "MLB",
+        "name": "Yankees v Astros"
+      }
+    },
+    {
+      "day": 71,
+      "date": "2015-08-27",
+      "start": "New York",
+      "finish": "New York",
+      "type": "stay",
+      "event": {
+        "type": "Tennis",
+        "name": "US Open"
+      }
+    },
+    {
+      "day": 72,
+      "date": "2015-08-28",
+      "start": "New York",
+      "finish": "New York",
+      "type": "stay",
+      "event": {
+        "type": "MLB",
+        "name": "Mets v Red Sox"
+      }
+    },
+    {
+      "day": 73,
+      "date": "2015-08-29",
+      "start": "New York",
+      "finish": "Philadelphia",
+      "type": "drive",
+      "miles": 120,
+      "drivingTime": "2:00"
+    },
+    {
+      "day": 74,
+      "date": "2015-08-30",
+      "start": "Philadelphia",
+      "finish": "Philadelphia",
+      "type": "stay",
+      "event": {
+        "type": "Comedy",
+        "name": "Kevin Hart"
+      }
+    },
+    {
+      "day": 75,
+      "date": "2015-08-31",
+      "start": "Philadelphia",
+      "finish": "Washington",
+      "type": "drive",
+      "via": "Delaware / Baltimore / Harpers Ferry",
+      "viaStops": [
+        "Delaware",
+        "Baltimore",
+        "Harpers Ferry"
+      ],
+      "miles": 228,
+      "drivingTime": "3:45"
+    },
+    {
+      "day": 76,
+      "date": "2015-09-01",
+      "start": "Washington",
+      "finish": "Washington",
+      "type": "stay"
+    },
+    {
+      "day": 77,
+      "date": "2015-09-02",
+      "start": "Washington",
+      "finish": "Charlotte",
+      "type": "drive",
+      "miles": 398,
+      "drivingTime": "5:41"
+    },
+    {
+      "day": 78,
+      "date": "2015-09-03",
+      "start": "Charlotte",
+      "finish": "Charlotte",
+      "type": "stay",
+      "event": {
+        "type": "CFB",
+        "name": "North Carolina v South Carolina"
+      }
+    },
+    {
+      "day": 79,
+      "date": "2015-09-04",
+      "start": "Charlotte",
+      "finish": "Opelika",
+      "type": "drive",
+      "miles": 396,
+      "drivingTime": "5:53"
+    },
+    {
+      "day": 80,
+      "date": "2015-09-05",
+      "start": "Opelika",
+      "finish": "Gainesville",
+      "type": "drive",
+      "miles": 305,
+      "drivingTime": "5:00"
+    },
+    {
+      "day": 81,
+      "date": "2015-09-06",
+      "start": "Gainesville",
+      "finish": "Gainesville",
+      "type": "stay"
+    },
+    {
+      "day": 82,
+      "date": "2015-09-07",
+      "start": "Gainesville",
+      "finish": "Orlando",
+      "type": "drive",
+      "miles": 114,
+      "drivingTime": "2:00"
+    },
+    {
+      "day": 83,
+      "date": "2015-09-08",
+      "start": "Orlando",
+      "finish": "West Palm Beach",
+      "type": "drive",
+      "miles": 171,
+      "drivingTime": "2:36"
+    },
+    {
+      "day": 84,
+      "date": "2015-09-09",
+      "start": "West Palm Beach",
+      "finish": "West Palm Beach",
+      "type": "stay"
+    },
+    {
+      "day": 85,
+      "date": "2015-09-10",
+      "start": "West Palm Beach",
+      "finish": "Key West",
+      "type": "drive",
+      "miles": 229,
+      "drivingTime": "4:45"
+    },
+    {
+      "day": 86,
+      "date": "2015-09-11",
+      "start": "Key West",
+      "finish": "Miami",
+      "type": "drive",
+      "miles": 170,
+      "drivingTime": "4:01"
+    },
+    {
+      "day": 87,
+      "date": "2015-09-12",
+      "start": "Miami",
+      "finish": "Miami",
+      "type": "stay"
+    },
+    {
+      "day": 88,
+      "date": "2015-09-13",
+      "start": "Miami",
+      "finish": "Miami",
+      "type": "stay"
+    },
+    {
+      "day": 89,
+      "date": "2015-09-14",
+      "start": "Miami",
+      "finish": "Miami",
+      "type": "stay"
+    },
+    {
+      "day": 90,
+      "date": "2015-09-15",
+      "start": "Miami",
+      "finish": "Fort Lauderdale",
+      "type": "drive"
+    }
   ]
 }
