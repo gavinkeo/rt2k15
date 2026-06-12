@@ -54,7 +54,7 @@
     {"day": 49, "date": "2015-08-05", "start": "New Orleans", "finish": "West Memphis", "type": "drive", "via": "Jackson", "viaStops": ["Jackson"], "miles": 403, "drivingTime": "5:50"},
     {"day": 50, "date": "2015-08-06", "start": "West Memphis", "finish": "Louisville", "type": "drive", "via": "Memphis / Nashville", "viaStops": ["Memphis", "Nashville"], "miles": 412, "drivingTime": "7:08"},
     {"day": 51, "date": "2015-08-07", "start": "Louisville", "finish": "Louisville", "type": "stay", "event": {"type": "CFB", "name": "Cardinal Stadium", "venue": "Cardinal Stadium"}},
-    {"day": 52, "date": "2015-08-08", "start": "Louisville", "finish": "Indianapolis", "type": "drive", "via": "Cincinnatti", "viaStops": ["Cincinnati"], "miles": 212, "drivingTime": "3:49", "event": {"type": "NFL", "name": "Paul Brown Stadium", "venue": "Paul Brown Stadium"}},
+    {"day": 52, "date": "2015-08-08", "start": "Louisville", "finish": "Indianapolis", "type": "drive", "via": "Cincinnatti", "viaStops": ["Cincinnati"], "miles": 212, "drivingTime": "3:49", "event": {"type": "NFL", "name": "Paul Brown Stadium", "venue": "Paul Brown Stadium", "location": "Cincinnati"}},
     {"day": 53, "date": "2015-08-09", "start": "Indianapolis", "finish": "Indianapolis", "type": "stay"},
     {"day": 54, "date": "2015-08-10", "start": "Indianapolis", "finish": "Kansas City", "type": "drive", "via": "St Louis", "viaStops": ["St Louis"], "miles": 475, "drivingTime": "6:48"},
     {"day": 55, "date": "2015-08-11", "start": "Kansas City", "finish": "Kansas City", "type": "stay"},
