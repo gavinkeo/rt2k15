@@ -623,3 +623,54 @@ body.gallery-open {
     font-size: 13px;
   }
 }
+
+/* Places pages: compact desktop header so tiles start higher */
+
+@media (min-width: 701px) {
+  .places-page {
+    width: min(1260px, calc(100% - 48px));
+    padding-top: 22px;
+  }
+
+  .places-hero {
+    padding: 0 0 10px;
+  }
+
+  .places-nav {
+    margin-bottom: 22px;
+  }
+
+  .places-hero-main {
+    align-items: center;
+  }
+
+  .compact-page-title {
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  /* The 13 places / 32 cities box is now clutter */
+  .places-summary {
+    display: none;
+  }
+
+  .places-main {
+    margin-top: 0;
+  }
+
+  .places-intro {
+    margin: 0 0 18px;
+    max-width: none;
+  }
+
+  .places-intro p {
+    font-size: 14px;
+    line-height: 1.35;
+    font-weight: 700;
+    color: rgba(255,255,255,0.62);
+  }
+
+  .place-grid {
+    gap: 18px;
+  }
+}
