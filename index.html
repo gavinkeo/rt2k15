@@ -3,35 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>RT2K15 — San Fran → Miami, 18 Jun → 16 Sep</title>
-  <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
-  <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
   <div id="map"></div>
 
-<div class="trip-menu" id="trip-menu">
-  <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
-    <span>Road Trip 2K15</span>
-    <span class="trip-menu-chevron">▾</span>
-  </button>
-
-  <div class="trip-menu-content" id="trip-menu-content">
-    <p class="subtitle">San Fran → Miami, 18 Jun → 16 Sep</p>
-
-    <div class="stats">
-      <div class="stat"><span class="stat-value" id="stat-days">—</span><span class="stat-label">days</span></div>
-      <div class="stat"><span class="stat-value" id="stat-miles">—</span><span class="stat-label">miles</span></div>
-      <div class="stat"><span class="stat-value" id="stat-states">—</span><span class="stat-label">states</span></div>
-      <div class="stat"><span class="stat-value" id="stat-provinces">—</span><span class="stat-label">provinces</span></div>
-    </div>
-
-<div class="menu-section">
-  <a class="menu-page-link" href="events.html">Sports & Events</a>
-</div>
+  <!-- map.js builds the full menu inside this -->
+  <div id="trip-menu"></div>
 
   <aside class="day-detail" id="day-detail" aria-hidden="true">
     <button class="close-btn" id="close-detail" aria-label="Close">×</button>
@@ -40,8 +27,18 @@
 
   <div class="timeline">
     <button class="play-btn" id="play-btn" aria-label="Play">▶</button>
+
     <div class="timeline-track">
-      <input type="range" id="timeline-slider" min="1" max="93" value="93" step="1" />
+      <input
+        type="range"
+        id="timeline-slider"
+        min="1"
+        max="90"
+        value="90"
+        step="1"
+        aria-label="Trip day"
+      />
+
       <div class="timeline-labels">
         <span>18 Jun</span>
         <span>Jul</span>
@@ -49,7 +46,10 @@
         <span>16 Sep</span>
       </div>
     </div>
-    <div class="day-counter">Day <span id="current-day">90</span> / 90</div>
+
+    <div class="day-counter">
+      Day <span id="current-day">90</span> / <span id="total-days">90</span>
+    </div>
   </div>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
