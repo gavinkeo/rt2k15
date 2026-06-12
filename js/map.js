@@ -1215,7 +1215,9 @@ function handleInitialUrlParams() {
 async function init() {
   map = L.map("map", {
     zoomControl: false,
-    attributionControl: true
+    attributionControl: true,
+    zoomSnap: 0.25,
+    zoomDelta: 0.5
   }).setView([39.5, -98.5], 4);
 
   setupCarPane();
@@ -1249,9 +1251,15 @@ async function init() {
   const allCoords = getAllRouteCoords();
 
   if (allCoords.length) {
-    map.fitBounds(L.latLngBounds(allCoords), {
-      padding: [60, 60]
-    });
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+
+    if (isMobile) {
+      map.setView([39.5, -96.5], 3.25);
+    } else {
+      map.fitBounds(L.latLngBounds(allCoords), {
+        padding: [70, 70]
+      });
+    }
   }
 
   const closeDetail = document.getElementById("close-detail");
