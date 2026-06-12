@@ -871,11 +871,9 @@ function setupTripMenu() {
       <div class="menu-section">
         <a class="menu-page-link" href="events.html">Sports & Events</a>
 
-        <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
-          Highlight events on map
-        </button>
-
-        <div class="events-list" id="events-list"></div>
+<div class="menu-section">
+  <a class="menu-page-link" href="events.html">Sports & Events</a>
+</div>
       </div>
     </div>
   `;
