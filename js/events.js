@@ -236,14 +236,14 @@ function renderEvents() {
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
         <div class="ticket-main">
-          <div class="ticket-topline">
-            <span class="admit">${escapeHtml(admission)}</span>
+<div class="ticket-topline ticket-topline-compact">
+  <span class="ticket-mini-label">RT2K15</span>
 
-            <span class="${brandClass}">
-              ${logoMarkup}
-              <span class="event-type">${escapeHtml(type)}</span>
-            </span>
-          </div>
+  <span class="${brandClass}">
+    ${logoMarkup}
+    <span class="event-type">${escapeHtml(type)}</span>
+  </span>
+</div>
 
           <h2>${escapeHtml(item.name)}</h2>
 
@@ -283,10 +283,11 @@ function renderEvents() {
             </div>
           ` : ""}
 
-          <div class="ticket-fineprint">
-            <span>Event Code ${escapeHtml(ticketCode)}</span>
-            <span>No refunds · No exchanges</span>
-          </div>
+<div class="ticket-fineprint">
+  <span>${escapeHtml(admission)}</span>
+  <span>Event Code ${escapeHtml(ticketCode)}</span>
+  <span>No refunds · No exchanges</span>
+</div>
         </div>
 
         <aside class="ticket-stub">
