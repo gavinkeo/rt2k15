@@ -1180,17 +1180,19 @@ function createPlaceMarker(placeData) {
   let html = "";
   let size = 12;
 
-  if (hasEvent) {
-    className = "marker-dot marker-event";
-    html = EVENT_ICONS[placeData.events?.[0]?.event?.type] || "★";
-    size = 24;
-  } else if (viaOnly) {
-    className = "marker-dot marker-via";
-    size = 10;
-  } else if (multiDay) {
-    className = "marker-dot marker-multi";
-    size = 16;
-  }
+if (hasEvent) {
+  className = "marker-dot marker-via";
+  html = "";
+  size = 10;
+} else if (viaOnly) {
+  className = "marker-dot marker-via";
+  html = "";
+  size = 10;
+} else if (multiDay) {
+  className = "marker-dot marker-multi";
+  html = "";
+  size = 16;
+}
 
   const icon = L.divIcon({
     className,
