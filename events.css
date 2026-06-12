@@ -203,12 +203,75 @@ body {
 .event-type {
   display: inline-flex;
   align-items: center;
-  border: 1px solid var(--ink);
+  justify-content: center;
+  min-width: 54px;
+  border: 2px solid var(--ink);
   border-radius: 999px;
-  padding: 5px 8px;
+  padding: 6px 10px;
   font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  background: #111;
+  color: var(--paper);
+  box-shadow: 2px 2px 0 rgba(17,17,17,0.18);
+}
+
+.event-type-mlb {
+  background: #0b2f6b;
+  color: #fff;
+}
+
+.event-type-nfl {
+  background: #102a54;
+  color: #fff;
+}
+
+.event-type-ufc {
+  background: #111;
+  color: #fff;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 16px;
+  letter-spacing: -0.06em;
+}
+
+.event-type-wwe {
+  background: #111;
+  color: #fff;
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 15px;
+}
+
+.event-type-tennis {
+  background: #174f2f;
+  color: #fff;
   font-size: 11px;
-  font-weight: 900;
+}
+
+.event-type-concert {
+  background: #7a1fa2;
+  color: #fff;
+}
+
+.event-type-comedy {
+  background: #c2410c;
+  color: #fff;
+}
+
+.event-type-show {
+  background: #374151;
+  color: #fff;
+}
+
+.event-type-mls {
+  background: #153e2f;
+  color: #fff;
+}
+
+.event-type-ncaaf,
+.event-type-cfb {
+  background: #7c2d12;
+  color: #fff;
 }
 
 .ticket h2 {
@@ -269,26 +332,6 @@ body {
 
 .ticket-icon {
   font-size: 30px;
-}
-
-.ticket-logo {
-  width: 66px;
-  min-height: 42px;
-  border: 2px solid #111;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 5px;
-  font-family: "JetBrains Mono", monospace;
-  font-size: 13px;
-  font-weight: 950;
-  line-height: 0.95;
-  letter-spacing: -0.06em;
-  background: #111;
-  color: var(--paper);
-  transform: rotate(-90deg);
 }
 
 .logo-ufc {
