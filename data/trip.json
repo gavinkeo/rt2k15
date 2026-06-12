@@ -273,25 +273,26 @@
       "finish": "Las Vegas",
       "type": "stay"
     },
-    {
-      "day": 24,
-      "date": "2015-07-11",
-      "start": "Las Vegas",
-      "finish": "Las Vegas",
-      "type": "stay",
-      "event": {
-        "type": "UFC",
-        "name": "UFC 189: McGregor v Mendes / Lawler v MacDonald",
-        "venue": "MGM Grand Garden Arena",
-        "location": "Las Vegas"
-        "ticket": {
-    "section": "213",
-    "row": "H",
-    "seat": "6",
-    "eventTime": "3:00 PM",
-    "price": "$245.90",
-      }
-    },
+{
+  "day": 24,
+  "date": "2015-07-11",
+  "start": "Las Vegas",
+  "finish": "Las Vegas",
+  "type": "stay",
+  "event": {
+    "type": "UFC",
+    "name": "UFC 189: McGregor v Mendes / Lawler v MacDonald",
+    "venue": "MGM Grand Garden Arena",
+    "location": "Las Vegas",
+    "ticket": {
+      "section": "213",
+      "row": "H",
+      "seat": "6",
+      "eventTime": "3:00 PM",
+      "price": "$245.90"
+    }
+  }
+},
     {
       "day": 25,
       "date": "2015-07-12",
