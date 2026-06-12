@@ -860,3 +860,16 @@ body {
     max-height: 124px;
   }
 }
+
+/* Cleaner fineprint */
+
+.ticket-fineprint {
+  margin-top: auto;
+  padding-top: 13px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(120, 70, 90, 0.45);
+}
