@@ -14,6 +14,13 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function classSafe(value) {
+  return String(value ?? "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 function formatDate(dateString) {
   if (!dateString) return "";
 
@@ -73,6 +80,10 @@ function getLogoPath(type) {
   return logos[type] || logos[normalised] || "";
 }
 
+function getTicketCode(day, type, ticket = {}) {
+  return ticket.code || ticket.eventCode || `RT2K15-${String(day.day).padStart(2, "0")}-${normaliseType(type).toUpperCase()}`;
+}
+
 function tiltForIndex(index) {
   const tilts = ["-1.2deg", "0.8deg", "-0.5deg", "1.1deg", "-0.8deg", "0.4deg"];
   return tilts[index % tilts.length];
@@ -92,7 +103,8 @@ function buildEventList(tripData) {
       date: day.event.date || day.date,
       logo: day.event.logo || getLogoPath(day.event.type),
       youtube: day.event.youtube || day.event.youtubeUrl || "",
-      boxscore: day.event.boxscore || day.event.boxScore || day.event.boxscoreUrl || ""
+      boxscore: day.event.boxscore || day.event.boxScore || day.event.boxscoreUrl || "",
+      ticket: day.event.ticket || {}
     }));
 }
 
@@ -129,6 +141,20 @@ function renderEvents() {
     const location = item.location;
     const date = formatDate(item.date);
     const logo = item.logo;
+    const ticket = item.ticket || {};
+
+    const ticketCode = getTicketCode(day, type, ticket);
+    const admission = ticket.admission || ticket.type || "Admit One";
+    const section = ticket.section || ticket.sec || "";
+    const row = ticket.row || "";
+    const seat = ticket.seat || "";
+    const doors = ticket.doors || ticket.gates || "";
+    const eventTime = ticket.eventTime || ticket.time || "";
+    const price = ticket.price || "";
+    const entry = ticket.entry || "";
+
+    const hasSeatInfo = Boolean(section || row || seat);
+    const hasExtraInfo = Boolean(doors || eventTime || price || entry);
 
     const showYoutube = Boolean(item.youtube);
     const showBoxscore = type === "MLB" && Boolean(item.boxscore);
@@ -138,7 +164,7 @@ function renderEvents() {
 
     const logoMarkup = logo
       ? `<img
-          class="event-logo event-logo-${escapeHtml(type.toLowerCase())}"
+          class="event-logo event-logo-${escapeHtml(classSafe(type))}"
           src="${escapeHtml(logo)}"
           alt="${escapeHtml(type)} logo"
           loading="lazy"
@@ -146,11 +172,72 @@ function renderEvents() {
         >`
       : "";
 
+    const seatInfoMarkup = hasSeatInfo
+      ? `
+        <div class="stub-seat-info">
+          ${section ? `
+            <div>
+              <span class="stub-seat-label">SEC</span>
+              <span class="stub-seat-value">${escapeHtml(section)}</span>
+            </div>
+          ` : ""}
+
+          ${row ? `
+            <div>
+              <span class="stub-seat-label">ROW</span>
+              <span class="stub-seat-value">${escapeHtml(row)}</span>
+            </div>
+          ` : ""}
+
+          ${seat ? `
+            <div>
+              <span class="stub-seat-label">SEAT</span>
+              <span class="stub-seat-value">${escapeHtml(seat)}</span>
+            </div>
+          ` : ""}
+        </div>
+      `
+      : "";
+
+    const extraInfoMarkup = hasExtraInfo
+      ? `
+        <div class="ticket-extra-grid">
+          ${entry ? `
+            <div class="ticket-extra-cell">
+              <span>Entry</span>
+              <strong>${escapeHtml(entry)}</strong>
+            </div>
+          ` : ""}
+
+          ${doors ? `
+            <div class="ticket-extra-cell">
+              <span>Doors</span>
+              <strong>${escapeHtml(doors)}</strong>
+            </div>
+          ` : ""}
+
+          ${eventTime ? `
+            <div class="ticket-extra-cell">
+              <span>Event</span>
+              <strong>${escapeHtml(eventTime)}</strong>
+            </div>
+          ` : ""}
+
+          ${price ? `
+            <div class="ticket-extra-cell">
+              <span>Price</span>
+              <strong>${escapeHtml(price)}</strong>
+            </div>
+          ` : ""}
+        </div>
+      `
+      : "";
+
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
         <div class="ticket-main">
           <div class="ticket-topline">
-            <span class="admit">Admit One</span>
+            <span class="admit">${escapeHtml(admission)}</span>
 
             <span class="${brandClass}">
               ${logoMarkup}
@@ -165,6 +252,8 @@ function renderEvents() {
             ${location ? `<div><strong>Location:</strong> ${escapeHtml(location)}</div>` : ""}
             ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
           </div>
+
+          ${extraInfoMarkup}
 
           ${showActions ? `
             <div class="ticket-actions">
@@ -193,10 +282,18 @@ function renderEvents() {
               ` : ""}
             </div>
           ` : ""}
+
+          <div class="ticket-fineprint">
+            <span>Event Code ${escapeHtml(ticketCode)}</span>
+            <span>No refunds · No exchanges</span>
+          </div>
         </div>
 
         <aside class="ticket-stub">
           <div class="day-number">Day ${escapeHtml(day.day)}</div>
+
+          ${seatInfoMarkup}
+
           <div class="barcode" aria-hidden="true"></div>
         </aside>
       </article>
