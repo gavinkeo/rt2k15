@@ -235,8 +235,13 @@ function renderEvents() {
 
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
-        <div class="ticket-main">
-          <h2>${escapeHtml(item.name)}</h2>
+<div class="ticket-main">
+  <span class="ticket-corner-brand ${brandClass}">
+    ${logoMarkup}
+    <span class="event-type">${escapeHtml(type)}</span>
+  </span>
+
+  <h2>${escapeHtml(item.name)}</h2>
 
           <div class="ticket-meta">
             ${venue ? `<div><strong>Venue:</strong> ${escapeHtml(venue)}</div>` : ""}
