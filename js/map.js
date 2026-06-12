@@ -734,8 +734,6 @@ function setupTripMenu() {
     </button>
 
     <div class="trip-menu-content" id="trip-menu-content">
-      <p class="subtitle">${escapeHtml(tripData?.subtitle || "San Fran → Miami, 18 Jun → 16 Sep")}</p>
-
       <div class="stats">
         <div class="stat">
           <div class="stat-main-row">
