@@ -1216,8 +1216,8 @@ async function init() {
   map = L.map("map", {
     zoomControl: false,
     attributionControl: true,
-    zoomSnap: 0.25,
-    zoomDelta: 0.5
+    zoomSnap: 1,
+    zoomDelta: 1
   }).setView([39.5, -98.5], 4);
 
   setupCarPane();
@@ -1256,7 +1256,7 @@ async function init() {
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
 
     if (isMobile) {
-      map.setView([39.5, -96.5], 3.25);
+      map.setView([39.5, -96.5], 3);
     } else {
       map.fitBounds(L.latLngBounds(allCoords), {
         padding: [70, 70]
