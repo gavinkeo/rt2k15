@@ -1345,8 +1345,8 @@ menu.innerHTML = `
       </div>
 
       <div class="menu-section">
-        <a class="menu-page-link" href="events.html">Sports & Events</a>
-      </div>
+<a class="menu-page-link" href="events.html">Tickets & Events</a>
+</div>
     </div>
   `;
 
