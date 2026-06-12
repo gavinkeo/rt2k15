@@ -1284,11 +1284,13 @@ function setupTripMenu() {
     document.body.appendChild(menu);
   }
 
-  menu.id = "trip-menu";
-  menu.className = "trip-menu";
+menu.id = "trip-menu";
 
-  menu.innerHTML = `
-    <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
+const shouldOpenMenuByDefault = window.matchMedia("(min-width: 641px)").matches;
+menu.className = shouldOpenMenuByDefault ? "trip-menu open" : "trip-menu";
+
+menu.innerHTML = `
+    <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="${shouldOpenMenuByDefault ? "true" : "false"}" aria-controls="trip-menu-content">
       <span>${escapeHtml(tripData?.title || "Road Trip 2K15")}</span>
       <span class="trip-menu-chevron">▾</span>
     </button>
