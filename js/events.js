@@ -66,17 +66,21 @@ function getLogoPath(type) {
   const normalised = normaliseType(type);
 
   const logos = {
-    MLB: "assets/logos/mlb.svg",
-    NFL: "assets/logos/nfl.svg",
-    NCAAF: "assets/logos/ncaa.svg",
-    CFB: "assets/logos/ncaa.svg",
-    MLS: "assets/logos/mls.svg",
-    NHL: "assets/logos/nhl.svg",
-    Tennis: "assets/logos/us-open.svg",
-    UFC: "assets/logos/ufc.svg",
-    UFC189: "assets/logos/ufc.svg",
-    WWE: "assets/logos/wwe.png",
-    MotoGP: "assets/logos/motogp.svg"
+  MLB: "assets/logos/mlb.svg",
+  NFL: "assets/logos/nfl.svg",
+  NCAAF: "assets/logos/ncaa.svg",
+  CFB: "assets/logos/ncaa.svg",
+  MLS: "assets/logos/mls.svg",
+  NHL: "assets/logos/nhl.png",
+  Tennis: "assets/logos/us-open.svg",
+  UFC: "assets/logos/ufc.svg",
+  UFC189: "assets/logos/ufc.svg",
+  Boxing: "assets/logos/boxing.png",
+  WWE: "assets/logos/wwe.png",
+  MotoGP: "assets/logos/motogp.svg",
+  Concert: "assets/logos/concert.png",
+  Comedy: "assets/logos/comedy.png",
+  "TV Show": "assets/logos/tv-show.png"
   };
 
   return logos[type] || logos[normalised] || "";
