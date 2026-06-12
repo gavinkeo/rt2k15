@@ -479,6 +479,52 @@ function setupLabelsPane() {
   }
 }
 
+function setupBoundaryPane() {
+  if (!map.getPane("boundaryPane")) {
+    const pane = map.createPane("boundaryPane");
+    pane.style.zIndex = 325;
+    pane.style.pointerEvents = "none";
+  }
+}
+
+function addBoundaryLayers() {
+  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
+    .then(res => res.json())
+    .then(geojson => {
+      geojson.features = geojson.features.filter(
+        feature => !["Alaska", "Hawaii", "Puerto Rico"].includes(feature.properties.name)
+      );
+
+      L.geoJSON(geojson, {
+        pane: "boundaryPane",
+        interactive: false,
+        style: {
+          color: "#ffffff",
+          weight: 1,
+          opacity: 0.6,
+          fillOpacity: 0
+        }
+      }).addTo(map);
+    })
+    .catch(error => console.warn("US state borders failed to load:", error));
+
+  fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
+    .then(res => res.json())
+    .then(geojson => {
+      L.geoJSON(geojson, {
+        pane: "boundaryPane",
+        interactive: false,
+        style: {
+          color: "#ffffff",
+          weight: 1,
+          opacity: 0.55,
+          fillOpacity: 0
+        }
+      }).addTo(map);
+    })
+    .catch(error => console.warn("Canadian province borders failed to load:", error));
+}
+
 function greatCircleArc(start, end, segments = 64) {
   const [lat1, lon1] = start.map(d => d * Math.PI / 180);
   const [lat2, lon2] = end.map(d => d * Math.PI / 180);
@@ -1222,12 +1268,14 @@ async function init() {
 
   setupCarPane();
   setupLabelsPane();
+  setupBoundaryPane();
 
   L.control.zoom({ position: "bottomleft" }).addTo(map);
 
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
     attribution: "Tiles &copy; Esri",
-    maxZoom: 19
+    maxZoom: 19,
+    className: "map-base-tile"
   }).addTo(map);
 
   L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png", {
@@ -1235,8 +1283,11 @@ async function init() {
     subdomains: "abcd",
     maxZoom: 20,
     opacity: 0.85,
-    pane: "labelsPane"
+    pane: "labelsPane",
+    className: "map-label-tile"
   }).addTo(map);
+
+  addBoundaryLayers();
 
   const res = await fetch("data/trip.json");
   tripData = await res.json();
