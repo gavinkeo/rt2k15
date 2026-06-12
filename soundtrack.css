@@ -642,3 +642,124 @@ body::before {
     text-transform: uppercase;
   }
 }
+
+/* Soundtrack: remove oversized hero feeling */
+
+.soundtrack-hero {
+  padding: 0 0 14px;
+}
+
+.soundtrack-nav {
+  margin-bottom: 22px;
+}
+
+.soundtrack-hero-main {
+  align-items: center;
+}
+
+.eyebrow {
+  margin: 0 0 4px;
+  font-size: 20px;
+}
+
+.soundtrack-hero h1 {
+  font-size: 38px;
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.summary-card {
+  min-width: 90px;
+  padding: 10px 13px;
+}
+
+.summary-value {
+  font-size: 26px;
+}
+
+.soundtrack-main {
+  margin-top: 12px;
+}
+
+.player-shell {
+  padding: 20px;
+  border-radius: 24px;
+}
+
+.player-copy {
+  margin-bottom: 14px;
+}
+
+.player-copy h2 {
+  font-size: 34px;
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.player-copy p:not(.section-kicker) {
+  display: none;
+}
+
+.playlist-frame-wrap {
+  height: 52vh;
+  min-height: 330px;
+  aspect-ratio: auto;
+}
+
+.playlist-frame-wrap iframe {
+  height: 100%;
+  min-height: 0;
+}
+
+.note-strip {
+  display: none;
+}
+
+@media (min-width: 821px) {
+  body {
+    overflow: hidden;
+  }
+
+  .soundtrack-page {
+    height: 100dvh;
+    padding: 22px 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .soundtrack-main {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .player-shell {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+  }
+
+  .player-stage {
+    min-height: 0;
+  }
+
+  .playlist-frame-wrap {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .soundtrack-hero h1 {
+    font-size: 42px;
+  }
+
+  .playlist-frame-wrap {
+    height: auto;
+    min-height: 230px;
+    aspect-ratio: 16 / 10;
+  }
+
+  .playlist-frame-wrap iframe {
+    min-height: 230px;
+  }
+}
