@@ -1333,3 +1333,96 @@ input[type="range"]::-moz-range-thumb {
 .events-hero .section-nav {
   margin-top: 0 !important;
 }
+
+/* Keep controller/menu text black, but make play button ocean teal */
+
+.trip-menu .stat-value,
+.trip-menu .stat-label-row,
+.playback-controller,
+.playback-controller strong,
+.playback-controller .timeline-stat-value,
+.playback-controller .timeline-stat-value strong,
+.playback-controller .timeline-stat-label,
+.playback-controller .day-label,
+.playback-controller .day-number,
+.timeline-stat-box,
+.timeline-stat-box strong,
+.timeline-stat-label,
+.timeline-stat-value,
+.timeline-stat-value strong {
+  color: #111111 !important;
+}
+
+/* Force the play/pause button to match the teal menu buttons */
+#play-pause,
+#play-button,
+#playPause,
+#play,
+#play-pause-button,
+#playback-play,
+.play-button,
+.playback-play,
+.play-pause,
+.play-toggle,
+.play-btn,
+.timeline-play,
+.timeline-play-button,
+.playback-controller button:first-of-type,
+.timeline-controller button:first-of-type,
+.timeline-controls button:first-of-type {
+  background:
+    linear-gradient(135deg, #083c4d 0%, #062f3c 100%) !important;
+  background-color: #083c4d !important;
+  color: #ffffff !important;
+  border-color: rgba(0, 229, 255, 0.38) !important;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.26),
+    0 0 18px rgba(0, 229, 255, 0.16) !important;
+}
+
+/* Lighter teal on hover */
+#play-pause:hover,
+#play-button:hover,
+#playPause:hover,
+#play:hover,
+#play-pause-button:hover,
+#playback-play:hover,
+.play-button:hover,
+.playback-play:hover,
+.play-pause:hover,
+.play-toggle:hover,
+.play-btn:hover,
+.timeline-play:hover,
+.timeline-play-button:hover,
+.playback-controller button:first-of-type:hover,
+.timeline-controller button:first-of-type:hover,
+.timeline-controls button:first-of-type:hover {
+  background:
+    linear-gradient(135deg, #0b6f86 0%, #083c4d 100%) !important;
+  background-color: #0b6f86 !important;
+  border-color: rgba(0, 229, 255, 0.62) !important;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.30),
+    0 0 24px rgba(0, 229, 255, 0.26) !important;
+}
+
+/* Keep play/pause icon white */
+#play-pause *,
+#play-button *,
+#playPause *,
+#play *,
+#play-pause-button *,
+#playback-play *,
+.play-button *,
+.playback-play *,
+.play-pause *,
+.play-toggle *,
+.play-btn *,
+.timeline-play *,
+.timeline-play-button *,
+.playback-controller button:first-of-type *,
+.timeline-controller button:first-of-type *,
+.timeline-controls button:first-of-type * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
