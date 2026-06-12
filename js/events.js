@@ -275,20 +275,26 @@ function renderEvents() {
           </div>
         </div>
 
-        <aside class="ticket-stub">
-          <div class="stub-top">
-            <span class="stub-brand ${brandClass}">
-              ${logoMarkup}
-              <span class="event-type">${escapeHtml(type)}</span>
-            </span>
 
-            ${stubActionsMarkup}
-          </div>
 
-          <div class="barcode-wrap">
-            <div class="barcode" aria-hidden="true"></div>
-          </div>
-        </aside>
+<aside class="ticket-stub">
+  <div class="stub-logo-row">
+    <span class="stub-brand ${brandClass}">
+      ${logoMarkup}
+      <span class="event-type">${escapeHtml(type)}</span>
+    </span>
+  </div>
+
+  <div class="barcode-wrap">
+    <div class="barcode" aria-hidden="true"></div>
+  </div>
+
+  ${stubActionsMarkup}
+</aside>
+
+
+
+        
       </article>
     `;
   }).join("");
