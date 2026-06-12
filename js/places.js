@@ -15,10 +15,17 @@ const closeButtons = document.querySelectorAll("[data-gallery-close]");
 const pageType = document.body.dataset.placeType || "park";
 const pageTitle = document.body.dataset.pageTitle || "Places";
 
+const DEFAULT_MAX_AUTO_PHOTOS = 40;
+const DEFAULT_AUTO_EXTENSIONS = ["jpg"];
+
 let places = [];
 let currentPlace = null;
 let currentPhotos = [];
 let currentPhotoIndex = 0;
+let galleryRequestId = 0;
+
+const imageExistsCache = new Map();
+const galleryCache = new Map();
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -52,12 +59,16 @@ function tiltForIndex(index) {
 }
 
 function getPlaceFolder(place) {
-  return place.folder || `assets/places/${place.slug}`;
+  return place.folder || `assets/places/${place.slug || classSafe(place.name)}`;
 }
 
-function buildPhotos(place) {
-  if (Array.isArray(place.photos) && place.photos.length) {
-    return place.photos.map(photo => {
+function normaliseExplicitPhotos(place) {
+  if (!Array.isArray(place.photos) || !place.photos.length) {
+    return [];
+  }
+
+  return place.photos
+    .map(photo => {
       if (typeof photo === "string") {
         return {
           src: photo,
@@ -69,31 +80,107 @@ function buildPhotos(place) {
         src: photo.src,
         caption: photo.caption || place.name
       };
-    }).filter(photo => photo.src);
+    })
+    .filter(photo => photo.src);
+}
+
+function buildNumberedPhotos(place, count) {
+  const folder = getPlaceFolder(place);
+
+  return Array.from({ length: Number(count) }, (_, index) => ({
+    src: `${folder}/${padPhotoNumber(index + 1)}.jpg`,
+    caption: place.name
+  }));
+}
+
+function imageExists(src) {
+  if (!src) return Promise.resolve(false);
+
+  if (imageExistsCache.has(src)) {
+    return imageExistsCache.get(src);
+  }
+
+  const check = new Promise(resolve => {
+    const image = new Image();
+
+    image.onload = () => resolve(true);
+    image.onerror = () => resolve(false);
+    image.src = src;
+  });
+
+  imageExistsCache.set(src, check);
+
+  return check;
+}
+
+async function findFirstExistingPhoto(number, place) {
+  const folder = getPlaceFolder(place);
+  const extensions = Array.isArray(place.photoExtensions) && place.photoExtensions.length
+    ? place.photoExtensions
+    : DEFAULT_AUTO_EXTENSIONS;
+
+  for (const extension of extensions) {
+    const cleanExtension = String(extension).replace(/^\./, "").toLowerCase();
+    const src = `${folder}/${padPhotoNumber(number)}.${cleanExtension}`;
+
+    if (await imageExists(src)) {
+      return {
+        src,
+        caption: place.name
+      };
+    }
+  }
+
+  return null;
+}
+
+async function discoverAutoPhotos(place) {
+  const cacheKey = place.slug || classSafe(place.name);
+
+  if (galleryCache.has(cacheKey)) {
+    return galleryCache.get(cacheKey);
+  }
+
+  const explicitPhotos = normaliseExplicitPhotos(place);
+
+  if (explicitPhotos.length) {
+    galleryCache.set(cacheKey, explicitPhotos);
+    return explicitPhotos;
   }
 
   if (Number(place.photoCount) > 0) {
-    const folder = getPlaceFolder(place);
-
-    return Array.from({ length: Number(place.photoCount) }, (_, index) => ({
-      src: `${folder}/${padPhotoNumber(index + 1)}.jpg`,
-      caption: place.name
-    }));
+    const countedPhotos = buildNumberedPhotos(place, place.photoCount);
+    galleryCache.set(cacheKey, countedPhotos);
+    return countedPhotos;
   }
 
-  if (place.cover) {
-    return [{
+  const maxPhotos = Number(place.maxPhotos) > 0
+    ? Number(place.maxPhotos)
+    : DEFAULT_MAX_AUTO_PHOTOS;
+
+  const discovered = await Promise.all(
+    Array.from({ length: maxPhotos }, (_, index) => findFirstExistingPhoto(index + 1, place))
+  );
+
+  const photos = discovered.filter(Boolean);
+
+  if (!photos.length && place.cover && await imageExists(place.cover)) {
+    photos.push({
       src: place.cover,
       caption: place.name
-    }];
+    });
   }
 
-  return [];
+  galleryCache.set(cacheKey, photos);
+
+  return photos;
 }
 
 function getPhotoLabel(place) {
-  if (Array.isArray(place.photos) && place.photos.length) {
-    return place.photos.length === 1 ? "1 photo" : `${place.photos.length} photos`;
+  const explicitPhotos = normaliseExplicitPhotos(place);
+
+  if (explicitPhotos.length) {
+    return explicitPhotos.length === 1 ? "1 photo" : `${explicitPhotos.length} photos`;
   }
 
   if (Number(place.photoCount) > 0) {
@@ -161,6 +248,25 @@ function renderPlaces() {
   });
 }
 
+function setGalleryLoading(place) {
+  if (!modal || !place) return;
+
+  modalTitle.textContent = place.name;
+  modalMeta.textContent = [place.location, place.routeNote].filter(Boolean).join(" · ") || "Road Trip 2K15";
+  modalCaption.textContent = "Searching this place folder for photos…";
+  modalCount.textContent = "Loading";
+
+  if (prevBtn) prevBtn.disabled = true;
+  if (nextBtn) nextBtn.disabled = true;
+
+  modalImage.classList.add("is-hidden");
+  modalImage.removeAttribute("src");
+  modalImage.alt = "";
+
+  modalPlaceholder.classList.add("show");
+  modalPlaceholder.innerHTML = `<span>Loading photos…</span>`;
+}
+
 function updateGalleryImage() {
   if (!modal || !currentPlace) return;
 
@@ -171,17 +277,18 @@ function updateGalleryImage() {
   modalMeta.textContent = [currentPlace.location, currentPlace.routeNote].filter(Boolean).join(" · ") || "Road Trip 2K15";
   modalCaption.textContent = hasPhoto
     ? photo.caption || currentPlace.name
-    : "Add photos to this place folder to build the gallery.";
+    : "Add 01.jpg, 02.jpg, 03.jpg and so on to this place folder to build the gallery.";
 
   modalCount.textContent = currentPhotos.length
     ? `${currentPhotoIndex + 1} / ${currentPhotos.length}`
     : "0 / 0";
 
-  prevBtn.disabled = currentPhotos.length <= 1;
-  nextBtn.disabled = currentPhotos.length <= 1;
+  if (prevBtn) prevBtn.disabled = currentPhotos.length <= 1;
+  if (nextBtn) nextBtn.disabled = currentPhotos.length <= 1;
 
   modalImage.classList.add("is-hidden");
   modalPlaceholder.classList.toggle("show", !hasPhoto);
+  modalPlaceholder.innerHTML = `<span>No photo found yet</span>`;
 
   if (!hasPhoto) {
     modalImage.removeAttribute("src");
@@ -203,23 +310,39 @@ function updateGalleryImage() {
   modalImage.src = photo.src;
 }
 
-function openGallery(placeIndex) {
-  currentPlace = places[placeIndex];
+async function openGallery(placeIndex) {
+  const selectedPlace = places[placeIndex];
 
-  if (!currentPlace) return;
+  if (!selectedPlace || !modal) return;
 
-  currentPhotos = buildPhotos(currentPlace);
+  const requestId = ++galleryRequestId;
+
+  currentPlace = selectedPlace;
+  currentPhotos = [];
   currentPhotoIndex = 0;
 
   modal.classList.add("open");
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("gallery-open");
 
+  setGalleryLoading(selectedPlace);
+
+  const photos = await discoverAutoPhotos(selectedPlace);
+
+  if (requestId !== galleryRequestId || currentPlace !== selectedPlace) {
+    return;
+  }
+
+  currentPhotos = photos;
+  currentPhotoIndex = 0;
+
   updateGalleryImage();
 }
 
 function closeGallery() {
   if (!modal) return;
+
+  galleryRequestId++;
 
   modal.classList.remove("open");
   modal.setAttribute("aria-hidden", "true");
@@ -244,8 +367,13 @@ function setupGalleryControls() {
     button.addEventListener("click", closeGallery);
   });
 
-  prevBtn.addEventListener("click", () => moveGallery(-1));
-  nextBtn.addEventListener("click", () => moveGallery(1));
+  if (prevBtn) {
+    prevBtn.addEventListener("click", () => moveGallery(-1));
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener("click", () => moveGallery(1));
+  }
 
   document.addEventListener("keydown", event => {
     if (!modal.classList.contains("open")) return;
@@ -277,11 +405,16 @@ async function init() {
 
     places = allPlaces
       .filter(place => place.type === pageType)
-      .map(place => ({
-        ...place,
-        slug: place.slug || classSafe(place.name),
-        cover: place.cover || `assets/places/${place.slug || classSafe(place.name)}/cover.jpg`
-      }));
+      .map(place => {
+        const slug = place.slug || classSafe(place.name);
+
+        return {
+          ...place,
+          slug,
+          folder: place.folder || `assets/places/${slug}`,
+          cover: place.cover || `assets/places/${slug}/cover.jpg`
+        };
+      });
 
     if (totalEl) {
       totalEl.textContent = places.length;
