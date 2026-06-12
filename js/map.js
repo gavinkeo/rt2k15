@@ -868,9 +868,6 @@ function setupTripMenu() {
         <span id="compact-miles">—</span> mi
       </div>
 
-      <div class="menu-section">
-        <a class="menu-page-link" href="events.html">Sports & Events</a>
-
 <div class="menu-section">
   <a class="menu-page-link" href="events.html">Sports & Events</a>
 </div>
