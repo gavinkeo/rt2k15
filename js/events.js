@@ -72,6 +72,22 @@ function getLogoPath(type) {
   return logos[type] || logos[normalised] || "";
 }
 
+function getYouTubeUrl(item) {
+  if (item.youtube) return item.youtube;
+
+  const query = [
+    item.name,
+    item.venue,
+    item.location,
+    item.date ? formatDate(item.date) : "",
+    "highlights"
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+}
+
 function tiltForIndex(index) {
   const tilts = ["-1.2deg", "0.8deg", "-0.5deg", "1.1deg", "-0.8deg", "0.4deg"];
   return tilts[index % tilts.length];
@@ -89,7 +105,8 @@ function buildEventList(tripData) {
       venue: getVenue(day),
       location: getEventLocation(day),
       date: day.event.date || day.date,
-      logo: day.event.logo || getLogoPath(day.event.type)
+      logo: day.event.logo || getLogoPath(day.event.type),
+      youtube: day.event.youtube || day.event.youtubeUrl || ""
     }));
 }
 
@@ -126,6 +143,7 @@ function renderEvents() {
     const location = item.location;
     const date = formatDate(item.date);
     const logo = item.logo;
+    const youtubeUrl = getYouTubeUrl(item);
 
     const brandClass = logo ? "ticket-brand has-logo" : "ticket-brand no-logo";
 
@@ -157,6 +175,18 @@ function renderEvents() {
             ${venue ? `<div><strong>Venue:</strong> ${escapeHtml(venue)}</div>` : ""}
             ${location ? `<div><strong>Location:</strong> ${escapeHtml(location)}</div>` : ""}
             ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
+          </div>
+
+          <div class="ticket-actions">
+            <a
+              class="youtube-link"
+              href="${escapeHtml(youtubeUrl)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch ${escapeHtml(item.name)} highlights on YouTube"
+            >
+              ▶ YouTube
+            </a>
           </div>
         </div>
 
