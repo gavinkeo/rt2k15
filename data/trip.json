@@ -150,9 +150,12 @@
       "type": "stay",
       "event": {
         "type": "TV Show",
-        "name": "ESPN Sportsnation",
+        "name": "ESPN Sports Nation LIVE",
         "venue": "ESPN Los Angeles Production Center",
-        "location": "Los Angeles"
+        "location": "Los Angeles",
+                        "ticket": {
+          "price": "FREE"
+        }
       }
     },
     {
@@ -552,7 +555,10 @@
         "type": "NFL",
         "name": "AT&T Stadium Tour",
         "venue": "AT&T Stadium",
-        "location": "Arlington"
+        "location": "Arlington",
+                        "ticket": {
+          "price": "$22.50"
+        }
       }
     },
     {
@@ -631,7 +637,10 @@
         "type": "CFB",
         "name": "Cardinal Stadium",
         "venue": "Cardinal Stadium",
-        "location": "Louisville"
+        "location": "Louisville",
+                        "ticket": {
+          "price": "FREE"
+        }
       }
     },
     {
@@ -651,7 +660,10 @@
         "type": "NFL",
         "name": "Paul Brown Stadium",
         "venue": "Paul Brown Stadium",
-        "location": "Cincinnati"
+        "location": "Cincinnati",
+                        "ticket": {
+          "price": "FREE"
+        }
       }
     },
     {
@@ -675,7 +687,10 @@
         "type": "NFL",
         "name": "Indianapolis Colts Training Camp",
         "venue": "Anderson University",
-        "location": "Anderson"
+        "location": "Anderson",
+                        "ticket": {
+          "price": "FREE"
+        }
       }
     },
     {
@@ -695,7 +710,10 @@
         "type": "NFL",
         "name": "Lucas Oil Stadium Tour",
         "venue": "Lucas Oil Stadium",
-        "location": "Indianapolis"
+        "location": "Indianapolis",
+                        "ticket": {
+          "price": "$20.00"
+        }
       }
     },
     {
@@ -748,7 +766,7 @@
         "venue": "U.S. Cellular Field",
         "location": "Chicago",
         "ticket": {
-          "section": "LC155",
+          "section": "155",
           "row": "16",
           "seat": "11",
           "eventTime": "3:10 PM",
@@ -798,7 +816,10 @@
         "type": "NHL",
         "name": "Hockey Hall of Fame",
         "venue": "Hockey Hall of Fame",
-        "location": "Toronto"
+        "location": "Toronto",
+                        "ticket": {
+          "price": "$24.95"
+        }
       }
     },
     {
@@ -978,7 +999,7 @@
       "type": "stay",
       "event": {
         "type": "Comedy",
-        "name": "Kevin Hart",
+        "name": "Kevin Hart - What Now?",
         "venue": "Lincoln Financial Field",
         "location": "Philadelphia",
         "ticket": {
@@ -1029,7 +1050,14 @@
         "type": "CFB",
         "name": "North Carolina v South Carolina",
         "venue": "Bank of America Stadium",
-        "location": "Charlotte"
+        "location": "Charlotte",
+                "ticket": {
+          "section": "537",
+          "row": "19",
+          "seat": "22",
+          "eventTime": "6:00 PM",
+          "price": "$72.50"
+        }
       }
     },
     {
@@ -1064,7 +1092,10 @@
         "type": "CFB",
         "name": "Ben Hill Griffin Stadium",
         "venue": "Ben Hill Griffin Stadium",
-        "location": "Gainesville"
+        "location": "Gainesville",
+                "ticket": {
+          "price": "FREE"
+        }
       }
     },
     {
