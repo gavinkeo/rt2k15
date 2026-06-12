@@ -904,3 +904,17 @@ body {
     max-height: 42px;
   }
 }
+
+/* Make WWE logo about 50% bigger */
+
+.stub-brand .event-logo-wwe {
+  max-width: 111px;
+  max-height: 48px;
+}
+
+@media (max-width: 700px) {
+  .stub-brand .event-logo-wwe {
+    max-width: 87px;
+    max-height: 36px;
+  }
+}
