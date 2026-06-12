@@ -873,3 +873,17 @@ body {
   text-transform: uppercase;
   color: rgba(120, 70, 90, 0.45);
 }
+
+/* Make custom event graphics 15–20% bigger */
+
+.stub-brand .event-logo-custom {
+  max-width: 122px;
+  max-height: 176px;
+}
+
+@media (max-width: 700px) {
+  .stub-brand .event-logo-custom {
+    max-width: 102px;
+    max-height: 146px;
+  }
+}
