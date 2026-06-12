@@ -597,3 +597,134 @@ body .timeline-track {
     font-size: 20px !important;
   }
 }
+
+/* MOBILE CONTROLLER REFINEMENT: LABELS ABOVE VALUES */
+
+.timeline-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 0;
+  padding: 7px 8px;
+  border-radius: 11px;
+  background: rgba(255,255,255,0.74);
+  border: 1px solid rgba(0,0,0,0.09);
+}
+
+.timeline-stat-label {
+  margin-bottom: 3px;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 9px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(0,0,0,0.48);
+  white-space: nowrap;
+}
+
+.timeline-stat-value {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 850;
+  color: #111;
+  white-space: nowrap;
+}
+
+.timeline-stat-value strong {
+  font-weight: 950;
+}
+
+@media (max-width: 640px) {
+  body .timeline {
+    grid-template-columns: 54px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto !important;
+    grid-template-areas:
+      "play day"
+      "stats stats"
+      "track track" !important;
+    column-gap: 10px !important;
+    row-gap: 10px !important;
+  }
+
+  body .play-btn {
+    grid-area: play !important;
+    align-self: center !important;
+  }
+
+  body .timeline-main-counter {
+    grid-area: day !important;
+    justify-self: end !important;
+
+    display: grid !important;
+    grid-template-columns: auto auto auto !important;
+    grid-template-areas:
+      "label label label"
+      "current slash total" !important;
+    align-items: end !important;
+    justify-items: end !important;
+    column-gap: 5px !important;
+    row-gap: 2px !important;
+  }
+
+  body .timeline-day-label {
+    grid-area: label !important;
+    margin: 0 !important;
+    justify-self: end !important;
+    font-size: 9px !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  body #current-day {
+    grid-area: current !important;
+  }
+
+  body .timeline-slash {
+    grid-area: slash !important;
+  }
+
+  body #total-days {
+    grid-area: total !important;
+  }
+
+  body #current-day,
+  body #total-days {
+    font-size: 31px !important;
+    line-height: 0.95 !important;
+  }
+
+  body .timeline-slash {
+    font-size: 21px !important;
+    line-height: 1 !important;
+  }
+
+  body .timeline-stats {
+    grid-area: stats !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 7px !important;
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
+  body .timeline-stat-box,
+  body .timeline-stats > span:not(.timeline-dot) {
+    min-height: 50px !important;
+    padding: 7px 4px !important;
+    border-radius: 10px !important;
+  }
+
+  body .timeline-stat-label {
+    font-size: 8px !important;
+    letter-spacing: 0.10em !important;
+  }
+
+  body .timeline-stat-value {
+    font-size: 11px !important;
+  }
+
+  body .timeline-track {
+    grid-area: track !important;
+  }
+}
