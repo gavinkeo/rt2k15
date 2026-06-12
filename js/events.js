@@ -35,8 +35,10 @@ function formatDate(dateString) {
 
 function normaliseType(type) {
   if (!type) return "Other";
+
   if (type === "UFC189") return "UFC";
   if (type === "CFB") return "NCAAF";
+
   return type;
 }
 
@@ -121,8 +123,15 @@ function buildEventList(tripData) {
 
 function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
-  if (activeFilter === "Combat") return item.group === "Combat";
-  if (activeFilter === "Other") return item.group === "Other";
+
+  if (activeFilter === "Combat") {
+    return item.group === "Combat";
+  }
+
+  if (activeFilter === "Other") {
+    return item.group === "Other";
+  }
+
   return item.type === activeFilter || item.group === activeFilter;
 }
 
@@ -149,7 +158,6 @@ function renderEvents() {
     const ticket = item.ticket || {};
 
     const ticketCode = getTicketCode(day, type, ticket);
-    const admission = ticket.admission || ticket.type || "Admit One";
 
     const section = ticket.section || ticket.sec || "";
     const row = ticket.row || "";
@@ -259,7 +267,7 @@ function renderEvents() {
           ` : ""}
         </div>
       `
-      : `<div class="stub-actions stub-actions-empty"></div>`;
+      : "";
 
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
@@ -287,8 +295,6 @@ function renderEvents() {
             ${logoMarkup}
             <span class="event-type">${escapeHtml(type)}</span>
           </span>
-
-          <div class="stub-admit">${escapeHtml(admission)}</div>
         </aside>
       </article>
     `;
