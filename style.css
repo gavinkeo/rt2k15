@@ -453,11 +453,6 @@ body {
 
 /* MOBILE */
 
-@media (max-width: 640px) {
-  .leaflet-control-zoom {
-    display: none !important;
-  }
-
   .leaflet-control-attribution {
     font-size: 9px !important;
     max-width: 72vw;
