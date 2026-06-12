@@ -27,11 +27,14 @@
         <div>
           <p class="eyebrow">Road Trip 2K15</p>
           <h1>Sports & Events</h1>
+          <p class="events-subtitle">
+            Stadiums, games, shows and one-off stops from the 90-day route.
+          </p>
         </div>
 
         <div class="events-summary">
           <div class="summary-card">
-            <span class="summary-value">26</span>
+            <span class="summary-value" id="events-total">26</span>
             <span class="summary-label">Events</span>
           </div>
 
@@ -49,7 +52,7 @@
           <button class="filter-btn active" type="button" data-filter="all">All</button>
           <button class="filter-btn" type="button" data-filter="MLB">MLB</button>
           <button class="filter-btn" type="button" data-filter="NFL">NFL</button>
-          <button class="filter-btn" type="button" data-filter="NCAAF">CFB</button>
+          <button class="filter-btn" type="button" data-filter="CFB">CFB</button>
           <button class="filter-btn" type="button" data-filter="NHL">NHL</button>
           <button class="filter-btn" type="button" data-filter="MLS">MLS</button>
           <button class="filter-btn" type="button" data-filter="UFC">UFC</button>
@@ -59,17 +62,27 @@
           <button class="filter-btn" type="button" data-filter="Concert">Concert</button>
           <button class="filter-btn" type="button" data-filter="Comedy">Comedy</button>
           <button class="filter-btn" type="button" data-filter="TV Show">TV Show</button>
-          <button class="filter-btn" type="button" data-filter="Other">Other</button>
         </div>
+
+        <label class="events-search-wrap" for="events-search">
+          <span>Search</span>
+          <input
+            id="events-search"
+            class="events-search"
+            type="search"
+            placeholder="Search events, venues or cities..."
+            autocomplete="off"
+          />
+        </label>
       </section>
 
       <section class="events-meta-row">
-        <p class="events-count" id="event-summary">
-          Loading events…
+        <p class="events-count">
+          Showing <strong id="events-visible-count">0</strong> events
         </p>
       </section>
 
-      <section class="events-list ticket-grid" id="ticket-grid" aria-live="polite">
+      <section class="events-list" id="events-list" aria-live="polite">
         <div class="events-loading">
           Loading events…
         </div>
