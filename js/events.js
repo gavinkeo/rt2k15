@@ -35,8 +35,10 @@ function formatDate(dateString) {
 
 function normaliseType(type) {
   if (!type) return "Other";
+
   if (type === "UFC189") return "UFC";
   if (type === "CFB") return "NCAAF";
+
   return type;
 }
 
@@ -66,21 +68,21 @@ function getLogoPath(type) {
   const normalised = normaliseType(type);
 
   const logos = {
-  MLB: "assets/logos/mlb.svg",
-  NFL: "assets/logos/nfl.svg",
-  NCAAF: "assets/logos/ncaa.svg",
-  CFB: "assets/logos/ncaa.svg",
-  MLS: "assets/logos/mls.svg",
-  NHL: "assets/logos/nhl.png",
-  Tennis: "assets/logos/us-open.svg",
-  UFC: "assets/logos/ufc.svg",
-  UFC189: "assets/logos/ufc.svg",
-  Boxing: "assets/logos/boxing.png",
-  WWE: "assets/logos/wwe.png",
-  MotoGP: "assets/logos/motogp.svg",
-  Concert: "assets/logos/concert.png",
-  Comedy: "assets/logos/comedy.png",
-  "TV Show": "assets/logos/tv-show.png"
+    MLB: "assets/logos/mlb.svg",
+    NFL: "assets/logos/nfl.svg",
+    NCAAF: "assets/logos/ncaa.svg",
+    CFB: "assets/logos/ncaa.svg",
+    MLS: "assets/logos/mls.svg",
+    NHL: "assets/logos/nhl.png",
+    Tennis: "assets/logos/us-open.svg",
+    UFC: "assets/logos/ufc.svg",
+    UFC189: "assets/logos/ufc.svg",
+    Boxing: "assets/logos/boxing.png",
+    WWE: "assets/logos/wwe.png",
+    MotoGP: "assets/logos/motogp.svg",
+    Concert: "assets/logos/concert.png",
+    Comedy: "assets/logos/comedy.png",
+    "TV Show": "assets/logos/tv-show.png"
   };
 
   return logos[type] || logos[normalised] || "";
@@ -120,8 +122,15 @@ function buildEventList(tripData) {
 
 function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
-  if (activeFilter === "Combat") return item.group === "Combat";
-  if (activeFilter === "Other") return item.group === "Other";
+
+  if (activeFilter === "Combat") {
+    return item.group === "Combat";
+  }
+
+  if (activeFilter === "Other") {
+    return item.group === "Other";
+  }
+
   return item.type === activeFilter || item.group === activeFilter;
 }
 
@@ -273,32 +282,21 @@ function renderEvents() {
           ${extraInfoMarkup}
 
           <div class="ticket-fineprint">
-            <span>${escapeHtml(admission)}</span>
             <span>Event Code ${escapeHtml(ticketCode)}</span>
             <span>No refunds · No exchanges</span>
           </div>
         </div>
 
+        <aside class="ticket-stub">
+          ${stubActionsMarkup}
 
+          <span class="stub-brand ${brandClass}">
+            ${logoMarkup}
+            <span class="event-type">${escapeHtml(type)}</span>
+          </span>
 
-<aside class="ticket-stub">
-  <div class="stub-logo-row">
-    <span class="stub-brand ${brandClass}">
-      ${logoMarkup}
-      <span class="event-type">${escapeHtml(type)}</span>
-    </span>
-  </div>
-
-  <div class="barcode-wrap">
-    <div class="barcode" aria-hidden="true"></div>
-  </div>
-
-  ${stubActionsMarkup}
-</aside>
-
-
-
-        
+          <div class="stub-admit">${escapeHtml(admission)}</div>
+        </aside>
       </article>
     `;
   }).join("");
