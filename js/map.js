@@ -255,6 +255,20 @@ style.innerHTML = `
     box-shadow: 0 0 12px rgba(0, 229, 255, 1);
   }
 
+  .marker-via {
+    width: 10px !important;
+    height: 10px !important;
+    background-color: #FAFAF7;
+    border-color: rgba(0, 229, 255, 0.95);
+    box-shadow: 0 0 7px rgba(0, 229, 255, 0.65);
+  }
+
+  .marker-multi {
+    background-color: #FFFFFF;
+    border-color: #00E5FF;
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.95);
+  }
+
   .marker-event {
     background-color: #FF00FF;
     border-color: #FFF;
@@ -490,6 +504,45 @@ style.innerHTML = `
     opacity: 0.72;
   }
 
+  .detail-day-row {
+    padding: 9px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+  }
+
+  .detail-day-row:last-child {
+    border-bottom: none;
+  }
+
+  .detail-day-title {
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .detail-route-line {
+    font-size: 13px;
+    line-height: 1.45;
+    opacity: 0.86;
+  }
+
+  .detail-route-line strong {
+    font-weight: 900;
+  }
+
+  .detail-role-badge {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 6px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.08);
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(0,0,0,0.62);
+    vertical-align: 1px;
+  }
+
   @media (max-width: 640px) {
     .trip-menu {
       top: 12px;
@@ -612,7 +665,7 @@ function addBoundaryLayers() {
         style: {
           color: "#ffffff",
           weight: 1,
-          opacity: 0.5,
+          opacity: 0.35,
           fillOpacity: 0
         }
       }).addTo(map);
@@ -628,7 +681,7 @@ function addBoundaryLayers() {
         style: {
           color: "#ffffff",
           weight: 1,
-          opacity: 0.5,
+          opacity: 0.35,
           fillOpacity: 0
         }
       }).addTo(map);
@@ -691,6 +744,29 @@ function finishRouteAnimationIfComplete() {
   resolveRouteAnimationWaiters();
 }
 
+function getMaxDay() {
+  if (!tripData || !tripData.days || !tripData.days.length) return 90;
+  return Math.max(...tripData.days.map(day => Number(day.day)));
+}
+
+function getRoutePlaces(day) {
+  const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
+
+  return [
+    day.start,
+    ...viaStops,
+    day.finish
+  ].filter(Boolean);
+}
+
+function getUniqueRoutePlaces(day) {
+  const routePlaces = getRoutePlaces(day);
+
+  return routePlaces.filter((place, index) => {
+    return index === 0 || place !== routePlaces[index - 1];
+  });
+}
+
 function getDayMarkerCoord(day) {
   if (eventsModeActive && day.event && day.event.location && LOCATIONS[day.event.location]) {
     return LOCATIONS[day.event.location];
@@ -699,24 +775,302 @@ function getDayMarkerCoord(day) {
   return LOCATIONS[day.finish];
 }
 
-function createMarker(day, latlng) {
+function getDaysDisplay(daysInput) {
+  const days = [...new Set(daysInput.map(Number))]
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+
+  if (!days.length) return "Day";
+
+  const ranges = [];
+  let start = days[0];
+  let previous = days[0];
+
+  for (let i = 1; i < days.length; i++) {
+    const current = days[i];
+
+    if (current === previous + 1) {
+      previous = current;
+      continue;
+    }
+
+    ranges.push(start === previous ? `${start}` : `${start}–${previous}`);
+    start = current;
+    previous = current;
+  }
+
+  ranges.push(start === previous ? `${start}` : `${start}–${previous}`);
+
+  const label = days.length === 1 ? "Day" : "Days";
+  return `${label} ${ranges.join(", ")}`;
+}
+
+function getDateRangeDisplay(daysInput) {
+  const days = [...new Set(daysInput.map(Number))]
+    .filter(Number.isFinite)
+    .sort((a, b) => a - b);
+
+  if (!days.length) return "";
+
+  const matchingDays = days
+    .map(dayNumber => tripData.days.find(day => Number(day.day) === dayNumber))
+    .filter(Boolean);
+
+  if (!matchingDays.length) return "";
+
+  const firstDate = matchingDays[0].date;
+  const lastDate = matchingDays[matchingDays.length - 1].date;
+
+  if (!firstDate || !lastDate) return "";
+
+  if (firstDate === lastDate) return formatDate(firstDate);
+
+  return `${formatDate(firstDate)} – ${formatDate(lastDate)}`;
+}
+
+function getRoleLabel(roles) {
+  const roleSet = new Set(roles);
+
+  if (roleSet.has("event")) return "Event";
+  if (roleSet.has("via")) return "Via";
+  if (roleSet.has("start") && roleSet.has("finish")) return "Start / Finish";
+  if (roleSet.has("finish")) return "Finish";
+  if (roleSet.has("start")) return "Start";
+
+  return "Visited";
+}
+
+function addVisitToPlaceMap(placeMap, day, place, role, event = null) {
+  if (!place || !LOCATIONS[place]) return;
+
+  if (!placeMap.has(place)) {
+    placeMap.set(place, {
+      place,
+      coord: LOCATIONS[place],
+      visits: [],
+      days: new Set(),
+      roles: new Set(),
+      events: []
+    });
+  }
+
+  const item = placeMap.get(place);
+  const dayNumber = Number(day.day);
+
+  item.days.add(dayNumber);
+  item.roles.add(role);
+
+  item.visits.push({
+    day,
+    dayNumber,
+    role,
+    event
+  });
+
+  if (event) {
+    item.events.push({
+      day,
+      dayNumber,
+      event
+    });
+  }
+}
+
+function buildPlaceMarkerData(upToDay) {
+  const placeMap = new Map();
+
+  tripData.days.forEach(day => {
+    if (Number(day.day) > Number(upToDay)) return;
+
+    addVisitToPlaceMap(placeMap, day, day.start, "start");
+
+    if (Array.isArray(day.viaStops)) {
+      day.viaStops.forEach(place => {
+        addVisitToPlaceMap(placeMap, day, place, "via");
+      });
+    }
+
+    addVisitToPlaceMap(placeMap, day, day.finish, "finish");
+
+    if (eventsModeActive && day.event?.location && LOCATIONS[day.event.location]) {
+      addVisitToPlaceMap(placeMap, day, day.event.location, "event", day.event);
+    }
+  });
+
+  return [...placeMap.values()];
+}
+
+function getPlaceVisitsByDay(placeData) {
+  const grouped = new Map();
+
+  placeData.visits.forEach(visit => {
+    if (!grouped.has(visit.dayNumber)) {
+      grouped.set(visit.dayNumber, {
+        day: visit.day,
+        dayNumber: visit.dayNumber,
+        roles: new Set(),
+        events: []
+      });
+    }
+
+    const item = grouped.get(visit.dayNumber);
+    item.roles.add(visit.role);
+
+    if (visit.event) {
+      item.events.push(visit.event);
+    }
+  });
+
+  return [...grouped.values()].sort((a, b) => a.dayNumber - b.dayNumber);
+}
+
+function formatRouteHtml(day, highlightPlace) {
+  const routePlaces = getUniqueRoutePlaces(day);
+
+  return routePlaces.map(place => {
+    const label = formatLocationWithRegion(place);
+
+    if (place === highlightPlace) {
+      return `<strong>${escapeHtml(label)}</strong>`;
+    }
+
+    return escapeHtml(label);
+  }).join(" → ");
+}
+
+function showPlaceDetail(placeData) {
+  const panel = document.getElementById("day-detail");
+  const content = document.getElementById("detail-content");
+
+  if (!panel || !content) return;
+
+  const days = [...placeData.days].sort((a, b) => a - b);
+  const daysDisplay = getDaysDisplay(days);
+  const dateRange = getDateRangeDisplay(days);
+  const visitsByDay = getPlaceVisitsByDay(placeData);
+
+  let html = `
+    <h2>${escapeHtml(formatLocationWithRegion(placeData.place))}</h2>
+    <h3>${escapeHtml(daysDisplay)}</h3>
+    ${dateRange ? `<p class="detail-date">${escapeHtml(dateRange)}</p>` : ""}
+  `;
+
+  html += `
+    <div class="detail-section">
+      <div class="detail-label">Drive / Stay</div>
+      <div class="detail-value">
+  `;
+
+  visitsByDay.forEach(item => {
+    const day = item.day;
+    const roleLabel = getRoleLabel(item.roles);
+    const driveLine = day.type === "drive" && day.miles
+      ? `${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime || "")}`
+      : day.type === "stay"
+        ? "Stayed here"
+        : day.type === "flight"
+          ? "Flight day"
+          : "Visited";
+
+    html += `
+      <div class="detail-day-row">
+        <div class="detail-day-title">
+          Day ${escapeHtml(item.dayNumber)}
+          <span class="detail-role-badge">${escapeHtml(roleLabel)}</span>
+        </div>
+        <div class="detail-route-line">${driveLine}</div>
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  html += `
+    <div class="detail-section">
+      <div class="detail-label">Route</div>
+      <div class="detail-value">
+  `;
+
+  visitsByDay.forEach(item => {
+    const routeHtml = formatRouteHtml(item.day, placeData.place);
+
+    html += `
+      <div class="detail-day-row">
+        <div class="detail-day-title">Day ${escapeHtml(item.dayNumber)}</div>
+        <div class="detail-route-line">${routeHtml}</div>
+      </div>
+    `;
+  });
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  const eventVisits = visitsByDay.flatMap(item => {
+    return item.events.map(event => ({
+      dayNumber: item.dayNumber,
+      event
+    }));
+  });
+
+  if (eventVisits.length) {
+    html += `
+      <div class="detail-section">
+        <div class="detail-label">Event</div>
+        <div class="detail-value">
+    `;
+
+    eventVisits.forEach(({ dayNumber, event }) => {
+      const venue = event.venue
+        ? `<div class="detail-subvalue">${escapeHtml(event.venue)}</div>`
+        : "";
+
+      html += `
+        <div class="detail-day-row">
+          <div class="detail-day-title">Day ${escapeHtml(dayNumber)} · ${escapeHtml(event.type || "Event")}</div>
+          <div class="detail-route-line">${escapeHtml(event.name || "")}</div>
+          ${venue}
+        </div>
+      `;
+    });
+
+    html += `
+        </div>
+      </div>
+    `;
+  }
+
+  content.innerHTML = html;
+  panel.classList.add("open");
+  panel.setAttribute("aria-hidden", "false");
+}
+
+function createPlaceMarker(placeData) {
+  const days = [...placeData.days].sort((a, b) => a - b);
+  const roles = placeData.roles;
+
+  const hasEvent = eventsModeActive && roles.has("event");
+  const viaOnly = roles.size === 1 && roles.has("via");
+  const multiDay = days.length > 1;
+
   let className = "marker-dot";
   let html = "";
   let size = 12;
 
-  const shouldHighlightEvent = eventsModeActive && day.event;
-
-  if (shouldHighlightEvent) {
+  if (hasEvent) {
     className = "marker-dot marker-event";
-    html = EVENT_ICONS[day.event.type] || "★";
+    html = EVENT_ICONS[placeData.events?.[0]?.event?.type] || "★";
     size = 24;
-  } else if (day.type === "stay") {
-    className = "marker-dot marker-stay";
-    size = 14;
-  } else if (day.type === "flight") {
-    className = "marker-dot marker-airport";
-    html = "✈";
-    size = 22;
+  } else if (viaOnly) {
+    className = "marker-dot marker-via";
+    size = 10;
+  } else if (multiDay) {
+    className = "marker-dot marker-multi";
+    size = 16;
   }
 
   const icon = L.divIcon({
@@ -726,13 +1080,9 @@ function createMarker(day, latlng) {
     iconAnchor: [size / 2, size / 2]
   });
 
-  const tooltipLocation = shouldHighlightEvent && day.event.location
-    ? day.event.location
-    : day.finish;
+  const marker = L.marker(placeData.coord, { icon }).on("click", () => showPlaceDetail(placeData));
 
-  const marker = L.marker(latlng, { icon }).on("click", () => showDayDetail(day));
-
-  marker.bindTooltip(`Day ${day.day} · ${formatLocationWithRegion(tooltipLocation)}`, {
+  marker.bindTooltip(`${getDaysDisplay(days)} · ${formatLocationWithRegion(placeData.place)}`, {
     direction: "top",
     offset: [0, -size / 2]
   });
@@ -753,17 +1103,16 @@ function showDayDetail(day) {
     year: "numeric"
   });
 
-  let html = `<h2>Day ${escapeHtml(day.day)}</h2><h3>${escapeHtml(day.finish)}</h3><p class="detail-date">${escapeHtml(dateStr)}</p>`;
+  let html = `<h2>Day ${escapeHtml(day.day)}</h2><h3>${escapeHtml(formatLocationWithRegion(day.finish))}</h3><p class="detail-date">${escapeHtml(dateStr)}</p>`;
 
   if (day.type === "drive" && day.miles) {
     html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime || "")}</div></div>`;
   }
 
-  const routeBits = [day.start, ...(day.viaStops || []), day.finish].filter(Boolean);
-  const uniqueRouteBits = routeBits.filter((place, index) => index === 0 || place !== routeBits[index - 1]);
+  const uniqueRouteBits = getUniqueRoutePlaces(day);
 
   if (uniqueRouteBits.length > 1) {
-    html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${uniqueRouteBits.map(escapeHtml).join(" → ")}</div></div>`;
+    html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${uniqueRouteBits.map(place => escapeHtml(formatLocationWithRegion(place))).join(" → ")}</div></div>`;
   }
 
   if (day.event) {
@@ -772,7 +1121,7 @@ function showDayDetail(day) {
       : "";
 
     const location = day.event.location
-      ? `<div class="detail-subvalue">${escapeHtml(day.event.location)}</div>`
+      ? `<div class="detail-subvalue">${escapeHtml(formatLocationWithRegion(day.event.location))}</div>`
       : "";
 
     html += `
@@ -802,11 +1151,6 @@ function closeDayDetail() {
 
   panel.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
-}
-
-function getMaxDay() {
-  if (!tripData || !tripData.days || !tripData.days.length) return 90;
-  return Math.max(...tripData.days.map(day => Number(day.day)));
 }
 
 function getCumulativeTripStats(upToDay) {
@@ -1121,14 +1465,6 @@ function renderRoute(upToDay, options = {}) {
         staticPoints.push(...pts);
       }
     }
-
-    const markerCoord = getDayMarkerCoord(day) || coord;
-
-    if (markerCoord) {
-      const marker = createMarker(day, markerCoord);
-      marker.addTo(map);
-      allMarkers.push(marker);
-    }
   }
 
   if (staticPoints.length > 1) {
@@ -1168,6 +1504,14 @@ function renderRoute(upToDay, options = {}) {
     isRouteAnimating = false;
     resolveRouteAnimationWaiters();
   }
+
+  const placeMarkerData = buildPlaceMarkerData(upToDay);
+
+  placeMarkerData.forEach(placeData => {
+    const marker = createPlaceMarker(placeData);
+    marker.addTo(map);
+    allMarkers.push(marker);
+  });
 
   if (carCurrentPos) {
     if (!carMarker) {
@@ -1218,16 +1562,6 @@ function renderRoute(upToDay, options = {}) {
       }))
     ).addTo(map);
   }
-}
-
-function getRoutePlaces(day) {
-  const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
-
-  return [
-    day.start,
-    ...viaStops,
-    day.finish
-  ].filter(Boolean);
 }
 
 async function loadRealisticRoads() {
