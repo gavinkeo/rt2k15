@@ -925,3 +925,136 @@ body {
     font-size: 5.5px;
   }
 }
+
+/* New layout: centered logo, seat info in lower info grid, rotated barcode */
+
+.ticket-middle-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  margin: 10px 0 8px;
+}
+
+.ticket-middle-brand .event-logo {
+  max-width: 120px;
+  max-height: 42px;
+  object-fit: contain;
+}
+
+.ticket-middle-brand.has-logo .event-type {
+  display: none;
+}
+
+.ticket-middle-brand.has-logo.logo-missing .event-type,
+.ticket-middle-brand.no-logo .event-type {
+  display: inline-flex;
+}
+
+.ticket-extra-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.ticket-extra-cell strong {
+  font-size: 12px;
+}
+
+.ticket-stub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+}
+
+.barcode {
+  position: relative;
+  width: 158px;
+  height: 34px;
+  margin: 0;
+  transform: rotate(90deg);
+  transform-origin: center;
+  background:
+    repeating-linear-gradient(
+      to right,
+      #111 0px,
+      #111 1px,
+      transparent 1px,
+      transparent 3px,
+      #111 3px,
+      #111 5px,
+      transparent 5px,
+      transparent 8px,
+      #111 8px,
+      #111 9px,
+      transparent 9px,
+      transparent 13px,
+      #111 13px,
+      #111 16px,
+      transparent 16px,
+      transparent 18px,
+      #111 18px,
+      #111 19px,
+      transparent 19px,
+      transparent 22px
+    );
+  background-size: 158px 34px;
+  opacity: 0.9;
+}
+
+.barcode::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 1px solid rgba(17,17,17,0.18);
+  border-radius: 3px;
+}
+
+.barcode::after {
+  content: "RT2K15 0618 0915";
+  position: absolute;
+  left: 50%;
+  bottom: -13px;
+  transform: translateX(-50%);
+  width: max-content;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 6px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(17,17,17,0.78);
+  background: rgba(250, 247, 236, 0.82);
+  padding: 0 3px;
+}
+
+@media (max-width: 700px) {
+  .ticket-middle-brand {
+    min-height: 36px;
+    margin: 8px 0 7px;
+  }
+
+  .ticket-middle-brand .event-logo {
+    max-width: 88px;
+    max-height: 30px;
+  }
+
+  .ticket-extra-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .ticket-stub {
+    padding: 8px 6px;
+  }
+
+  .barcode {
+    width: 132px;
+    height: 28px;
+    background-size: 132px 28px;
+  }
+
+  .barcode::after {
+    font-size: 5px;
+    bottom: -11px;
+  }
+}
