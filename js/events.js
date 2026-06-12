@@ -5,23 +5,6 @@ const filterButtons = document.querySelectorAll(".filter-btn");
 let allEvents = [];
 let activeFilter = "all";
 
-const EVENT_ICONS = {
-  MLB: "⚾",
-  NFL: "🏈",
-  NCAAF: "🏈",
-  CFB: "🏈",
-  MLS: "⚽",
-  Tennis: "🎾",
-  Concert: "🎤",
-  Comedy: "🎭",
-  Show: "📺",
-  Boxing: "🥊",
-  UFC: "🥊",
-  UFC189: "🥊",
-  WWE: "🤼",
-  MotoGP: "🏁"
-};
-
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -57,40 +40,36 @@ function filterGroup(type) {
 
   if (["Boxing", "UFC", "WWE"].includes(normalised)) return "Combat";
   if (["MLB", "NFL", "NCAAF", "MLS", "Tennis", "MotoGP"].includes(normalised)) return normalised;
-  if (["Concert"].includes(normalised)) return "Concert";
+  if (normalised === "Concert") return "Concert";
 
   return "Other";
 }
 
 function getEventLocation(day) {
-  return day.event.location || day.finish || "";
+  return day.event?.location || day.finish || "";
 }
 
 function getVenue(day) {
-  return day.event.venue || "";
+  return day.event?.venue || day.event?.stadium || day.venue || day.stadium || "";
 }
 
-function getLogoLabel(type) {
+function getLogoPath(type) {
   const normalised = normaliseType(type);
 
   const logos = {
-    MLB: "MLB",
-    NFL: "NFL",
-    NCAAF: "CFB",
-    CFB: "CFB",
-    MLS: "MLS",
-    Tennis: "US OPEN",
-    Concert: "LIVE",
-    Comedy: "COMEDY",
-    Show: "TV",
-    Boxing: "BOXING",
-    UFC: "UFC",
-    UFC189: "UFC",
-    WWE: "WWE",
-    MotoGP: "MOTO GP"
+    MLB: "assets/logos/mlb.svg",
+    NFL: "assets/logos/nfl.svg",
+    NCAAF: "assets/logos/ncaa.svg",
+    CFB: "assets/logos/ncaa.svg",
+    MLS: "assets/logos/mls.svg",
+    Tennis: "assets/logos/us-open.svg",
+    UFC: "assets/logos/ufc.svg",
+    UFC189: "assets/logos/ufc.svg",
+    WWE: "assets/logos/wwe.svg",
+    MotoGP: "assets/logos/motogp.svg"
   };
 
-  return logos[type] || logos[normalised] || "EVENT";
+  return logos[type] || logos[normalised] || "";
 }
 
 function tiltForIndex(index) {
@@ -109,7 +88,8 @@ function buildEventList(tripData) {
       name: day.event.name,
       venue: getVenue(day),
       location: getEventLocation(day),
-      date: day.event.date || day.date
+      date: day.event.date || day.date,
+      logo: day.event.logo || getLogoPath(day.event.type)
     }));
 }
 
@@ -141,19 +121,35 @@ function renderEvents() {
 
   ticketGrid.innerHTML = visibleEvents.map((item, index) => {
     const day = item.day;
-    const event = item.event;
     const type = item.type;
     const venue = item.venue;
     const location = item.location;
     const date = formatDate(item.date);
+    const logo = item.logo;
+
+    const brandClass = logo ? "ticket-brand has-logo" : "ticket-brand no-logo";
+
+    const logoMarkup = logo
+      ? `<img
+          class="event-logo event-logo-${escapeHtml(type.toLowerCase())}"
+          src="${escapeHtml(logo)}"
+          alt="${escapeHtml(type)} logo"
+          loading="lazy"
+          onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');"
+        >`
+      : "";
 
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
         <div class="ticket-main">
-<div class="ticket-topline">
-  <span class="admit">Admit One</span>
-  <span class="event-type event-type-${normaliseType(event.type).toLowerCase()}">${escapeHtml(type)}</span>
-</div>
+          <div class="ticket-topline">
+            <span class="admit">Admit One</span>
+
+            <span class="${brandClass}">
+              ${logoMarkup}
+              <span class="event-type">${escapeHtml(type)}</span>
+            </span>
+          </div>
 
           <h2>${escapeHtml(item.name)}</h2>
 
