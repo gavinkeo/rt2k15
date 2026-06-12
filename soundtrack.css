@@ -754,3 +754,77 @@ body::before {
 .track-artist {
   color: rgba(255,255,255,0.58);
 }
+
+/* Slim cross-page section nav */
+
+.section-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  margin-bottom: 20px;
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: 999px;
+  background: rgba(255,255,255,0.075);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 12px 32px rgba(0,0,0,0.20),
+    inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+.section-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: rgba(255,255,255,0.72);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.section-nav-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.10);
+}
+
+.section-nav-link.active {
+  color: #111;
+  background: #fff;
+}
+
+/* remove old back-link spacing if still present */
+.events-nav,
+.places-nav,
+.soundtrack-nav {
+  margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+  .section-nav {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    gap: 6px;
+    margin-bottom: 18px;
+    padding: 6px;
+    scrollbar-width: none;
+  }
+
+  .section-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .section-nav-link {
+    flex: 0 0 auto;
+    min-height: 34px;
+    padding: 8px 11px;
+    font-size: 11px;
+  }
+}
