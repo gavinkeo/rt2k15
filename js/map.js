@@ -1302,7 +1302,10 @@ menu.className = shouldOpenMenuByDefault ? "trip-menu open" : "trip-menu";
 
 menu.innerHTML = `
     <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="${shouldOpenMenuByDefault ? "true" : "false"}" aria-controls="trip-menu-content">
-<span class="trip-menu-title-text">${escapeHtml(tripData?.title || "Road Trip 2K15")}</span>
+<span class="trip-menu-title-wrap">
+  <span class="trip-menu-title-text">${escapeHtml(tripData?.title || "Road Trip 2K15")}</span>
+  <span class="trip-menu-subtitle">US & Canada Road Trip</span>
+</span>
 <span class="trip-menu-chevron">▾</span>
     </button>
 
