@@ -75,7 +75,7 @@ function getLogoPath(type) {
     Tennis: "assets/logos/us-open.svg",
     UFC: "assets/logos/ufc.svg",
     UFC189: "assets/logos/ufc.svg",
-    WWE: "assets/logos/wwe.svg",
+    WWE: "assets/logos/wwe.png",
     MotoGP: "assets/logos/motogp.svg"
   };
 
