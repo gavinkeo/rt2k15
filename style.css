@@ -1426,3 +1426,35 @@ input[type="range"]::-moz-range-thumb {
   color: #ffffff !important;
   fill: #ffffff !important;
 }
+
+/* Funkier title font for Road Trip 2K15 */
+
+.trip-menu-toggle,
+.trip-menu-toggle span:first-child,
+.trip-menu h1,
+.trip-menu-title,
+.menu-title {
+  font-family: "Bebas Neue", sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.055em !important;
+  font-weight: 400 !important;
+  color: #083c4d !important;
+}
+
+.trip-menu-toggle {
+  font-size: 28px !important;
+  line-height: 1 !important;
+}
+
+/* Keep the little collapse arrow normal-ish */
+.trip-menu-toggle span:last-child {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .trip-menu-toggle {
+    font-size: 26px !important;
+  }
+}
