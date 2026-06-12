@@ -69,7 +69,7 @@
     {"day": 64, "date": "2015-08-20", "start": "Montreal", "finish": "Boston", "type": "drive", "via": "Kittery, ME", "viaStops": ["Kittery, ME"], "miles": 386, "drivingTime": "6:19"},
     {"day": 65, "date": "2015-08-21", "start": "Boston", "finish": "Boston", "type": "stay", "event": {"type": "MLB", "name": "Boston Red Sox v Kansas City Royals", "venue": "Fenway Park", "boxscore": "https://www.baseball-reference.com/boxes/BOS/BOS201508210.shtml"}},
     {"day": 66, "date": "2015-08-22", "start": "Boston", "finish": "New York", "type": "drive", "via": "Providence / New Haven", "viaStops": ["Providence", "New Haven"], "miles": 216, "drivingTime": "3:24", "event": {"type": "NFL", "name": "New York Giants v Jacksonville Jaguars", "venue": "MetLife Stadium", "youtube": "https://www.youtube.com/watch?v=Rr_7bAAIk9A"}},
-    {"day": 67, "date": "2015-08-23", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "WWE", "name": "Summerslam", "venue": "Barclays Center", "youtube": "https://www.youtube.com/watch?v=0rm2yBAmLYE"}},
+    {"day": 67, "date": "2015-08-23", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "WWE", "name": "WWE Summerslam", "venue": "Barclays Center", "youtube": "https://www.youtube.com/watch?v=0rm2yBAmLYE"}},
     {"day": 68, "date": "2015-08-24", "start": "New York", "finish": "New York", "type": "stay"},
     {"day": 69, "date": "2015-08-25", "start": "New York", "finish": "New York", "type": "stay"},
     {"day": 70, "date": "2015-08-26", "start": "New York", "finish": "New York", "type": "stay", "event": {"type": "MLB", "name": "New York Yankees v Houston Astros", "venue": "Yankee Stadium", "boxscore": "https://www.espn.com/mlb/game/_/gameId/350826110/astros-yankees"}},
