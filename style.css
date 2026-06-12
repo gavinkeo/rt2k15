@@ -1602,3 +1602,69 @@ input[type="range"]::-moz-range-thumb {
 .trip-menu-chevron {
   order: 3 !important;
 }
+
+/* FINAL font fix: Bebas only for ROAD TRIP 2K15, nowhere else */
+
+/* Reset every bit of menu/controller UI back to Inter */
+#trip-menu,
+#trip-menu *,
+#trip-menu-content,
+#trip-menu-content *,
+.trip-menu-content,
+.trip-menu-content *,
+.trip-menu .stat,
+.trip-menu .stat *,
+.menu-page-link,
+.menu-page-link *,
+.playback-controller,
+.playback-controller *,
+.timeline-stat-box,
+.timeline-stat-box *,
+.timeline-stat-label,
+.timeline-stat-value,
+.day-label,
+.day-number {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Apply Bebas ONLY to the first span inside the title button */
+#trip-menu-toggle > span:first-child,
+.trip-menu-toggle > span:first-child {
+  font-family: "Bebas Neue", sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.055em !important;
+  font-weight: 400 !important;
+  color: #083c4d !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Keep the title button centred */
+#trip-menu-toggle,
+.trip-menu-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Keep the dropdown arrow normal */
+#trip-menu-toggle > span:last-child,
+.trip-menu-toggle > span:last-child,
+.trip-menu-chevron {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Menu page buttons must stay normal */
+.menu-page-link {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-weight: 850 !important;
+}
