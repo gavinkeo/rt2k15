@@ -1541,3 +1541,41 @@ input[type="range"]::-moz-range-thumb {
   opacity: 0.92;
 }
 
+/* Font isolation: Bebas only on Road Trip title */
+
+.trip-menu,
+.trip-menu *,
+.playback-controller,
+.playback-controller *,
+.timeline-stat-box,
+.timeline-stat-box *,
+.menu-page-link,
+.menu-page-link * {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+.trip-menu-title-text {
+  font-family: "Bebas Neue", sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.055em !important;
+  font-weight: 400 !important;
+  color: #083c4d !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.trip-menu-toggle {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.trip-menu-chevron {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+}
