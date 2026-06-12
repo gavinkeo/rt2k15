@@ -590,3 +590,90 @@ body {
     font-size: 15px;
   }
 }
+
+/* Compact desktop timeline controller */
+@media (min-width: 641px) {
+  .timeline {
+    left: 20px;
+    bottom: 20px;
+    transform: none;
+    width: 300px;
+    max-width: 300px;
+    padding: 12px;
+    border-radius: 14px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "top"
+      "stats"
+      "track";
+    row-gap: 9px;
+  }
+
+  .timeline-top {
+    min-width: 0;
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr);
+    gap: 10px;
+    align-items: center;
+  }
+
+  .play-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 17px;
+  }
+
+  .timeline-main-counter {
+    min-width: 0;
+    height: 48px;
+    padding: 7px 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+  }
+
+  .timeline-day-label {
+    font-size: 9px;
+  }
+
+  #current-day {
+    font-size: 30px;
+  }
+
+  .timeline-slash,
+  #total-days {
+    font-size: 16px;
+  }
+
+  .timeline-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .timeline-stat-box {
+    padding: 7px 4px;
+    border-radius: 11px;
+  }
+
+  .timeline-stat-label {
+    margin-bottom: 3px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .timeline-stat-value {
+    font-size: 10.5px;
+    letter-spacing: -0.05em;
+  }
+
+  #timeline-slider {
+    height: 20px;
+  }
+
+  .timeline-labels {
+    display: none;
+  }
+}
