@@ -271,6 +271,62 @@ body {
   font-size: 30px;
 }
 
+.ticket-logo {
+  width: 66px;
+  min-height: 42px;
+  border: 2px solid #111;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 5px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 950;
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+  background: #111;
+  color: var(--paper);
+  transform: rotate(-90deg);
+}
+
+.logo-ufc {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 22px;
+  letter-spacing: -0.08em;
+}
+
+.logo-mlb {
+  font-size: 19px;
+}
+
+.logo-nfl {
+  font-size: 20px;
+}
+
+.logo-wwe {
+  font-family: Impact, "Arial Black", sans-serif;
+  font-size: 22px;
+}
+
+.logo-tennis {
+  font-size: 10px;
+  letter-spacing: -0.03em;
+}
+
+.logo-concert {
+  font-size: 18px;
+}
+
+.logo-comedy {
+  font-size: 11px;
+}
+
+.logo-motogp {
+  font-size: 10px;
+}
+
 .barcode {
   width: 48px;
   height: 74px;
