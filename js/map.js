@@ -95,6 +95,30 @@ const LOCATIONS = {
   "Baltimore": [39.2904, -76.6122],
   "Harpers Ferry": [39.3254, -77.7389],
 
+  // Event venues
+  "Oakland Coliseum": [37.7516, -122.2005],
+  "Oracle Arena": [37.7503, -122.2030],
+  "Hollywood Bowl": [34.1122, -118.3391],
+  "ESPN Los Angeles Production Center": [34.0450, -118.2673],
+  "Petco Park": [32.7073, -117.1566],
+  "Chase Field": [33.4455, -112.0667],
+  "MGM Grand Garden Arena": [36.1026, -115.1685],
+  "Lumen Field": [47.5952, -122.3316],
+  "Pepsi Center": [39.7487, -105.0077],
+  "AT&T Stadium": [32.7473, -97.0945],
+  "Cardinal Stadium": [38.2059, -85.7588],
+  "Paul Brown Stadium": [39.0955, -84.5161],
+  "Soldier Field": [41.8623, -87.6167],
+  "U.S. Cellular Field": [41.8300, -87.6338],
+  "Fenway Park": [42.3467, -71.0972],
+  "MetLife Stadium": [40.8135, -74.0745],
+  "Barclays Center": [40.6826, -73.9754],
+  "Yankee Stadium": [40.8296, -73.9262],
+  "USTA Billie Jean King National Tennis Center": [40.7505, -73.8470],
+  "Citi Field": [40.7571, -73.8458],
+  "Lincoln Financial Field": [39.9008, -75.1675],
+  "Bank of America Stadium": [35.2258, -80.8528],
+
   // Optional event-location overrides
   "Arlington": [32.7357, -97.1081],
   "East Rutherford": [40.8336, -74.0971]
@@ -193,8 +217,57 @@ const LOCATION_REGION_LABELS = {
   "Delaware": "DE",
   "Baltimore": "MD",
   "Harpers Ferry": "WV",
+
+  "Oakland Coliseum": "CA",
+  "Oracle Arena": "CA",
+  "Hollywood Bowl": "CA",
+  "ESPN Los Angeles Production Center": "CA",
+  "Petco Park": "CA",
+  "Chase Field": "AZ",
+  "MGM Grand Garden Arena": "NV",
+  "Lumen Field": "WA",
+  "Pepsi Center": "CO",
+  "AT&T Stadium": "TX",
+  "Cardinal Stadium": "KY",
+  "Paul Brown Stadium": "OH",
+  "Soldier Field": "IL",
+  "U.S. Cellular Field": "IL",
+  "Fenway Park": "MA",
+  "MetLife Stadium": "NJ",
+  "Barclays Center": "NY",
+  "Yankee Stadium": "NY",
+  "USTA Billie Jean King National Tennis Center": "NY",
+  "Citi Field": "NY",
+  "Lincoln Financial Field": "PA",
+  "Bank of America Stadium": "NC",
+
   "Arlington": "TX",
   "East Rutherford": "NJ"
+};
+
+const EVENT_VENUE_OVERRIDES = {
+  2: "Oakland Coliseum",
+  3: "Oracle Arena",
+  8: "Hollywood Bowl",
+  9: "ESPN Los Angeles Production Center",
+  13: "Petco Park",
+  16: "Chase Field",
+  24: "MGM Grand Garden Arena",
+  31: "Lumen Field",
+  40: "Pepsi Center",
+  43: "AT&T Stadium",
+  51: "Cardinal Stadium",
+  52: "Paul Brown Stadium",
+  57: "Soldier Field",
+  59: "U.S. Cellular Field",
+  65: "Fenway Park",
+  66: "MetLife Stadium",
+  67: "Barclays Center",
+  70: "Yankee Stadium",
+  71: "USTA Billie Jean King National Tennis Center",
+  72: "Citi Field",
+  74: "Lincoln Financial Field",
+  78: "Bank of America Stadium"
 };
 
 const EVENT_ICONS = {
@@ -256,8 +329,6 @@ style.innerHTML = `
   }
 
   .marker-via {
-    width: 10px !important;
-    height: 10px !important;
     background-color: #FAFAF7;
     border-color: rgba(0, 229, 255, 0.95);
     box-shadow: 0 0 7px rgba(0, 229, 255, 0.65);
@@ -583,6 +654,39 @@ function formatLocationWithRegion(place) {
   return `${place}, ${region}`;
 }
 
+function getEventVenuePlace(day) {
+  if (!day || !day.event) return null;
+
+  const dayNumber = Number(day.day);
+  const overrideVenue = EVENT_VENUE_OVERRIDES[dayNumber];
+
+  if (overrideVenue && LOCATIONS[overrideVenue]) {
+    return overrideVenue;
+  }
+
+  if (day.event.venue && LOCATIONS[day.event.venue]) {
+    return day.event.venue;
+  }
+
+  if (day.event.location && LOCATIONS[day.event.location]) {
+    return day.event.location;
+  }
+
+  return null;
+}
+
+function getEventWithVenue(day) {
+  if (!day?.event) return null;
+
+  const venuePlace = getEventVenuePlace(day);
+
+  return {
+    ...day.event,
+    venue: venuePlace || day.event.venue || "",
+    location: venuePlace || day.event.location || day.finish || ""
+  };
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -749,18 +853,28 @@ function getMaxDay() {
   return Math.max(...tripData.days.map(day => Number(day.day)));
 }
 
-function getRoutePlaces(day) {
+function getRoutePlaces(day, includeEventVenue = false) {
   const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
-
-  return [
+  const routePlaces = [
     day.start,
     ...viaStops,
     day.finish
   ].filter(Boolean);
+
+  if (includeEventVenue) {
+    const eventVenue = getEventVenuePlace(day);
+
+    if (eventVenue && !routePlaces.includes(eventVenue)) {
+      const finishIndex = Math.max(routePlaces.length - 1, 0);
+      routePlaces.splice(finishIndex, 0, eventVenue);
+    }
+  }
+
+  return routePlaces;
 }
 
-function getUniqueRoutePlaces(day) {
-  const routePlaces = getRoutePlaces(day);
+function getUniqueRoutePlaces(day, includeEventVenue = false) {
+  const routePlaces = getRoutePlaces(day, includeEventVenue);
 
   return routePlaces.filter((place, index) => {
     return index === 0 || place !== routePlaces[index - 1];
@@ -768,8 +882,10 @@ function getUniqueRoutePlaces(day) {
 }
 
 function getDayMarkerCoord(day) {
-  if (eventsModeActive && day.event && day.event.location && LOCATIONS[day.event.location]) {
-    return LOCATIONS[day.event.location];
+  const eventVenue = getEventVenuePlace(day);
+
+  if (eventVenue && LOCATIONS[eventVenue]) {
+    return LOCATIONS[eventVenue];
   }
 
   return LOCATIONS[day.finish];
@@ -892,8 +1008,11 @@ function buildPlaceMarkerData(upToDay) {
 
     addVisitToPlaceMap(placeMap, day, day.finish, "finish");
 
-    if (eventsModeActive && day.event?.location && LOCATIONS[day.event.location]) {
-      addVisitToPlaceMap(placeMap, day, day.event.location, "event", day.event);
+    const eventVenue = getEventVenuePlace(day);
+    const eventWithVenue = getEventWithVenue(day);
+
+    if (eventVenue && eventWithVenue) {
+      addVisitToPlaceMap(placeMap, day, eventVenue, "event", eventWithVenue);
     }
   });
 
@@ -925,7 +1044,7 @@ function getPlaceVisitsByDay(placeData) {
 }
 
 function formatRouteHtml(day, highlightPlace) {
-  const routePlaces = getUniqueRoutePlaces(day);
+  const routePlaces = getUniqueRoutePlaces(day, true);
 
   return routePlaces.map(place => {
     const label = formatLocationWithRegion(place);
@@ -1026,7 +1145,7 @@ function showPlaceDetail(placeData) {
 
     eventVisits.forEach(({ dayNumber, event }) => {
       const venue = event.venue
-        ? `<div class="detail-subvalue">${escapeHtml(event.venue)}</div>`
+        ? `<div class="detail-subvalue">${escapeHtml(formatLocationWithRegion(event.venue))}</div>`
         : "";
 
       html += `
@@ -1053,7 +1172,7 @@ function createPlaceMarker(placeData) {
   const days = [...placeData.days].sort((a, b) => a - b);
   const roles = placeData.roles;
 
-  const hasEvent = eventsModeActive && roles.has("event");
+  const hasEvent = roles.has("event");
   const viaOnly = roles.size === 1 && roles.has("via");
   const multiDay = days.length > 1;
 
@@ -1082,10 +1201,19 @@ function createPlaceMarker(placeData) {
 
   const marker = L.marker(placeData.coord, { icon }).on("click", () => showPlaceDetail(placeData));
 
-  marker.bindTooltip(`${getDaysDisplay(days)} · ${formatLocationWithRegion(placeData.place)}`, {
-    direction: "top",
-    offset: [0, -size / 2]
-  });
+  if (hasEvent && placeData.events.length) {
+    const event = placeData.events[0].event;
+
+    marker.bindTooltip(`${getDaysDisplay(days)} · ${event.name} · ${formatLocationWithRegion(placeData.place)}`, {
+      direction: "top",
+      offset: [0, -size / 2]
+    });
+  } else {
+    marker.bindTooltip(`${getDaysDisplay(days)} · ${formatLocationWithRegion(placeData.place)}`, {
+      direction: "top",
+      offset: [0, -size / 2]
+    });
+  }
 
   return marker;
 }
@@ -1109,19 +1237,17 @@ function showDayDetail(day) {
     html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime || "")}</div></div>`;
   }
 
-  const uniqueRouteBits = getUniqueRoutePlaces(day);
+  const uniqueRouteBits = getUniqueRoutePlaces(day, true);
 
   if (uniqueRouteBits.length > 1) {
     html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${uniqueRouteBits.map(place => escapeHtml(formatLocationWithRegion(place))).join(" → ")}</div></div>`;
   }
 
   if (day.event) {
-    const venue = day.event.venue
-      ? `<div class="detail-subvalue">${escapeHtml(day.event.venue)}</div>`
-      : "";
+    const eventWithVenue = getEventWithVenue(day);
 
-    const location = day.event.location
-      ? `<div class="detail-subvalue">${escapeHtml(formatLocationWithRegion(day.event.location))}</div>`
+    const venue = eventWithVenue?.venue
+      ? `<div class="detail-subvalue">${escapeHtml(formatLocationWithRegion(eventWithVenue.venue))}</div>`
       : "";
 
     html += `
@@ -1130,7 +1256,6 @@ function showDayDetail(day) {
         <div class="detail-value">
           <span class="event-badge">${escapeHtml(day.event.type)}</span>${escapeHtml(day.event.name)}
           ${venue}
-          ${location}
         </div>
       </div>
     `;
@@ -1621,12 +1746,14 @@ function getAllRouteCoords() {
   const coords = [];
 
   tripData.days.forEach(day => {
-    getRoutePlaces(day).forEach(place => {
+    getRoutePlaces(day, true).forEach(place => {
       if (LOCATIONS[place]) coords.push(LOCATIONS[place]);
     });
 
-    if (day.event?.location && LOCATIONS[day.event.location]) {
-      coords.push(LOCATIONS[day.event.location]);
+    const eventVenue = getEventVenuePlace(day);
+
+    if (eventVenue && LOCATIONS[eventVenue]) {
+      coords.push(LOCATIONS[eventVenue]);
     }
   });
 
