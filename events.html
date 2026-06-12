@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Sports & Events | Road Trip 2K15</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="events.css" />
+</head>
+
+<body>
+  <main class="events-page">
+    <header class="events-hero">
+      <a class="back-link" href="index.html">← Back to map</a>
+
+      <div class="hero-kicker">Road Trip 2K15</div>
+      <h1>Sports & Events</h1>
+      <p>
+        Ticket stubs from the games, gigs, fights, shows and general chaos picked up across the road trip.
+      </p>
+
+      <div class="event-summary" id="event-summary">
+        Loading events…
+      </div>
+    </header>
+
+    <section class="filters" aria-label="Event filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="MLB">MLB</button>
+      <button class="filter-btn" data-filter="NFL">NFL</button>
+      <button class="filter-btn" data-filter="Concert">Concerts</button>
+      <button class="filter-btn" data-filter="Combat">Combat</button>
+      <button class="filter-btn" data-filter="Other">Other</button>
+    </section>
+
+    <section class="ticket-grid" id="ticket-grid" aria-live="polite"></section>
+  </main>
+
+  <script src="js/events.js"></script>
+</body>
+</html>
