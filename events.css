@@ -684,3 +684,51 @@ body {
     font-size: 11px;
   }
 }
+
+/* Centre logos in the cream stub section */
+
+.ticket-stub {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.stub-top,
+.stub-logo-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stub-brand {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+/* Slight visual nudge left so it feels centred within the cream area,
+   not centred against the whole ticket including the perforation line */
+.stub-brand .event-logo,
+.stub-brand .event-type {
+  transform: translateX(-2px);
+}
+
+/* NFL + NCAA specific centring */
+.stub-brand .event-logo-nfl,
+.stub-brand .event-logo-ncaaf {
+  display: block;
+  margin: 0 auto;
+  transform: translateX(-2px);
+}
+
+@media (max-width: 700px) {
+  .stub-brand .event-logo,
+  .stub-brand .event-type,
+  .stub-brand .event-logo-nfl,
+  .stub-brand .event-logo-ncaaf {
+    transform: translateX(-1px);
+  }
+}
