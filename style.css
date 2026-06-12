@@ -794,3 +794,79 @@ body {
     margin-bottom: 0 !important;
   }
 }
+
+/* Desktop: slimmer menu with compact page links */
+
+@media (min-width: 641px) {
+  .trip-menu {
+    width: 280px !important;
+  }
+
+  .trip-menu-toggle {
+    padding: 9px 13px !important;
+    font-size: 16px !important;
+  }
+
+  .trip-menu-content {
+    padding: 0 13px 12px !important;
+  }
+
+  .trip-menu .stats {
+    gap: 6px !important;
+    margin-bottom: 10px !important;
+  }
+
+  .trip-menu .stat {
+    min-height: 47px !important;
+    padding: 7px 9px !important;
+    border-radius: 8px !important;
+  }
+
+  .trip-menu .stat-value {
+    font-size: 20px !important;
+    line-height: 1 !important;
+  }
+
+  .trip-menu .stat-label-row {
+    margin-top: 5px !important;
+    font-size: 8px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .trip-menu .stat-main-row {
+    gap: 5px !important;
+  }
+
+  .trip-menu .stat-icon-emoji {
+    font-size: 17px !important;
+  }
+
+  .trip-menu .flag-icon {
+    width: 25px !important;
+    height: 17px !important;
+  }
+
+  .menu-section {
+    padding-top: 10px !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 7px !important;
+  }
+
+  .menu-page-link {
+    margin: 0 !important;
+    padding: 10px 8px !important;
+    min-height: 42px !important;
+    border-radius: 8px !important;
+    font-size: 12.5px !important;
+    line-height: 1.1 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .menu-page-link:nth-child(3) {
+    grid-column: 1 / -1 !important;
+  }
+}
