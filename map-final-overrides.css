@@ -1,0 +1,173 @@
+/* FINAL MAP UI OVERRIDES */
+/* Purpose: Bebas ONLY for ROAD TRIP 2K15. Everything else back to clean Inter. */
+
+#trip-menu,
+#trip-menu-content,
+#trip-menu-content *,
+#trip-menu .stat,
+#trip-menu .stat *,
+#trip-menu .menu-page-link,
+#trip-menu .menu-page-link *,
+.playback-controller,
+.playback-controller *,
+.timeline-stat-box,
+.timeline-stat-box *,
+.timeline-stat-label,
+.timeline-stat-value,
+.day-label,
+.day-number {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* The toggle/button itself should NOT use Bebas, otherwise children inherit it */
+#trip-menu-toggle,
+.trip-menu-toggle {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  line-height: 1 !important;
+}
+
+/* Bebas ONLY on the ROAD TRIP 2K15 span */
+#trip-menu-toggle > span:first-child,
+.trip-menu-toggle > span:first-child {
+  font-family: "Bebas Neue", sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.055em !important;
+  font-weight: 400 !important;
+  color: #083c4d !important;
+  line-height: 1 !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Dropdown arrow back to normal */
+#trip-menu-toggle > span:last-child,
+.trip-menu-toggle > span:last-child,
+.trip-menu-chevron {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: 13px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Menu page links: normal readable UI text */
+#trip-menu .menu-page-link {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+  font-size: 13px !important;
+  font-weight: 850 !important;
+  line-height: 1.1 !important;
+
+  background:
+    linear-gradient(135deg, #083c4d 0%, #062f3c 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(0, 229, 255, 0.34) !important;
+}
+
+#trip-menu .menu-page-link:hover {
+  background:
+    linear-gradient(135deg, #0b6f86 0%, #083c4d 100%) !important;
+  border-color: rgba(0, 229, 255, 0.58) !important;
+}
+
+/* Stats: black text, normal font */
+#trip-menu .stat-value,
+#trip-menu .stat-label-row,
+.timeline-stat-label,
+.timeline-stat-value,
+.timeline-stat-value strong,
+.playback-controller,
+.playback-controller strong {
+  color: #111111 !important;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+/* Stat labels still uppercase, but NOT Bebas */
+#trip-menu .stat-label-row,
+.timeline-stat-label {
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 800 !important;
+}
+
+/* Play button teal */
+#play-pause,
+#play-button,
+#playPause,
+#play,
+#play-pause-button,
+#playback-play,
+.play-button,
+.playback-play,
+.play-pause,
+.play-toggle,
+.play-btn,
+.timeline-play,
+.timeline-play-button,
+.playback-controller button:first-of-type,
+.timeline-controller button:first-of-type,
+.timeline-controls button:first-of-type {
+  background:
+    linear-gradient(135deg, #083c4d 0%, #062f3c 100%) !important;
+  background-color: #083c4d !important;
+  color: #ffffff !important;
+  border-color: rgba(0, 229, 255, 0.38) !important;
+}
+
+#play-pause *,
+#play-button *,
+#playPause *,
+#play *,
+#play-pause-button *,
+#playback-play *,
+.play-button *,
+.playback-play *,
+.play-pause *,
+.play-toggle *,
+.play-btn *,
+.timeline-play *,
+.timeline-play-button *,
+.playback-controller button:first-of-type * {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+/* Bigger CX-5 beside title */
+#trip-menu-toggle::after,
+.trip-menu-toggle::after {
+  content: "" !important;
+  width: 84px !important;
+  height: 36px !important;
+  margin-left: auto !important;
+  margin-right: 12px !important;
+  background: url("assets/mazda-cx5-side.png") center / contain no-repeat !important;
+  opacity: 0.95 !important;
+  flex: 0 0 auto !important;
+  order: 2 !important;
+}
+
+#trip-menu-toggle > span:first-child,
+.trip-menu-toggle > span:first-child {
+  order: 1 !important;
+}
+
+#trip-menu-toggle > span:last-child,
+.trip-menu-toggle > span:last-child,
+.trip-menu-chevron {
+  order: 3 !important;
+}
+
+@media (max-width: 640px) {
+  #trip-menu-toggle::after,
+  .trip-menu-toggle::after {
+    width: 70px !important;
+    height: 30px !important;
+    margin-right: 10px !important;
+  }
+}
