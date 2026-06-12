@@ -38,6 +38,11 @@
         "name": "Oakland Athletics v Los Angeles Angels",
         "venue": "Oakland Coliseum",
         "location": "Oakland"
+        "ticket": {
+      "section": "Bleacher General Admission",
+      "eventTime": "6:35 PM",
+      "price": "$16.50"
+    }
       }
     },
     {
@@ -55,6 +60,13 @@
         "name": "Andre Ward v Paul Smith",
         "venue": "Oracle Arena",
         "location": "Oakland"
+        "ticket": {
+      "section": "121",
+      "row": "22",
+      "seat": "15",
+      "eventTime": "3:00 PM",
+      "price": "$43.00"
+    }
       }
     },
     {
@@ -121,6 +133,13 @@
         "name": "Ed Sheeran",
         "venue": "Hollywood Bowl",
         "location": "Los Angeles"
+        "ticket": {
+      "section": "S",
+      "row": "19",
+      "seat": "121",
+      "eventTime": "7:30 PM",
+      "price": "$43.00"
+    }
       }
     },
     {
@@ -175,6 +194,13 @@
         "name": "San Diego Padres v Seattle Mariners",
         "venue": "Petco Park",
         "location": "San Diego"
+        "ticket": {
+      "section": "UI306",
+      "row": "9",
+      "seat": "8",
+      "eventTime": "7:10 PM",
+      "price": "$16.25"
+    }
       }
     },
     {
@@ -206,6 +232,13 @@
         "name": "Arizona Diamondbacks v Colorado Rockies",
         "venue": "Chase Field",
         "location": "Phoenix"
+        "ticket": {
+      "section": "316",
+      "row": "10",
+      "seat": "23",
+      "eventTime": "6:40 PM",
+      "price": "$10.00"
+    }
       }
     },
     {
@@ -371,6 +404,13 @@
         "name": "Seattle Sounders v Colorado Rapids",
         "venue": "Lumen Field",
         "location": "Seattle"
+        "ticket": {
+      "section": "126",
+      "row": "KK",
+      "seat": "18",
+      "eventTime": "7:00 PM",
+      "price": "$36.00"
+    }
       }
     },
     {
@@ -471,6 +511,13 @@
         "name": "Imagine Dragons",
         "venue": "Pepsi Center",
         "location": "Denver"
+        "ticket": {
+      "section": "334",
+      "row": "11",
+      "seat": "1",
+      "eventTime": "7:30 PM",
+      "price": "$35.00"
+    }
       }
     },
     {
@@ -673,6 +720,13 @@
         "name": "Chicago Bears v Miami Dolphins",
         "venue": "Soldier Field",
         "location": "Chicago"
+        "ticket": {
+      "section": "446",
+      "row": "20",
+      "seat": "19",
+      "eventTime": "7:00 PM",
+      "price": "$22.50"
+    }
       }
     },
     {
@@ -693,6 +747,13 @@
         "name": "Chicago White Sox v Chicago Cubs",
         "venue": "U.S. Cellular Field",
         "location": "Chicago"
+        "ticket": {
+      "section": "Lower Corner 155",
+      "row": "16",
+      "seat": "11",
+      "eventTime": "3:10 PM",
+      "price": "$33.00"
+    }
       }
     },
     {
@@ -777,6 +838,13 @@
         "name": "Boston Red Sox v Kansas City Royals",
         "venue": "Fenway Park",
         "location": "Boston"
+        "ticket": {
+      "section": "Right Field Box 94",
+      "row": "XX",
+      "seat": "25",
+      "eventTime": "7:10 PM",
+      "price": "$18.00"
+    }
       }
     },
     {
@@ -797,6 +865,13 @@
         "name": "New York Giants v Jacksonville Jaguars",
         "venue": "MetLife Stadium",
         "location": "East Rutherford"
+        "ticket": {
+      "section": "Mezzanine Club 207C",
+      "row": "8",
+      "seat": "3",
+      "eventTime": "7:30 PM",
+      "price": "$40.00"
+    }
       }
     },
     {
@@ -810,6 +885,13 @@
         "name": "WWE Summerslam",
         "venue": "Barclays Center",
         "location": "New York"
+        "ticket": {
+      "section": "218",
+      "row": "3",
+      "seat": "9",
+      "eventTime": "7:30 PM",
+      "price": "$65.00"
+    }
       }
     },
     {
@@ -837,6 +919,13 @@
         "name": "New York Yankees v Houston Astros",
         "venue": "Yankee Stadium",
         "location": "New York"
+        "ticket": {
+      "section": "432A",
+      "row": "1",
+      "seat": "18",
+      "eventTime": "1:05 PM",
+      "price": "$21.00"
+    }
       }
     },
     {
@@ -863,6 +952,13 @@
         "name": "New York Mets v Boston Red Sox",
         "venue": "Citi Field",
         "location": "New York"
+        "ticket": {
+      "section": "503",
+      "row": "10",
+      "seat": "10",
+      "eventTime": "7:10 PM",
+      "price": "$35.00"
+    }
       }
     },
     {
@@ -885,6 +981,13 @@
         "name": "Kevin Hart",
         "venue": "Lincoln Financial Field",
         "location": "Philadelphia"
+        "ticket": {
+      "section": "218",
+      "row": "4",
+      "seat": "25",
+      "eventTime": "8:00 PM",
+      "price": "$36.00"
+    }
       }
     },
     {
