@@ -843,3 +843,19 @@ body {
     font-size: 9px;
   }
 }
+
+/* Remove top strip and move ticket title up */
+
+.ticket-main {
+  padding-top: 18px;
+}
+
+.ticket h2 {
+  margin-top: 0;
+}
+
+@media (max-width: 700px) {
+  .ticket-main {
+    padding-top: 16px;
+  }
+}
