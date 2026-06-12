@@ -1,7 +1,21 @@
 {
-  "title": "The Sounds of the Summer - RT2K15 Playlist",
-  "playlistId": "PLmZr_pajUD6XcMtiW5lgR32SbYm9zrf7k",
+  "title": "RT2K15 YouTube Music Playlist",
+  "playlistId": "PASTE_YOUR_PLAYLIST_ID_HERE",
   "youtubeMusicUrl": "",
   "playlistUrl": "",
-  "trackCount": 42
+  "trackCount": 42,
+  "tracks": [
+    {
+      "number": 1,
+      "title": "Post to Be",
+      "artist": "Omarion feat. Chris Brown & Jhen\u00e9 Aiko",
+      "youtube": ""
+    },
+    {
+      "number": 2,
+      "title": "America, F*** Yeah",
+      "artist": "Team America",
+      "youtube": ""
+    }
+  ]
 }
