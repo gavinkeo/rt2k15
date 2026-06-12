@@ -100,29 +100,6 @@ const LOCATIONS = {
   "East Rutherford": [40.8336, -74.0971]
 };
 
-const STATE_CODES = {
-  "Alabama": "AL", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO",
-  "Connecticut": "CT", "Delaware": "DE", "Florida": "FL", "Georgia": "GA", "Idaho": "ID",
-  "Illinois": "IL", "Indiana": "IN", "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY",
-  "Louisiana": "LA", "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI",
-  "Minnesota": "MN", "Mississippi": "MS", "Missouri": "MO", "Montana": "MT", "Nebraska": "NE",
-  "Nevada": "NV", "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY",
-  "North Carolina": "NC", "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR",
-  "Pennsylvania": "PA", "Rhode Island": "RI", "South Carolina": "SC", "South Dakota": "SD",
-  "Tennessee": "TN", "Texas": "TX", "Utah": "UT", "Vermont": "VT", "Virginia": "VA",
-  "Washington": "WA", "West Virginia": "WV", "Wisconsin": "WI", "Wyoming": "WY",
-  "Alberta": "AB", "British Columbia": "BC", "Manitoba": "MB", "New Brunswick": "NB",
-  "Newfoundland and Labrador": "NL", "Nova Scotia": "NS", "Ontario": "ON",
-  "Prince Edward Island": "PE", "Quebec": "QC", "Saskatchewan": "SK"
-};
-
-const MANUAL_PROVINCE_LABELS = {
-  "British Columbia": [53.7, -125.2],
-  "Ontario": [49.8, -84.8],
-  "Quebec": [52.7, -71.8],
-  "Newfoundland and Labrador": [53.3, -60.8]
-};
-
 const EVENT_ICONS = {
   "MLB": "⚾",
   "NFL": "🏈",
@@ -195,17 +172,6 @@ style.innerHTML = `
     box-shadow: 0 0 10px #FFEB3B;
   }
 
-  .leaflet-tooltip.state-label {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    color: rgba(255, 255, 255, 0.85);
-    font-weight: 700;
-    font-size: 14px;
-    letter-spacing: 1px;
-    text-shadow: 1px 1px 4px #000, -1px -1px 4px #000, 0px 0px 8px rgba(0,0,0,0.8);
-  }
-
   .moving-car-icon {
     z-index: 99999 !important;
   }
@@ -270,12 +236,6 @@ style.innerHTML = `
 
   .trip-menu.open .trip-menu-content {
     display: block;
-  }
-
-  .trip-menu .subtitle {
-    font-size: 13px;
-    color: rgba(0,0,0,0.62);
-    margin: 0 0 14px;
   }
 
   .trip-menu .stats {
@@ -490,6 +450,14 @@ function setupCarPane() {
   if (!map.getPane("carPane")) {
     const pane = map.createPane("carPane");
     pane.style.zIndex = 900;
+    pane.style.pointerEvents = "none";
+  }
+}
+
+function setupLabelsPane() {
+  if (!map.getPane("labelsPane")) {
+    const pane = map.createPane("labelsPane");
+    pane.style.zIndex = 350;
     pane.style.pointerEvents = "none";
   }
 }
@@ -1172,6 +1140,7 @@ async function init() {
   }).setView([39.5, -98.5], 4);
 
   setupCarPane();
+  setupLabelsPane();
 
   L.control.zoom({ position: "bottomleft" }).addTo(map);
 
@@ -1180,70 +1149,11 @@ async function init() {
     maxZoom: 19
   }).addTo(map);
 
-  fetch("https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json")
-    .then(r => r.json())
-    .then(g => {
-      g.features = g.features.filter(f => !["Alaska", "Hawaii", "Puerto Rico"].includes(f.properties.name));
-
-      L.geoJSON(g, {
-        style: {
-          color: "rgba(255,255,255,0.4)",
-          weight: 1.2,
-          fillOpacity: 0
-        },
-        onEachFeature: (f, l) => {
-          if (STATE_CODES[f.properties.name]) {
-            l.bindTooltip(STATE_CODES[f.properties.name], {
-              permanent: true,
-              direction: "center",
-              className: "state-label"
-            });
-          }
-        }
-      }).addTo(map);
-    });
-
-  fetch("https://raw.githubusercontent.com/codeforgermany/click_that_hood/main/public/data/canada.geojson")
-    .then(r => r.json())
-    .then(g => {
-      L.geoJSON(g, {
-        style: {
-          color: "rgba(255,255,255,0.4)",
-          weight: 1.2,
-          fillOpacity: 0
-        },
-        onEachFeature: (f, l) => {
-          const name = f.properties.name;
-          const code = STATE_CODES[name];
-
-          if (!code) return;
-
-          if (MANUAL_PROVINCE_LABELS[name]) return;
-
-          l.bindTooltip(code, {
-            permanent: true,
-            direction: "center",
-            className: "state-label"
-          });
-        }
-      }).addTo(map);
-
-      Object.entries(MANUAL_PROVINCE_LABELS).forEach(([name, coord]) => {
-        const code = STATE_CODES[name];
-        if (!code) return;
-
-        L.marker(coord, {
-          interactive: false,
-          opacity: 0
-        })
-          .bindTooltip(code, {
-            permanent: true,
-            direction: "center",
-            className: "state-label"
-          })
-          .addTo(map);
-      });
-    });
+  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
+    attribution: "Labels &copy; Esri",
+    maxZoom: 19,
+    pane: "labelsPane"
+  }).addTo(map);
 
   const res = await fetch("data/trip.json");
   tripData = await res.json();
