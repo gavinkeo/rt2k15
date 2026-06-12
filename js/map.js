@@ -2,6 +2,7 @@
 // [lat, lng]
 const LOCATIONS = {
   "San Francisco Airport": [37.6213, -122.3790],
+  "Oakland": [37.8044, -122.2712],
   "San Francisco": [37.7749, -122.4194],
   "Chowchilla": [37.1230, -120.2602],
   "San Luis Obispo": [35.2828, -120.6596],
@@ -52,7 +53,8 @@ const LOCATIONS = {
   "Miami": [25.7617, -80.1918],
   "Fort Lauderdale": [26.1224, -80.1373],
   "Fort Lauderdale Airport": [26.0742, -80.1506],
-  "Oakland": [37.8044, -122.2712],
+
+  // Via/day-trip locations
   "San Mateo Hayward Bridge": [37.6096, -122.1474],
   "Richmond": [37.9358, -122.3477],
   "San Rafael Bridge": [37.9365, -122.4458],
@@ -80,6 +82,7 @@ const LOCATIONS = {
   "Memphis": [35.1495, -90.0490],
   "Nashville": [36.1627, -86.7816],
   "Cincinnati": [39.1031, -84.5120],
+  "Cincinnatti": [39.1031, -84.5120],
   "St Louis": [38.6270, -90.1994],
   "Notre Dame": [41.6993, -86.2389],
   "Detroit": [42.3314, -83.0458],
@@ -90,7 +93,7 @@ const LOCATIONS = {
   "New Haven": [41.3083, -72.9279],
   "Delaware": [39.7391, -75.5398],
   "Baltimore": [39.2904, -76.6122],
-  "Harpers Ferry": [39.3254, -77.7389]  
+  "Harpers Ferry": [39.3254, -77.7389]
 };
 
 const STATE_CODES = {
@@ -120,10 +123,12 @@ const MANUAL_PROVINCE_LABELS = {
 const EVENT_ICONS = {
   "MLB": "⚾",
   "NFL": "🏈",
-  "MLS": "⚽",
   "NCAAF": "🏈",
+  "CFB": "🏈",
+  "MLS": "⚽",
   "MotoGP": "🏁",
   "UFC": "🥊",
+  "UFC189": "🥊",
   "Boxing": "🥊",
   "WWE": "🤼",
   "Tennis": "🎾",
@@ -410,6 +415,29 @@ style.innerHTML = `
     border-top: none;
   }
 
+  .menu-page-link {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    text-decoration: none;
+    border: 1px solid #111;
+    background: #111;
+    color: #FAFAF7;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 8px;
+  }
+
+  .menu-page-link:hover {
+    background: #000;
+    color: #FAFAF7;
+    text-decoration: none;
+  }
+
   .menu-action-btn {
     width: 100%;
     border: 1px solid #111;
@@ -476,11 +504,24 @@ style.innerHTML = `
     font-family: 'JetBrains Mono', monospace;
   }
 
+  .detail-subvalue {
+    margin-top: 4px;
+    font-size: 13px;
+    opacity: 0.72;
+  }
+
   @media (max-width: 640px) {
     .trip-menu {
-      top: 10px;
-      left: 10px;
-      width: min(300px, calc(100% - 20px));
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      width: auto;
+      max-width: none;
+    }
+
+    .trip-menu.open {
+      max-height: calc(100dvh - 125px);
+      overflow-y: auto;
     }
 
     .trip-menu-toggle {
@@ -495,27 +536,6 @@ style.innerHTML = `
     .events-list {
       max-height: 290px;
     }
-
-    .menu-page-link {
-  display: block;
-  width: 100%;
-  text-align: center;
-  text-decoration: none;
-  border: 1px solid #111;
-  background: #111;
-  color: #FAFAF7;
-  border-radius: 8px;
-  padding: 10px 12px;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  margin-bottom: 8px;
-}
-
-.menu-page-link:hover {
-  background: #000;
-}
-
   }
 `;
 document.head.appendChild(style);
@@ -535,6 +555,18 @@ function formatFullStat(value) {
   if (!Number.isFinite(number)) return "—";
 
   return Math.round(number).toLocaleString();
+}
+
+function formatDate(dateString) {
+  if (!dateString) return "";
+
+  const date = new Date(`${dateString}T12:00:00`);
+
+  return date.toLocaleDateString("en-GB", {
+    day: "numeric",
+    month: "short",
+    year: "numeric"
+  });
 }
 
 function greatCircleArc(start, end, segments = 64) {
@@ -592,6 +624,14 @@ function finishRouteAnimationIfComplete() {
   resolveRouteAnimationWaiters();
 }
 
+function getDayMarkerCoord(day) {
+  if (eventsModeActive && day.event && day.event.location && LOCATIONS[day.event.location]) {
+    return LOCATIONS[day.event.location];
+  }
+
+  return LOCATIONS[day.finish];
+}
+
 function createMarker(day, latlng) {
   let className = "marker-dot";
   let html = "";
@@ -619,9 +659,13 @@ function createMarker(day, latlng) {
     iconAnchor: [size / 2, size / 2]
   });
 
+  const tooltipLocation = shouldHighlightEvent && day.event.location
+    ? day.event.location
+    : day.finish;
+
   const marker = L.marker(latlng, { icon }).on("click", () => showDayDetail(day));
 
-  marker.bindTooltip(`Day ${day.day} · ${day.finish}`, {
+  marker.bindTooltip(`Day ${day.day} · ${tooltipLocation}`, {
     direction: "top",
     offset: [0, -size / 2]
   });
@@ -633,29 +677,47 @@ function showDayDetail(day) {
   const panel = document.getElementById("day-detail");
   const content = document.getElementById("detail-content");
 
-  const dateStr = new Date(day.date).toLocaleDateString("en-GB", {
+  if (!panel || !content) return;
+
+  const dateStr = new Date(`${day.date}T12:00:00`).toLocaleDateString("en-GB", {
     weekday: "long",
     day: "numeric",
     month: "long",
     year: "numeric"
   });
 
-  let html = `<h2>Day ${day.day}</h2><h3>${escapeHtml(day.finish)}</h3><p class="detail-date">${dateStr}</p>`;
+  let html = `<h2>Day ${escapeHtml(day.day)}</h2><h3>${escapeHtml(day.finish)}</h3><p class="detail-date">${escapeHtml(dateStr)}</p>`;
 
   if (day.type === "drive" && day.miles) {
-    html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime)}</div></div>`;
+    html += `<div class="detail-section"><div class="detail-label">Drove</div><div class="detail-value detail-miles">${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime || "")}</div></div>`;
+  }
 
-    if (day.start !== day.finish) {
-      html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${escapeHtml(day.start)}${day.via ? " → " + escapeHtml(day.via) : ""} → ${escapeHtml(day.finish)}</div></div>`;
-    }
+  const routeBits = [day.start, ...(day.viaStops || []), day.finish].filter(Boolean);
+  const uniqueRouteBits = routeBits.filter((place, index) => index === 0 || place !== routeBits[index - 1]);
+
+  if (uniqueRouteBits.length > 1) {
+    html += `<div class="detail-section"><div class="detail-label">Route</div><div class="detail-value">${uniqueRouteBits.map(escapeHtml).join(" → ")}</div></div>`;
   }
 
   if (day.event) {
-    html += `<div class="detail-section"><div class="detail-label">Event</div><div class="detail-value"><span class="event-badge">${escapeHtml(day.event.type)}</span>${escapeHtml(day.event.name)}</div></div>`;
-  }
+    const venue = day.event.venue
+      ? `<div class="detail-subvalue">${escapeHtml(day.event.venue)}</div>`
+      : "";
 
-  if (day.attractions && day.attractions.length) {
-    html += `<div class="detail-section"><div class="detail-label">Attractions</div><ul>${day.attractions.map(a => `<li>· ${escapeHtml(a)}</li>`).join("")}</ul></div>`;
+    const location = day.event.location
+      ? `<div class="detail-subvalue">${escapeHtml(day.event.location)}</div>`
+      : "";
+
+    html += `
+      <div class="detail-section">
+        <div class="detail-label">Event</div>
+        <div class="detail-value">
+          <span class="event-badge">${escapeHtml(day.event.type)}</span>${escapeHtml(day.event.name)}
+          ${venue}
+          ${location}
+        </div>
+      </div>
+    `;
   }
 
   if (day.hotel) {
@@ -669,12 +731,14 @@ function showDayDetail(day) {
 
 function closeDayDetail() {
   const panel = document.getElementById("day-detail");
+  if (!panel) return;
+
   panel.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
 }
 
 function getMaxDay() {
-  if (!tripData || !tripData.days || !tripData.days.length) return 93;
+  if (!tripData || !tripData.days || !tripData.days.length) return 90;
   return Math.max(...tripData.days.map(day => Number(day.day)));
 }
 
@@ -683,9 +747,7 @@ function getEventDays() {
   return tripData.days.filter(day => day.event);
 }
 
-function setEventsMode(active) {
-  eventsModeActive = Boolean(active);
-
+function updateEventsModeUi() {
   const menu = document.getElementById("trip-menu");
   const button = document.getElementById("events-toggle");
 
@@ -696,15 +758,20 @@ function setEventsMode(active) {
   if (button) {
     button.classList.toggle("active", eventsModeActive);
     button.setAttribute("aria-pressed", eventsModeActive ? "true" : "false");
-    button.textContent = eventsModeActive ? "Hide events" : "Highlight events";
+    button.textContent = eventsModeActive ? "Hide events on map" : "Highlight events on map";
   }
+}
+
+function setEventsMode(active) {
+  eventsModeActive = Boolean(active);
+  updateEventsModeUi();
 
   const targetDay = eventsModeActive ? getMaxDay() : lastUpToDay;
   renderRoute(targetDay, { instant: true });
 
   if (eventsModeActive) {
     const eventCoords = getEventDays()
-      .map(day => LOCATIONS[day.finish])
+      .map(day => getDayMarkerCoord(day))
       .filter(Boolean);
 
     if (eventCoords.length) {
@@ -713,6 +780,15 @@ function setEventsMode(active) {
       });
     }
   }
+}
+
+function focusDay(day, zoom = 7) {
+  const coord = getDayMarkerCoord(day);
+  if (!coord) return;
+
+  map.setView(coord, zoom, {
+    animate: true
+  });
 }
 
 function setupTripMenu() {
@@ -728,12 +804,12 @@ function setupTripMenu() {
 
   menu.innerHTML = `
     <button class="trip-menu-toggle" id="trip-menu-toggle" aria-expanded="false" aria-controls="trip-menu-content">
-      <span>Road Trip 2K15</span>
+      <span>${escapeHtml(tripData?.title || "Road Trip 2K15")}</span>
       <span class="trip-menu-chevron">▾</span>
     </button>
 
     <div class="trip-menu-content" id="trip-menu-content">
-      <p class="subtitle">San Fran → Miami, 18 Jun → 16 Sep</p>
+      <p class="subtitle">${escapeHtml(tripData?.subtitle || "San Fran → Miami, 18 Jun → 16 Sep")}</p>
 
       <div class="stats">
         <div class="stat">
@@ -792,14 +868,12 @@ function setupTripMenu() {
         <span id="compact-miles">—</span> mi
       </div>
 
-<div class="menu-section">
-  <a class="menu-page-link" href="events.html">
-    Sports & Events
-  </a>
+      <div class="menu-section">
+        <a class="menu-page-link" href="events.html">Sports & Events</a>
 
-  <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
-    Highlight events on map
-  </button>
+        <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
+          Highlight events on map
+        </button>
 
         <div class="events-list" id="events-list"></div>
       </div>
@@ -826,18 +900,16 @@ function setupTripMenu() {
       eventsList.innerHTML = eventDays.map(day => {
         const type = day.event?.type || "Event";
         const name = day.event?.name || "Event";
-        const finish = day.finish || "";
-        const date = day.date
-          ? new Date(day.date).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "short"
-            })
+        const venue = day.event?.venue ? ` · ${day.event.venue}` : "";
+        const finish = day.event?.location || day.finish || "";
+        const date = day.event?.date || day.date
+          ? formatDate(day.event?.date || day.date)
           : "";
 
         return `
           <button class="event-list-item" data-event-day="${day.day}">
             <span class="event-list-title">${escapeHtml(type)} · ${escapeHtml(name)}</span>
-            <span class="event-list-meta">Day ${escapeHtml(day.day)} · ${escapeHtml(date)} · ${escapeHtml(finish)}</span>
+            <span class="event-list-meta">Day ${escapeHtml(day.day)} · ${escapeHtml(date)} · ${escapeHtml(finish)}${escapeHtml(venue)}</span>
           </button>
         `;
       }).join("");
@@ -853,26 +925,9 @@ function setupTripMenu() {
       if (!day) return;
 
       eventsModeActive = true;
-
-      const button = document.getElementById("events-toggle");
-      if (button) {
-        button.classList.add("active");
-        button.setAttribute("aria-pressed", "true");
-        button.textContent = "Hide events";
-      }
-
-      menu.classList.add("events-open");
-
+      updateEventsModeUi();
       renderRoute(dayNumber, { instant: true });
-
-      const coord = LOCATIONS[day.finish];
-
-      if (coord) {
-        map.setView(coord, 7, {
-          animate: true
-        });
-      }
-
+      focusDay(day);
       showDayDetail(day);
     });
   }
@@ -948,11 +1003,19 @@ function renderRoute(upToDay, options = {}) {
 
   lastUpToDay = upToDay;
 
+  const maxDay = getMaxDay();
+
   const currentDayEl = document.getElementById("current-day");
   if (currentDayEl) currentDayEl.textContent = upToDay;
 
+  const totalDayEl = document.getElementById("total-days");
+  if (totalDayEl) totalDayEl.textContent = maxDay;
+
   const sliderEl = document.getElementById("timeline-slider");
-  if (sliderEl) sliderEl.value = upToDay;
+  if (sliderEl) {
+    sliderEl.max = maxDay;
+    sliderEl.value = upToDay;
+  }
 
   if (routeLayer) routeLayer.remove();
   if (flightLayer) flightLayer.remove();
@@ -965,21 +1028,21 @@ function renderRoute(upToDay, options = {}) {
   const flightSegments = [];
 
   for (const day of tripData.days) {
-    if (day.day > upToDay) break;
+    if (Number(day.day) > upToDay) break;
 
     const coord = LOCATIONS[day.finish];
-    if (!coord) continue;
+    if (!coord && day.type !== "flight") continue;
 
     if (day.type === "flight") {
-      if (LOCATIONS[day.start]) {
-        flightSegments.push([LOCATIONS[day.start], coord]);
+      if (LOCATIONS[day.start] && LOCATIONS[day.finish]) {
+        flightSegments.push([LOCATIONS[day.start], LOCATIONS[day.finish]]);
       }
     } else {
       let pts = day.roadPoints && day.roadPoints.length > 0
         ? [...day.roadPoints]
         : [coord];
 
-      if (day.day === upToDay && isPlaying) {
+      if (Number(day.day) === upToDay && isPlaying) {
         animatePoints = pts;
 
         if (staticPoints.length > 0) {
@@ -990,9 +1053,13 @@ function renderRoute(upToDay, options = {}) {
       }
     }
 
-    const marker = createMarker(day, coord);
-    marker.addTo(map);
-    allMarkers.push(marker);
+    const markerCoord = getDayMarkerCoord(day) || coord;
+
+    if (markerCoord) {
+      const marker = createMarker(day, markerCoord);
+      marker.addTo(map);
+      allMarkers.push(marker);
+    }
   }
 
   if (staticPoints.length > 1) {
@@ -1082,15 +1149,28 @@ function renderRoute(upToDay, options = {}) {
   }
 }
 
+function getRoutePlaces(day) {
+  const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
+
+  return [
+    day.start,
+    ...viaStops,
+    day.finish
+  ].filter(Boolean);
+}
+
 async function loadRealisticRoads() {
   const promises = tripData.days.map(async day => {
-    if (day.type === "drive" && day.start !== day.finish) {
-      const routePlaces = [
-        day.start,
-        ...(day.viaStops || []),
-        day.finish
-      ].filter(Boolean);
+    if (day.type === "flight") {
+      day.roadPoints = [];
+      return;
+    }
 
+    const routePlaces = getRoutePlaces(day);
+    const hasViaStops = Array.isArray(day.viaStops) && day.viaStops.length > 0;
+    const shouldRoute = day.type === "drive" || hasViaStops;
+
+    if (shouldRoute && routePlaces.length >= 2) {
       const coords = routePlaces
         .map(place => {
           const coord = LOCATIONS[place];
@@ -1128,6 +1208,92 @@ async function loadRealisticRoads() {
   });
 
   await Promise.all(promises);
+}
+
+function getAllRouteCoords() {
+  if (!tripData || !tripData.days) return [];
+
+  const coords = [];
+
+  tripData.days.forEach(day => {
+    getRoutePlaces(day).forEach(place => {
+      if (LOCATIONS[place]) coords.push(LOCATIONS[place]);
+    });
+
+    if (day.event?.location && LOCATIONS[day.event.location]) {
+      coords.push(LOCATIONS[day.event.location]);
+    }
+  });
+
+  return coords;
+}
+
+function applyStatsToMenu() {
+  const rawMiles = Number(tripData?.stats?.milesDriven) || 0;
+  const estimatedMiles = rawMiles * LOCAL_DRIVING_MARKUP;
+  const estimatedKm = estimatedMiles * MILES_TO_KM;
+
+  const stats = {
+    days: tripData?.stats?.days || getMaxDay(),
+    countries: COUNTRIES_VISITED,
+    states: tripData?.stats?.states || 48,
+    provinces: tripData?.stats?.provinces || 4,
+    km: formatFullStat(estimatedKm),
+    miles: formatFullStat(estimatedMiles)
+  };
+
+  const values = {
+    "stat-days": stats.days,
+    "stat-countries": stats.countries,
+    "stat-states": stats.states,
+    "stat-provinces": stats.provinces,
+    "stat-km": stats.km,
+    "stat-miles": stats.miles,
+    "compact-days": stats.days,
+    "compact-countries": stats.countries,
+    "compact-states": stats.states,
+    "compact-provinces": stats.provinces,
+    "compact-km": stats.km,
+    "compact-miles": stats.miles
+  };
+
+  Object.entries(values).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  });
+}
+
+function applyTimelineMax() {
+  const maxDay = getMaxDay();
+
+  const slider = document.getElementById("timeline-slider");
+  if (slider) {
+    slider.min = 0;
+    slider.max = maxDay;
+  }
+
+  const totalDayEl = document.getElementById("total-days");
+  if (totalDayEl) totalDayEl.textContent = maxDay;
+}
+
+function handleInitialUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const dayNumber = Number(params.get("day"));
+  const shouldShowEvents = params.get("events") === "1";
+
+  if (shouldShowEvents) {
+    eventsModeActive = true;
+    updateEventsModeUi();
+  }
+
+  if (!Number.isFinite(dayNumber) || dayNumber <= 0) return;
+
+  const day = tripData.days.find(d => Number(d.day) === dayNumber);
+  if (!day) return;
+
+  renderRoute(dayNumber, { instant: true });
+  focusDay(day);
+  showDayDetail(day);
 }
 
 async function init() {
@@ -1215,28 +1381,13 @@ async function init() {
   await loadRealisticRoads();
 
   setupTripMenu();
+  applyStatsToMenu();
+  applyTimelineMax();
 
-  const rawMiles = Number(tripData.stats.milesDriven) || 0;
-  const estimatedMiles = rawMiles * LOCAL_DRIVING_MARKUP;
-  const estimatedKm = estimatedMiles * MILES_TO_KM;
+  const maxDay = getMaxDay();
+  renderRoute(maxDay, { instant: true });
 
-  document.getElementById("stat-days").textContent = tripData.stats.days;
-  document.getElementById("stat-countries").textContent = COUNTRIES_VISITED;
-  document.getElementById("stat-states").textContent = tripData.stats.states;
-  document.getElementById("stat-provinces").textContent = tripData.stats.provinces;
-  document.getElementById("stat-km").textContent = formatFullStat(estimatedKm);
-  document.getElementById("stat-miles").textContent = formatFullStat(estimatedMiles);
-
-  document.getElementById("compact-days").textContent = tripData.stats.days;
-  document.getElementById("compact-countries").textContent = COUNTRIES_VISITED;
-  document.getElementById("compact-states").textContent = tripData.stats.states;
-  document.getElementById("compact-provinces").textContent = tripData.stats.provinces;
-  document.getElementById("compact-km").textContent = formatFullStat(estimatedKm);
-  document.getElementById("compact-miles").textContent = formatFullStat(estimatedMiles);
-
-  renderRoute(93, { instant: true });
-
-  const allCoords = tripData.days.map(d => LOCATIONS[d.finish]).filter(Boolean);
+  const allCoords = getAllRouteCoords();
 
   if (allCoords.length) {
     map.fitBounds(L.latLngBounds(allCoords), {
@@ -1244,7 +1395,10 @@ async function init() {
     });
   }
 
-  document.getElementById("close-detail").addEventListener("click", closeDayDetail);
+  const closeDetail = document.getElementById("close-detail");
+  if (closeDetail) {
+    closeDetail.addEventListener("click", closeDayDetail);
+  }
 
   requestAnimationFrame(engineLoop);
 
@@ -1257,6 +1411,8 @@ async function init() {
     carSpeed: CAR_SPEED,
     localDrivingMarkup: LOCAL_DRIVING_MARKUP
   };
+
+  handleInitialUrlParams();
 }
 
 init();
