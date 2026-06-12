@@ -14,10 +14,6 @@ body {
   color: #111;
 }
 
-body {
-  position: relative;
-}
-
 #map {
   position: fixed;
   inset: 0;
@@ -30,140 +26,165 @@ body {
   width: 100%;
   height: 100%;
   background: #050505;
-  font-family: "Inter", system-ui, sans-serif;
-}
-
-.leaflet-control-zoom {
-  border: none !important;
-  box-shadow: 0 4px 18px rgba(0,0,0,0.24) !important;
-  overflow: hidden;
-  border-radius: 12px !important;
-}
-
-.leaflet-control-zoom a {
-  width: 48px !important;
-  height: 48px !important;
-  line-height: 46px !important;
-  font-size: 28px !important;
-  font-weight: 800 !important;
-  color: #111 !important;
-  background: rgba(250,250,247,0.96) !important;
-  border: none !important;
-}
-
-.leaflet-control-zoom a:hover {
-  background: #fff !important;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .leaflet-control-attribution {
-  font-family: "Inter", system-ui, sans-serif !important;
-  font-size: 11px !important;
-  background: rgba(250,250,247,0.78) !important;
-  color: rgba(0,0,0,0.72) !important;
-  border-radius: 5px 0 0 0 !important;
-  padding: 2px 6px !important;
+  font-size: 10px !important;
+  background: rgba(250, 250, 247, 0.72) !important;
+  color: rgba(0, 0, 0, 0.58) !important;
+  border-radius: 6px 0 0 0;
 }
 
-/* Day detail side panel */
+.leaflet-control-attribution a {
+  color: rgba(0, 0, 0, 0.7) !important;
+}
+
+.leaflet-control-zoom {
+  border: 0 !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18) !important;
+}
+
+.leaflet-control-zoom a {
+  width: 34px !important;
+  height: 34px !important;
+  line-height: 33px !important;
+  border: 0 !important;
+  background: rgba(250, 250, 247, 0.94) !important;
+  color: #111 !important;
+  font-weight: 800;
+}
+
+.leaflet-control-zoom a:first-child {
+  border-radius: 9px 9px 0 0 !important;
+}
+
+.leaflet-control-zoom a:last-child {
+  border-radius: 0 0 9px 9px !important;
+}
+
+.leaflet-bottom.leaflet-left {
+  bottom: 126px;
+}
+
+.leaflet-tooltip {
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(250, 250, 247, 0.94) !important;
+  color: #111 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
+  padding: 6px 9px !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.01em;
+}
+
+.leaflet-tooltip::before {
+  display: none !important;
+}
+
+/* DAY / PLACE DETAIL PANEL */
 
 .day-detail {
   position: absolute;
   top: 20px;
   right: 20px;
-  z-index: 850;
+  bottom: 26px;
+  z-index: 760;
   width: min(390px, calc(100vw - 40px));
-  max-height: calc(100dvh - 40px);
-  overflow-y: auto;
-
-  background: rgba(250,250,247,0.97);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(20,20,20,0.14);
-  border-radius: 18px;
-  box-shadow: 0 14px 42px rgba(0,0,0,0.28);
-
-  padding: 24px;
-  transform: translateX(calc(100% + 30px));
-  opacity: 0;
-  pointer-events: none;
-  transition: transform 0.24s ease, opacity 0.24s ease;
+  background: rgba(250, 250, 247, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.22);
+  transform: translateX(calc(100% + 40px));
+  transition: transform 0.22s ease;
+  overflow: hidden;
+  color: #111;
 }
 
 .day-detail.open {
   transform: translateX(0);
-  opacity: 1;
-  pointer-events: auto;
 }
 
 .close-btn {
   position: absolute;
-  top: 12px;
+  top: 11px;
   right: 12px;
-
-  width: 34px;
-  height: 34px;
-  border: none;
+  z-index: 2;
+  width: 32px;
+  height: 32px;
+  border: 0;
   border-radius: 999px;
-
-  background: rgba(0,0,0,0.08);
+  background: rgba(0, 0, 0, 0.07);
   color: #111;
-  font-size: 25px;
-  line-height: 1;
+  font-size: 24px;
+  line-height: 28px;
+  font-weight: 500;
   cursor: pointer;
 }
 
 .close-btn:hover {
-  background: rgba(0,0,0,0.14);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.detail-content {
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 22px 22px;
 }
 
 .detail-content h2 {
-  margin: 0 0 4px;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  color: rgba(0,0,0,0.48);
-  font-weight: 850;
+  margin: 0 38px 4px 0;
+  font-size: 24px;
+  line-height: 1.08;
+  font-weight: 900;
+  letter-spacing: -0.05em;
 }
 
 .detail-content h3 {
-  margin: 0;
-  font-size: 28px;
-  line-height: 1.08;
-  letter-spacing: -0.04em;
-  font-weight: 900;
-  color: #111;
+  margin: 0 38px 6px 0;
+  font-size: 15px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.72);
 }
 
 .detail-date {
-  margin: 8px 0 22px;
-  font-size: 14px;
-  color: rgba(0,0,0,0.58);
+  margin: 0 0 18px;
+  font-size: 13px;
   font-weight: 650;
+  color: rgba(0, 0, 0, 0.56);
 }
 
 .detail-section {
-  border-top: 1px solid rgba(0,0,0,0.10);
-  padding-top: 15px;
-  margin-top: 15px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+}
+
+.detail-section:last-child {
+  padding-bottom: 0;
 }
 
 .detail-label {
-  margin-bottom: 5px;
-  font-size: 11px;
-  text-transform: uppercase;
+  margin-bottom: 7px;
+  font-size: 10px;
+  font-weight: 900;
   letter-spacing: 0.14em;
-  color: rgba(0,0,0,0.48);
-  font-weight: 850;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.48);
 }
 
 .detail-value {
-  font-size: 15px;
-  line-height: 1.45;
-  color: #111;
-  font-weight: 700;
+  font-size: 14px;
+  line-height: 1.48;
+  font-weight: 650;
+  color: rgba(0, 0, 0, 0.86);
 }
 
 .detail-miles {
   font-family: "JetBrains Mono", monospace;
+  font-weight: 800;
 }
 
 .detail-subvalue {
@@ -173,79 +194,107 @@ body {
 }
 
 .event-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
+  display: inline-block;
   margin-right: 8px;
   padding: 3px 7px;
   border-radius: 999px;
-
   background: #111;
   color: #FAFAF7;
-
-  font-family: "JetBrains Mono", monospace;
   font-size: 10px;
-  font-weight: 850;
-  letter-spacing: 0.04em;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  vertical-align: 1px;
 }
 
-/* Homepage controller */
+.detail-day-row {
+  padding: 9px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.detail-day-row:last-child {
+  border-bottom: none;
+}
+
+.detail-day-title {
+  font-size: 13px;
+  font-weight: 850;
+  margin-bottom: 4px;
+  color: #111;
+}
+
+.detail-route-line {
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.86;
+}
+
+.detail-route-line strong {
+  font-weight: 950;
+}
+
+.detail-role-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  font-size: 10px;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(0, 0, 0, 0.62);
+  vertical-align: 1px;
+}
+
+/* TIMELINE CONTROLLER */
 
 .timeline {
   position: absolute;
   left: 50%;
-  right: auto;
   bottom: 26px;
   transform: translateX(-50%);
   z-index: 650;
-
   width: min(760px, calc(100vw - 64px));
-  min-height: 0;
-
-  background: rgba(250,250,247,0.96);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(20,20,20,0.14);
-  border-radius: 22px;
-  box-shadow: 0 10px 32px rgba(0,0,0,0.22);
-
-  padding: 16px 18px 15px;
+  background: rgba(250, 250, 247, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 8px 34px rgba(0, 0, 0, 0.2);
+  padding: 15px 17px 14px;
+  color: #111;
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto;
-  gap: 12px;
-
-  overflow: hidden;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    "top stats"
+    "track track";
+  column-gap: 15px;
+  row-gap: 12px;
 }
 
 .timeline-top {
-  display: grid;
-  grid-template-columns: 64px 1fr;
+  grid-area: top;
+  display: flex;
   align-items: center;
-  gap: 16px;
-  width: 100%;
+  gap: 12px;
+  min-width: 170px;
 }
 
 .play-btn {
-  width: 58px;
-  height: 58px;
-  min-width: 58px;
-  min-height: 58px;
-
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  border: 0;
   border-radius: 999px;
-  border: none;
   background: #111;
   color: #FAFAF7;
-
+  font-size: 18px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
   display: flex;
   align-items: center;
   justify-content: center;
-
-  font-size: 18px;
-  font-weight: 900;
-  line-height: 1;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
 }
 
 .play-btn:hover {
@@ -253,494 +302,143 @@ body {
 }
 
 .timeline-main-counter {
-  justify-self: end;
-
+  min-width: 104px;
   display: flex;
   align-items: baseline;
-  justify-content: flex-end;
-  gap: 7px;
-
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 900;
-  color: #111;
+  justify-content: flex-start;
+  gap: 4px;
   line-height: 1;
   white-space: nowrap;
 }
 
 .timeline-day-label {
-  font-family: "Inter", system-ui, sans-serif;
-  font-size: 13px;
-  font-weight: 900;
-  text-transform: uppercase;
-  letter-spacing: 0.16em;
-  color: rgba(0,0,0,0.54);
-  margin-right: 5px;
-}
-
-#current-day,
-#total-days {
-  font-size: 38px;
+  margin-right: 2px;
+  font-size: 10px;
   font-weight: 950;
-  letter-spacing: -0.07em;
+  text-transform: uppercase;
+  letter-spacing: 0.13em;
+  color: rgba(0, 0, 0, 0.48);
 }
 
-.timeline-slash {
-  font-size: 28px;
-  font-weight: 800;
-  color: rgba(0,0,0,0.38);
+#current-day {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  color: #111;
+}
+
+.timeline-slash,
+#total-days {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 18px;
+  font-weight: 850;
+  color: rgba(0, 0, 0, 0.5);
 }
 
 .timeline-stats {
-  width: 100%;
-
+  grid-area: stats;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
-
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  font-weight: 800;
-  color: rgba(0,0,0,0.62);
-  white-space: nowrap;
-}
-
-.timeline-stats > span:not(.timeline-dot) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-
   min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-
-  padding: 8px 9px;
-  border-radius: 11px;
-  background: rgba(255,255,255,0.74);
-  border: 1px solid rgba(0,0,0,0.09);
+  align-items: stretch;
 }
-
-.timeline-stats strong {
-  color: #111;
-  font-weight: 950;
-}
-
-.timeline-dot {
-  display: none;
-}
-
-.timeline-track {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 7px;
-  min-width: 0;
-}
-
-#timeline-slider {
-  width: 100%;
-  height: 18px;
-  margin: 0;
-  cursor: pointer;
-  accent-color: #F05A28;
-}
-
-#timeline-slider::-webkit-slider-runnable-track {
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.10);
-}
-
-#timeline-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 22px;
-  height: 22px;
-  margin-top: -8.5px;
-  border-radius: 999px;
-  border: 3px solid #FAFAF7;
-  background: #F05A28;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-}
-
-#timeline-slider::-moz-range-track {
-  height: 5px;
-  border-radius: 999px;
-  background: rgba(0,0,0,0.10);
-}
-
-#timeline-slider::-moz-range-thumb {
-  width: 22px;
-  height: 22px;
-  border-radius: 999px;
-  border: 3px solid #FAFAF7;
-  background: #F05A28;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-}
-
-.timeline-labels {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  font-weight: 750;
-  color: rgba(0,0,0,0.52);
-}
-
-.day-counter {
-  display: none;
-}
-
-/* Mobile */
-
-@media (max-width: 640px) {
-  .trip-menu {
-    top: 12px !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: auto !important;
-    max-width: none !important;
-  }
-
-  .trip-menu.open {
-    max-height: calc(100dvh - 190px) !important;
-    overflow-y: auto !important;
-  }
-
-  .timeline {
-    left: 12px;
-    right: 12px;
-    bottom: calc(env(safe-area-inset-bottom) + 12px);
-    transform: none;
-    width: auto;
-
-    border-radius: 20px;
-    padding: 13px 13px 12px;
-    gap: 10px;
-  }
-
-  .timeline-top {
-    grid-template-columns: 54px 1fr;
-    gap: 10px;
-  }
-
-  .play-btn {
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
-    min-height: 52px;
-    font-size: 16px;
-  }
-
-  .timeline-main-counter {
-    gap: 5px;
-  }
-
-  .timeline-day-label {
-    font-size: 10px;
-    letter-spacing: 0.13em;
-    margin-right: 2px;
-  }
-
-  #current-day,
-  #total-days {
-    font-size: 30px;
-    letter-spacing: -0.075em;
-  }
-
-  .timeline-slash {
-    font-size: 22px;
-  }
-
-  .timeline-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
-    font-size: 10px;
-  }
-
-  .timeline-stats > span:not(.timeline-dot) {
-    padding: 7px 5px;
-    border-radius: 9px;
-  }
-
-  .timeline-labels {
-    display: none;
-  }
-
-  #timeline-slider {
-    height: 20px;
-  }
-
-  .leaflet-bottom.leaflet-left {
-    bottom: calc(env(safe-area-inset-bottom) + 166px) !important;
-    left: 12px !important;
-  }
-
-  .leaflet-bottom.leaflet-right {
-    bottom: calc(env(safe-area-inset-bottom) + 2px) !important;
-    right: 6px !important;
-  }
-
-  .leaflet-control-attribution {
-    font-size: 10px !important;
-    max-width: 58vw !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
-    opacity: 0.72 !important;
-  }
-
-  .day-detail {
-    top: auto;
-    left: 12px;
-    right: 12px;
-    bottom: calc(env(safe-area-inset-bottom) + 12px);
-    width: auto;
-    max-height: calc(100dvh - 110px);
-
-    border-radius: 20px;
-    padding: 22px 18px 20px;
-
-    transform: translateY(calc(100% + 28px));
-  }
-
-  .day-detail.open {
-    transform: translateY(0);
-  }
-
-  .detail-content h3 {
-    font-size: 25px;
-  }
-}
-
-/* MOVE ROLLING STATS INTO TOP CONTROLLER ROW */
-
-body .timeline {
-  grid-template-columns: auto minmax(0, 1fr) auto !important;
-  grid-template-rows: auto auto !important;
-  grid-template-areas:
-    "play stats day"
-    "track track track" !important;
-  align-items: center !important;
-  column-gap: 16px !important;
-  row-gap: 13px !important;
-}
-
-body .timeline-top {
-  display: contents !important;
-}
-
-body .play-btn {
-  grid-area: play !important;
-}
-
-body .timeline-main-counter {
-  grid-area: day !important;
-  justify-self: end !important;
-}
-
-body .timeline-stats {
-  grid-area: stats !important;
-  align-self: center !important;
-
-  display: grid !important;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-  gap: 8px !important;
-
-  margin: 0 !important;
-  min-width: 0 !important;
-}
-
-body .timeline-stats > span:not(.timeline-dot) {
-  padding: 8px 9px !important;
-  min-height: 42px !important;
-}
-
-body .timeline-track {
-  grid-area: track !important;
-}
-
-/* Mobile tightening */
-@media (max-width: 640px) {
-  body .timeline {
-    grid-template-columns: 54px minmax(0, 1fr) auto !important;
-    grid-template-areas:
-      "play stats day"
-      "track track track" !important;
-    column-gap: 8px !important;
-    row-gap: 10px !important;
-  }
-
-  body .timeline-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 4px !important;
-    font-size: 9px !important;
-  }
-
-  body .timeline-stats > span:not(.timeline-dot) {
-    padding: 6px 3px !important;
-    min-height: 38px !important;
-  }
-
-  body #current-day,
-  body #total-days {
-    font-size: 28px !important;
-  }
-
-  body .timeline-day-label {
-    font-size: 9px !important;
-  }
-
-  body .timeline-slash {
-    font-size: 20px !important;
-  }
-}
-
-/* MOBILE CONTROLLER REFINEMENT: LABELS ABOVE VALUES */
 
 .timeline-stat-box {
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(0, 0, 0, 0.09);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  min-width: 0;
-  padding: 7px 8px;
-  border-radius: 11px;
-  background: rgba(255,255,255,0.74);
-  border: 1px solid rgba(0,0,0,0.09);
 }
 
 .timeline-stat-label {
-  margin-bottom: 3px;
-  font-family: "Inter", system-ui, sans-serif;
+  margin-bottom: 4px;
   font-size: 9px;
-  font-weight: 900;
+  font-weight: 950;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(0,0,0,0.48);
+  letter-spacing: 0.13em;
+  color: rgba(0, 0, 0, 0.46);
   white-space: nowrap;
 }
 
 .timeline-stat-value {
   font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 850;
   color: #111;
   white-space: nowrap;
+  letter-spacing: -0.03em;
 }
 
 .timeline-stat-value strong {
   font-weight: 950;
 }
 
-@media (max-width: 640px) {
-  body .timeline {
-    grid-template-columns: 54px minmax(0, 1fr) !important;
-    grid-template-rows: auto auto auto !important;
-    grid-template-areas:
-      "play day"
-      "stats stats"
-      "track track" !important;
-    column-gap: 10px !important;
-    row-gap: 10px !important;
-  }
-
-  body .play-btn {
-    grid-area: play !important;
-    align-self: center !important;
-  }
-
-  body .timeline-main-counter {
-    grid-area: day !important;
-    justify-self: end !important;
-
-    display: grid !important;
-    grid-template-columns: auto auto auto !important;
-    grid-template-areas:
-      "label label label"
-      "current slash total" !important;
-    align-items: end !important;
-    justify-items: end !important;
-    column-gap: 5px !important;
-    row-gap: 2px !important;
-  }
-
-  body .timeline-day-label {
-    grid-area: label !important;
-    margin: 0 !important;
-    justify-self: end !important;
-    font-size: 9px !important;
-    letter-spacing: 0.18em !important;
-  }
-
-  body #current-day {
-    grid-area: current !important;
-  }
-
-  body .timeline-slash {
-    grid-area: slash !important;
-  }
-
-  body #total-days {
-    grid-area: total !important;
-  }
-
-  body #current-day,
-  body #total-days {
-    font-size: 31px !important;
-    line-height: 0.95 !important;
-  }
-
-  body .timeline-slash {
-    font-size: 21px !important;
-    line-height: 1 !important;
-  }
-
-  body .timeline-stats {
-    grid-area: stats !important;
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 7px !important;
-    width: 100% !important;
-    margin: 0 !important;
-  }
-
-  body .timeline-stat-box,
-  body .timeline-stats > span:not(.timeline-dot) {
-    min-height: 50px !important;
-    padding: 7px 4px !important;
-    border-radius: 10px !important;
-  }
-
-  body .timeline-stat-label {
-    font-size: 8px !important;
-    letter-spacing: 0.10em !important;
-  }
-
-  body .timeline-stat-value {
-    font-size: 11px !important;
-  }
-
-  body .timeline-track {
-    grid-area: track !important;
-  }
+.timeline-track {
+  grid-area: track;
+  min-width: 0;
 }
 
-/* Reduce visible raster tile seams */
-.leaflet-tile {
-  border: none !important;
-  outline: 1px solid transparent !important;
+#timeline-slider {
+  width: 100%;
+  height: 22px;
+  margin: 0;
+  accent-color: #111;
+  cursor: pointer;
 }
 
-.leaflet-tile-container img {
-  backface-visibility: hidden;
-  transform: translateZ(0);
+#timeline-slider::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.16);
 }
 
-/* Desktop Chrome tile seam fix only */
+#timeline-slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6.5px;
+  border-radius: 999px;
+  background: #111;
+  border: 3px solid #FAFAF7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+#timeline-slider::-moz-range-track {
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+#timeline-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  background: #111;
+  border: 3px solid #FAFAF7;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+.timeline-labels {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.44);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* DESKTOP CHROME TILE SEAM FIX ONLY */
+
 @media (min-width: 641px) {
   .leaflet-tile.map-base-tile,
   .leaflet-tile.map-label-tile {
@@ -753,9 +451,147 @@ body .timeline-track {
   }
 }
 
-/* Hide Leaflet zoom buttons on mobile */
+/* MOBILE */
+
 @media (max-width: 640px) {
   .leaflet-control-zoom {
     display: none !important;
+  }
+
+  .leaflet-control-attribution {
+    font-size: 9px !important;
+    max-width: 72vw;
+  }
+
+  .day-detail {
+    top: auto;
+    left: 10px;
+    right: 10px;
+    bottom: 112px;
+    width: auto;
+    max-height: calc(100dvh - 132px);
+    transform: translateY(calc(100% + 132px));
+    border-radius: 15px;
+  }
+
+  .day-detail.open {
+    transform: translateY(0);
+  }
+
+  .detail-content {
+    padding: 20px 17px 18px;
+  }
+
+  .detail-content h2 {
+    font-size: 21px;
+    margin-right: 36px;
+  }
+
+  .detail-content h3 {
+    font-size: 14px;
+    margin-right: 36px;
+  }
+
+  .timeline {
+    left: 9px;
+    right: 9px;
+    bottom: 9px;
+    transform: none;
+    width: auto;
+    padding: 12px;
+    border-radius: 15px;
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "top"
+      "stats"
+      "track";
+    row-gap: 9px;
+  }
+
+  .timeline-top {
+    display: grid;
+    grid-template-columns: 50px minmax(0, 1fr);
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .play-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+
+  .timeline-main-counter {
+    min-width: 0;
+    height: 50px;
+    padding: 7px 10px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 0, 0, 0.09);
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+  }
+
+  .timeline-day-label {
+    font-size: 9px;
+  }
+
+  #current-day {
+    font-size: 30px;
+  }
+
+  .timeline-slash,
+  #total-days {
+    font-size: 16px;
+  }
+
+  .timeline-stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .timeline-stat-box {
+    padding: 7px 5px;
+    border-radius: 11px;
+  }
+
+  .timeline-stat-label {
+    margin-bottom: 3px;
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+
+  .timeline-stat-value {
+    font-size: 10.5px;
+    letter-spacing: -0.05em;
+  }
+
+  #timeline-slider {
+    height: 20px;
+  }
+
+  .timeline-labels {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .timeline-stat-label {
+    font-size: 7.5px;
+    letter-spacing: 0.08em;
+  }
+
+  .timeline-stat-value {
+    font-size: 10px;
+  }
+
+  #current-day {
+    font-size: 28px;
+  }
+
+  .timeline-slash,
+  #total-days {
+    font-size: 15px;
   }
 }
