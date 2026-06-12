@@ -495,6 +495,27 @@ style.innerHTML = `
     .events-list {
       max-height: 290px;
     }
+
+    .menu-page-link {
+  display: block;
+  width: 100%;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid #111;
+  background: #111;
+  color: #FAFAF7;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.menu-page-link:hover {
+  background: #000;
+}
+
   }
 `;
 document.head.appendChild(style);
@@ -771,10 +792,14 @@ function setupTripMenu() {
         <span id="compact-miles">—</span> mi
       </div>
 
-      <div class="menu-section">
-        <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
-          Highlight events
-        </button>
+<div class="menu-section">
+  <a class="menu-page-link" href="events.html">
+    Sports & Events
+  </a>
+
+  <button class="menu-action-btn" id="events-toggle" aria-pressed="false">
+    Highlight events on map
+  </button>
 
         <div class="events-list" id="events-list"></div>
       </div>
