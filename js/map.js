@@ -100,6 +100,103 @@ const LOCATIONS = {
   "East Rutherford": [40.8336, -74.0971]
 };
 
+const LOCATION_REGION_LABELS = {
+  "San Francisco Airport": "CA",
+  "Oakland": "CA",
+  "San Francisco": "CA",
+  "Chowchilla": "CA",
+  "San Luis Obispo": "CA",
+  "Santa Barbara": "CA",
+  "Los Angeles": "CA",
+  "San Diego": "CA",
+  "Palm Springs": "CA",
+  "Phoenix": "AZ",
+  "Alamogordo": "NM",
+  "Albuquerque": "NM",
+  "Page": "AZ",
+  "Las Vegas": "NV",
+  "Beaver": "UT",
+  "Rexburg": "ID",
+  "Boise": "ID",
+  "Portland": "OR",
+  "Seattle": "WA",
+  "Vancouver": "BC",
+  "Kamloops": "BC",
+  "Calgary": "AB",
+  "Great Falls": "MT",
+  "Glendive": "MT",
+  "Hot Springs": "SD",
+  "Denver": "CO",
+  "Amarillo": "TX",
+  "Dallas": "TX",
+  "Houston": "TX",
+  "New Orleans": "LA",
+  "West Memphis": "AR",
+  "Louisville": "KY",
+  "Indianapolis": "IN",
+  "Kansas City": "MO",
+  "Onalaska": "WI",
+  "Chicago": "IL",
+  "Windsor": "ON",
+  "Toronto": "ON",
+  "Montreal": "QC",
+  "Boston": "MA",
+  "New York": "NY",
+  "Philadelphia": "PA",
+  "Washington": "DC",
+  "Charlotte": "NC",
+  "Opelika": "AL",
+  "Gainesville": "FL",
+  "Orlando": "FL",
+  "West Palm Beach": "FL",
+  "Key West": "FL",
+  "Miami": "FL",
+  "Fort Lauderdale": "FL",
+  "Fort Lauderdale Airport": "FL",
+
+  "San Mateo Hayward Bridge": "CA",
+  "Richmond": "CA",
+  "San Rafael Bridge": "CA",
+  "Golden Gate Bridge": "CA",
+  "Yosemite NP": "CA",
+  "Monterey": "CA",
+  "Carmel": "CA",
+  "Santa Monica": "CA",
+  "Venice Beach": "CA",
+  "Long Beach": "CA",
+  "La Jolla": "CA",
+  "Las Cruces": "NM",
+  "Grand Canyon": "AZ",
+  "Cedar City": "UT",
+  "Salt Lake City": "UT",
+  "Yellowstone NP": "WY",
+  "Idaho Falls": "ID",
+  "Twin Falls": "ID",
+  "Lake Louise": "AB",
+  "Banff": "AB",
+  "Rapid City": "SD",
+  "Scottsbluff": "NE",
+  "Welcome to Oklahoma Sign, Devol OK": "OK",
+  "Jackson": "MS",
+  "Memphis": "TN",
+  "Nashville": "TN",
+  "Cincinnati": "OH",
+  "Cincinnatti": "OH",
+  "St Louis": "MO",
+  "Notre Dame": "IN",
+  "Detroit": "MI",
+  "Niagara Falls": "ON",
+  "Ottawa": "ON",
+  "Kittery, ME": "ME",
+  "Providence": "RI",
+  "New Haven": "CT",
+  "Delaware": "DE",
+  "Baltimore": "MD",
+  "Harpers Ferry": "WV",
+  "Arlington": "TX",
+  "East Rutherford": "NJ"
+};
+
 const EVENT_ICONS = {
   "MLB": "⚾",
   "NFL": "🏈",
@@ -419,6 +516,20 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
+function formatLocationWithRegion(place) {
+  if (!place) return "";
+
+  const region = LOCATION_REGION_LABELS[place];
+
+  if (!region) return place;
+
+  if (place.endsWith(`, ${region}`) || place.endsWith(` ${region}`)) {
+    return place;
+  }
+
+  return `${place}, ${region}`;
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -501,7 +612,7 @@ function addBoundaryLayers() {
         style: {
           color: "#ffffff",
           weight: 1,
-          opacity: 0.2,
+          opacity: 0.5,
           fillOpacity: 0
         }
       }).addTo(map);
@@ -517,7 +628,7 @@ function addBoundaryLayers() {
         style: {
           color: "#ffffff",
           weight: 1,
-          opacity: 0.2,
+          opacity: 0.5,
           fillOpacity: 0
         }
       }).addTo(map);
@@ -621,7 +732,7 @@ function createMarker(day, latlng) {
 
   const marker = L.marker(latlng, { icon }).on("click", () => showDayDetail(day));
 
-  marker.bindTooltip(`Day ${day.day} · ${tooltipLocation}`, {
+  marker.bindTooltip(`Day ${day.day} · ${formatLocationWithRegion(tooltipLocation)}`, {
     direction: "top",
     offset: [0, -size / 2]
   });
