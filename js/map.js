@@ -501,7 +501,7 @@ function addBoundaryLayers() {
         style: {
           color: "#ffffff",
           weight: 1,
-          opacity: 0.6,
+          opacity: 0.5,
           fillOpacity: 0
         }
       }).addTo(map);
@@ -517,7 +517,7 @@ function addBoundaryLayers() {
         style: {
           color: "#ffffff",
           weight: 1,
-          opacity: 0.55,
+          opacity: 0.5,
           fillOpacity: 0
         }
       }).addTo(map);
