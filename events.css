@@ -732,3 +732,25 @@ body {
     transform: translateX(-1px);
   }
 }
+
+/* Extra category logo sizing */
+
+.stub-brand .event-logo-concert,
+.stub-brand .event-logo-tv-show,
+.stub-brand .event-logo-boxing,
+.stub-brand .event-logo-nhl,
+.stub-brand .event-logo-comedy {
+  max-width: 82px;
+  max-height: 48px;
+}
+
+@media (max-width: 700px) {
+  .stub-brand .event-logo-concert,
+  .stub-brand .event-logo-tv-show,
+  .stub-brand .event-logo-boxing,
+  .stub-brand .event-logo-nhl,
+  .stub-brand .event-logo-comedy {
+    max-width: 64px;
+    max-height: 38px;
+  }
+}
