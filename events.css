@@ -206,10 +206,6 @@ body {
   bottom: -12px;
 }
 
-.ticket-stub-perfs {
-  display: none;
-}
-
 .ticket-topline {
   display: flex;
   align-items: center;
@@ -351,9 +347,9 @@ body {
 
 .barcode {
   position: relative;
-  width: 92px;
+  width: 128px;
   height: 52px;
-  margin: 18px 0 20px;
+  margin: 24px 0 28px;
   background:
     repeating-linear-gradient(
       to right,
@@ -382,6 +378,7 @@ body {
       transparent 19px,
       transparent 22px
     );
+  background-size: 128px 52px;
   opacity: 0.9;
   transform: rotate(90deg);
   transform-origin: center;
@@ -481,9 +478,10 @@ body {
   }
 
   .barcode {
-    width: 82px;
-    height: 46px;
-    margin: 16px 0 18px;
+    width: 112px;
+    height: 44px;
+    margin: 20px 0 24px;
+    background-size: 112px 44px;
   }
 
   .barcode::after {
