@@ -45,6 +45,7 @@ const LOCATIONS = {
   "Philadelphia": [39.9526, -75.1652],
   "Washington": [38.9072, -77.0369],
   "Charlotte": [35.2271, -80.8431],
+  "Atlanta": [33.7490, -84.3880],
   "Opelika": [32.6454, -85.3783],
   "Gainesville": [29.6516, -82.3248],
   "Orlando": [28.5383, -81.3792],
@@ -89,8 +90,12 @@ const LOCATIONS = {
   "Cincinnatti": [39.1031, -84.5120],
   "St Louis": [38.6270, -90.1994],
   "Notre Dame": [41.6993, -86.2389],
+  "University of Notre Dame": [41.7056, -86.2353],
+  "Michigan Stadium": [42.2658, -83.7487],
   "Detroit": [42.3314, -83.0458],
   "Niagara Falls": [43.0962, -79.0377],
+  "Hockey Hall of Fame": [43.6473, -79.3773],
+  "Toronto Island Park": [43.6210, -79.3786],
   "Ottawa": [45.4215, -75.6972],
   "Kittery, ME": [43.0881, -70.7362],
   "Providence": [41.8240, -71.4128],
@@ -112,6 +117,8 @@ const LOCATIONS = {
   "AT&T Stadium": [32.7473, -97.0945],
   "Cardinal Stadium": [38.2059, -85.7588],
   "Paul Brown Stadium": [39.0955, -84.5161],
+  "Anderson University": [40.1125, -85.6627],
+  "Lucas Oil Stadium": [39.7601, -86.1639],
   "Soldier Field": [41.8623, -87.6167],
   "U.S. Cellular Field": [41.8300, -87.6338],
   "Fenway Park": [42.3467, -71.0972],
@@ -122,6 +129,7 @@ const LOCATIONS = {
   "Citi Field": [40.7571, -73.8458],
   "Lincoln Financial Field": [39.9008, -75.1675],
   "Bank of America Stadium": [35.2258, -80.8528],
+  "Ben Hill Griffin Stadium": [29.6499, -82.3486],
 
   // Optional event-location overrides
   "Arlington": [32.7357, -97.1081],
@@ -173,6 +181,7 @@ const LOCATION_REGION_LABELS = {
   "Philadelphia": "PA",
   "Washington": "DC",
   "Charlotte": "NC",
+  "Atlanta": "GA",
   "Opelika": "AL",
   "Gainesville": "FL",
   "Orlando": "FL",
@@ -216,8 +225,12 @@ const LOCATION_REGION_LABELS = {
   "Cincinnatti": "OH",
   "St Louis": "MO",
   "Notre Dame": "IN",
+  "University of Notre Dame": "IN",
+  "Michigan Stadium": "MI",
   "Detroit": "MI",
   "Niagara Falls": "ON",
+  "Hockey Hall of Fame": "ON",
+  "Toronto Island Park": "ON",
   "Ottawa": "ON",
   "Kittery, ME": "ME",
   "Providence": "RI",
@@ -238,6 +251,8 @@ const LOCATION_REGION_LABELS = {
   "AT&T Stadium": "TX",
   "Cardinal Stadium": "KY",
   "Paul Brown Stadium": "OH",
+  "Anderson University": "IN",
+  "Lucas Oil Stadium": "IN",
   "Soldier Field": "IL",
   "U.S. Cellular Field": "IL",
   "Fenway Park": "MA",
@@ -248,6 +263,7 @@ const LOCATION_REGION_LABELS = {
   "Citi Field": "NY",
   "Lincoln Financial Field": "PA",
   "Bank of America Stadium": "NC",
+  "Ben Hill Griffin Stadium": "FL",
 
   "Arlington": "TX",
   "East Rutherford": "NJ"
@@ -266,8 +282,11 @@ const EVENT_VENUE_OVERRIDES = {
   43: "AT&T Stadium",
   51: "Cardinal Stadium",
   52: "Paul Brown Stadium",
+  54: "Anderson University",
+  55: "Lucas Oil Stadium",
   57: "Soldier Field",
   59: "U.S. Cellular Field",
+  62: "Hockey Hall of Fame",
   65: "Fenway Park",
   66: "MetLife Stadium",
   67: "Barclays Center",
@@ -275,7 +294,27 @@ const EVENT_VENUE_OVERRIDES = {
   71: "USTA Billie Jean King National Tennis Center",
   72: "Citi Field",
   74: "Lincoln Financial Field",
-  78: "Bank of America Stadium"
+  78: "Bank of America Stadium",
+  81: "Ben Hill Griffin Stadium"
+};
+
+const EVENT_ICONS = {
+  "MLB": "⚾",
+  "NFL": "🏈",
+  "NCAAF": "🏈",
+  "CFB": "🏈",
+  "MLS": "⚽",
+  "NHL": "🏒",
+  "MotoGP": "🏁",
+  "UFC": "🥊",
+  "UFC189": "🥊",
+  "Boxing": "🥊",
+  "WWE": "🤼",
+  "Tennis": "🎾",
+  "Concert": "🎤",
+  "Comedy": "🎭",
+  "Show": "📺",
+  "TV Show": "📺"
 };
 
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
@@ -557,6 +596,12 @@ style.innerHTML = `
 
   .detail-route-line strong {
     font-weight: 900;
+  }
+
+  .detail-subvalue {
+    margin-top: 4px;
+    font-size: 13px;
+    opacity: 0.72;
   }
 
   .detail-role-badge {
@@ -1404,7 +1449,7 @@ function greatCircleArc(start, end, segments = 64) {
     const B = Math.sin(f * d) / Math.sin(d);
 
     const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
-    const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+    const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
     const z = A * Math.sin(lat1) + B * Math.sin(lat2);
 
     points.push([
