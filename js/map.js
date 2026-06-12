@@ -379,13 +379,24 @@ style.innerHTML = `
   }
 
   .cx5-car {
-    width: 56px;
-    height: 32px;
-    margin-left: -28px;
-    margin-top: -16px;
+    width: 76px;
+    height: 43px;
+    margin-left: -38px;
+    margin-top: -21.5px;
     position: relative;
     z-index: 99999;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cx5-car img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
   }
 
   .trip-menu {
@@ -412,35 +423,10 @@ style.innerHTML = `
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 18px;
     font-weight: 800;
     letter-spacing: -0.02em;
     cursor: pointer;
-  }
-
-  .trip-menu-title-text {
-    font-family: "Bebas Neue", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 0.055em;
-    font-weight: 400;
-    color: #083c4d;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    order: 1;
-  }
-
-  .trip-menu-toggle::after {
-    content: "";
-    width: 84px;
-    height: 36px;
-    margin-left: auto;
-    margin-right: 12px;
-    background: url("assets/mazda-cx5-side.png") center / contain no-repeat;
-    opacity: 0.95;
-    flex: 0 0 auto;
-    order: 2;
   }
 
   .trip-menu-toggle:hover {
@@ -448,11 +434,8 @@ style.innerHTML = `
   }
 
   .trip-menu-chevron {
-    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 14px;
-    letter-spacing: 0;
     transition: transform 0.2s ease;
-    order: 3;
   }
 
   .trip-menu.open .trip-menu-chevron {
@@ -584,9 +567,9 @@ style.innerHTML = `
     box-sizing: border-box;
     text-align: center;
     text-decoration: none;
-    border: 1px solid rgba(0, 229, 255, 0.34);
-    background: linear-gradient(135deg, #083c4d 0%, #062f3c 100%);
-    color: #ffffff;
+    border: 1px solid #111;
+    background: #111;
+    color: #FAFAF7;
     border-radius: 8px;
     padding: 10px 12px;
     font-size: 13px;
@@ -596,8 +579,8 @@ style.innerHTML = `
   }
 
   .menu-page-link:hover {
-    background: linear-gradient(135deg, #0b6f86 0%, #083c4d 100%);
-    color: #ffffff;
+    background: #000;
+    color: #FAFAF7;
     text-decoration: none;
   }
 
@@ -1612,18 +1595,7 @@ function renderRoute(upToDay, options = {}) {
     if (!carMarker) {
       const carHtml = `
         <div class="cx5-car">
-          <svg viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="90" cy="82" rx="75" ry="10" fill="rgba(0,0,0,0.4)" filter="blur(3px)"/>
-            <circle cx="45" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
-            <circle cx="45" cy="75" r="7" fill="#555"/>
-            <circle cx="135" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
-            <circle cx="135" cy="75" r="7" fill="#555"/>
-            <path d="M 15 65 Q 12 55 20 45 L 45 42 L 75 25 Q 95 22 135 25 L 160 45 Q 168 55 165 65 Q 160 70 150 70 L 148 68 Q 135 58 122 68 L 58 68 Q 45 58 32 68 L 20 70 Z" fill="#181818" stroke="#444" stroke-width="1.5"/>
-            <path d="M 52 40 L 74 27 L 102 27 L 108 40 Z" fill="#080808"/>
-            <path d="M 112 40 L 105 27 L 132 27 L 145 40 Z" fill="#080808"/>
-            <path d="M 160 46 L 165 48 L 162 54 Z" fill="#FFFFEE"/>
-            <path d="M 20 46 L 15 48 L 17 54 Z" fill="#FF2222"/>
-          </svg>
+          <img src="assets/mazda-cx5-side.png" alt="Mazda CX-5" />
         </div>
       `;
 
