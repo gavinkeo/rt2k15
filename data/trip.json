@@ -323,6 +323,7 @@
         "name": "UFC 189: McGregor v Mendes / Lawler v MacDonald",
         "venue": "MGM Grand Garden Arena",
         "location": "Las Vegas",
+        "stubGraphic": "assets/logos/events/ufc189.png",
         "ticket": {
           "section": "213",
           "row": "H",
