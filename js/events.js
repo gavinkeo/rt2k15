@@ -35,10 +35,8 @@ function formatDate(dateString) {
 
 function normaliseType(type) {
   if (!type) return "Other";
-
   if (type === "UFC189") return "UFC";
   if (type === "CFB") return "NCAAF";
-
   return type;
 }
 
@@ -85,7 +83,11 @@ function getLogoPath(type) {
 }
 
 function getTicketCode(day, type, ticket = {}) {
-  return ticket.code || ticket.eventCode || `RT2K15-${String(day.day).padStart(2, "0")}-${normaliseType(type).toUpperCase()}`;
+  return (
+    ticket.code ||
+    ticket.eventCode ||
+    `RT2K15-${String(day.day).padStart(2, "0")}-${normaliseType(type).toUpperCase()}`
+  );
 }
 
 function tiltForIndex(index) {
@@ -114,15 +116,8 @@ function buildEventList(tripData) {
 
 function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
-
-  if (activeFilter === "Combat") {
-    return item.group === "Combat";
-  }
-
-  if (activeFilter === "Other") {
-    return item.group === "Other";
-  }
-
+  if (activeFilter === "Combat") return item.group === "Combat";
+  if (activeFilter === "Other") return item.group === "Other";
   return item.type === activeFilter || item.group === activeFilter;
 }
 
@@ -162,7 +157,6 @@ function renderEvents() {
 
     const showYoutube = Boolean(item.youtube);
     const showBoxscore = type === "MLB" && Boolean(item.boxscore);
-    const showActions = showYoutube || showBoxscore;
 
     const brandClass = logo ? "ticket-brand has-logo" : "ticket-brand no-logo";
 
@@ -175,13 +169,6 @@ function renderEvents() {
           onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');"
         >`
       : "";
-
-    const middleBrandMarkup = `
-      <div class="ticket-middle-brand ${brandClass}">
-        ${logoMarkup}
-        <span class="event-type">${escapeHtml(type)}</span>
-      </div>
-    `;
 
     const extraInfoMarkup = (section || row || seat || entry || doors || eventTime || price)
       ? `
@@ -238,6 +225,36 @@ function renderEvents() {
       `
       : "";
 
+    const stubActionsMarkup = (showYoutube || showBoxscore)
+      ? `
+        <div class="stub-actions">
+          ${showYoutube ? `
+            <a
+              class="stub-action youtube-link"
+              href="${escapeHtml(item.youtube)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch ${escapeHtml(item.name)} highlights on YouTube"
+            >
+              YouTube
+            </a>
+          ` : ""}
+
+          ${showBoxscore ? `
+            <a
+              class="stub-action boxscore-link"
+              href="${escapeHtml(item.boxscore)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View box score for ${escapeHtml(item.name)}"
+            >
+              Box Score
+            </a>
+          ` : ""}
+        </div>
+      `
+      : `<div class="stub-actions stub-actions-empty"></div>`;
+
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
         <div class="ticket-main">
@@ -249,37 +266,7 @@ function renderEvents() {
             ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
           </div>
 
-          ${middleBrandMarkup}
-
           ${extraInfoMarkup}
-
-          ${showActions ? `
-            <div class="ticket-actions">
-              ${showYoutube ? `
-                <a
-                  class="ticket-action youtube-link"
-                  href="${escapeHtml(item.youtube)}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Watch ${escapeHtml(item.name)} highlights on YouTube"
-                >
-                  ▶ YouTube
-                </a>
-              ` : ""}
-
-              ${showBoxscore ? `
-                <a
-                  class="ticket-action boxscore-link"
-                  href="${escapeHtml(item.boxscore)}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="View box score for ${escapeHtml(item.name)}"
-                >
-                  Box Score
-                </a>
-              ` : ""}
-            </div>
-          ` : ""}
 
           <div class="ticket-fineprint">
             <span>${escapeHtml(admission)}</span>
@@ -289,7 +276,18 @@ function renderEvents() {
         </div>
 
         <aside class="ticket-stub">
-          <div class="barcode" aria-hidden="true"></div>
+          <div class="stub-top">
+            <span class="stub-brand ${brandClass}">
+              ${logoMarkup}
+              <span class="event-type">${escapeHtml(type)}</span>
+            </span>
+
+            ${stubActionsMarkup}
+          </div>
+
+          <div class="barcode-wrap">
+            <div class="barcode" aria-hidden="true"></div>
+          </div>
         </aside>
       </article>
     `;
