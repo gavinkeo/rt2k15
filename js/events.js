@@ -282,10 +282,9 @@ function renderEvents() {
 
           ${extraInfoMarkup}
 
-          <div class="ticket-fineprint">
-            <span>Event Code ${escapeHtml(ticketCode)}</span>
-            <span>No refunds · No exchanges</span>
-          </div>
+<div class="ticket-fineprint">
+  <span>${escapeHtml(ticketCode)}</span>
+</div>
         </div>
 
         <aside class="ticket-stub">
