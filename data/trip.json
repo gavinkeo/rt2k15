@@ -35,7 +35,7 @@
       ],
       "event": {
         "type": "MLB",
-        "name": "Oakland Athletics v Los Angeles Angels",
+        "name": "Athletics v Angels",
         "venue": "Oakland Coliseum",
         "location": "Oakland"
       }
@@ -52,7 +52,7 @@
       ],
       "event": {
         "type": "Boxing",
-        "name": "Andre Ward v Paul Smith",
+        "name": "Ward v Smith",
         "venue": "Oracle Arena",
         "location": "Oakland"
       }
@@ -172,7 +172,7 @@
       "type": "stay",
       "event": {
         "type": "MLB",
-        "name": "San Diego Padres v Seattle Mariners",
+        "name": "Padres v Mariners",
         "venue": "Petco Park",
         "location": "San Diego"
       }
@@ -203,7 +203,7 @@
       "type": "stay",
       "event": {
         "type": "MLB",
-        "name": "Arizona Diamondbacks v Colorado Rockies",
+        "name": "D'Backs v Rockies",
         "venue": "Chase Field",
         "location": "Phoenix"
       }
@@ -361,7 +361,7 @@
       "drivingTime": "2:23",
       "event": {
         "type": "MLS",
-        "name": "Seattle Sounders v Colorado Rapids",
+        "name": "Sounders v Rapids",
         "venue": "Lumen Field",
         "location": "Seattle"
       }
@@ -595,7 +595,7 @@
       "drivingTime": "3:49",
       "event": {
         "type": "NFL",
-        "name": "Paul Brown Stadium",
+        "name": "Paul Brown Stadium Tour",
         "venue": "Paul Brown Stadium",
         "location": "Cincinnati"
       }
@@ -663,7 +663,7 @@
       "drivingTime": "3:52",
       "event": {
         "type": "NFL",
-        "name": "Chicago Bears v Miami Dolphins",
+        "name": "Bears v Dolphins",
         "venue": "Soldier Field",
         "location": "Chicago"
       }
@@ -767,7 +767,7 @@
       "type": "stay",
       "event": {
         "type": "MLB",
-        "name": "Boston Red Sox v Kansas City Royals",
+        "name": "Red Sox v Royals",
         "venue": "Fenway Park",
         "location": "Boston"
       }
@@ -787,7 +787,7 @@
       "drivingTime": "3:24",
       "event": {
         "type": "NFL",
-        "name": "New York Giants v Jacksonville Jaguars",
+        "name": "Giants v Jaguars",
         "venue": "MetLife Stadium",
         "location": "East Rutherford"
       }
@@ -800,7 +800,7 @@
       "type": "stay",
       "event": {
         "type": "WWE",
-        "name": "WWE Summerslam",
+        "name": "Summerslam",
         "venue": "Barclays Center",
         "location": "New York"
       }
@@ -827,7 +827,7 @@
       "type": "stay",
       "event": {
         "type": "MLB",
-        "name": "New York Yankees v Houston Astros",
+        "name": "Yankees v Astros",
         "venue": "Yankee Stadium",
         "location": "New York"
       }
@@ -841,7 +841,7 @@
       "event": {
         "type": "Tennis",
         "name": "US Open",
-        "venue": "Flushing Meadows",
+        "venue": "USTA Billie Jean King National Tennis Center",
         "location": "New York"
       }
     },
@@ -853,7 +853,7 @@
       "type": "stay",
       "event": {
         "type": "MLB",
-        "name": "New York Mets v Boston Red Sox",
+        "name": "Mets v Red Sox",
         "venue": "Citi Field",
         "location": "New York"
       }
@@ -917,7 +917,7 @@
       "type": "stay",
       "event": {
         "type": "CFB",
-        "name": "North Carolina Tar Heels v South Carolina Gamecocks",
+        "name": "North Carolina v South Carolina",
         "venue": "Bank of America Stadium",
         "location": "Charlotte"
       }
