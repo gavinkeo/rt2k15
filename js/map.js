@@ -446,6 +446,23 @@ function formatDate(dateString) {
   });
 }
 
+function parseDrivingTimeToMinutes(value) {
+  if (!value) return 0;
+
+  const [hours, minutes] = String(value).split(":").map(Number);
+
+  if (!Number.isFinite(hours)) return 0;
+
+  return (hours * 60) + (Number.isFinite(minutes) ? minutes : 0);
+}
+
+function formatDrivenTime(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  return `${hours}h ${String(minutes).padStart(2, "0")}m`;
+}
+
 function setupCarPane() {
   if (!map.getPane("carPane")) {
     const pane = map.createPane("carPane");
@@ -633,6 +650,64 @@ function closeDayDetail() {
 function getMaxDay() {
   if (!tripData || !tripData.days || !tripData.days.length) return 90;
   return Math.max(...tripData.days.map(day => Number(day.day)));
+}
+
+function getCumulativeTripStats(upToDay) {
+  let miles = 0;
+  let minutes = 0;
+  const states = new Set();
+
+  if (!tripData || !tripData.days) {
+    return {
+      miles: 0,
+      minutes: 0,
+      states: 0
+    };
+  }
+
+  tripData.days.forEach(day => {
+    if (Number(day.day) > Number(upToDay)) return;
+
+    if (day.miles) {
+      miles += Number(day.miles) || 0;
+    }
+
+    if (day.drivingTime) {
+      minutes += parseDrivingTimeToMinutes(day.drivingTime);
+    }
+
+    if (Array.isArray(day.newStates)) {
+      day.newStates.forEach(state => states.add(String(state).trim().toUpperCase()));
+    }
+  });
+
+  return {
+    miles,
+    minutes,
+    states: states.size
+  };
+}
+
+function updateRollingCounters(upToDay) {
+  const drivenDistanceEl = document.getElementById("driven-distance");
+  const drivenTimeEl = document.getElementById("driven-time");
+  const statesVisitedEl = document.getElementById("states-visited");
+
+  const stats = getCumulativeTripStats(upToDay);
+  const maxDay = getMaxDay();
+  const totalStates = Number(tripData?.stats?.states) || 48;
+
+  if (drivenDistanceEl) {
+    drivenDistanceEl.textContent = formatFullStat(stats.miles * LOCAL_DRIVING_MARKUP);
+  }
+
+  if (drivenTimeEl) {
+    drivenTimeEl.textContent = formatDrivenTime(stats.minutes);
+  }
+
+  if (statesVisitedEl) {
+    statesVisitedEl.textContent = stats.states || (Number(upToDay) >= maxDay ? totalStates : 0);
+  }
 }
 
 function getEventDays() {
@@ -842,6 +917,8 @@ function renderRoute(upToDay, options = {}) {
 
   const currentDayEl = document.getElementById("current-day");
   if (currentDayEl) currentDayEl.textContent = upToDay;
+
+  updateRollingCounters(upToDay);
 
   const totalDayEl = document.getElementById("total-days");
   if (totalDayEl) totalDayEl.textContent = maxDay;
@@ -1111,6 +1188,8 @@ function applyTimelineMax() {
 
   const totalDayEl = document.getElementById("total-days");
   if (totalDayEl) totalDayEl.textContent = maxDay;
+
+  updateRollingCounters(maxDay);
 }
 
 function handleInitialUrlParams() {
