@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Big Cities · RT2K15</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="places.css" />
+</head>
+
+<body data-place-type="city" data-page-title="Big Cities">
+  <div class="places-page">
+    <header class="places-hero">
+      <nav class="places-nav">
+        <a class="back-link" href="index.html">← Back to map</a>
+      </nav>
+
+      <div class="places-hero-main">
+        <div>
+          <p class="eyebrow">Road Trip 2K15</p>
+          <h1>Big Cities</h1>
+        </div>
+
+        <div class="places-summary" aria-label="Page summary">
+          <div class="summary-card">
+            <span class="summary-value" id="place-total">32</span>
+            <span class="summary-label">Cities</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="places-main">
+      <section class="places-intro">
+        <p>
+          The major city stops from coast to coast — from San Francisco to Miami.
+        </p>
+      </section>
+
+      <section class="places-grid" id="places-grid" aria-live="polite">
+        <div class="empty-state">Loading places…</div>
+      </section>
+    </main>
+  </div>
+
+  <div class="gallery-modal" id="gallery-modal" aria-hidden="true">
+    <div class="gallery-backdrop" data-gallery-close></div>
+
+    <section class="gallery-panel" role="dialog" aria-modal="true" aria-labelledby="gallery-title">
+      <button class="gallery-close" type="button" data-gallery-close aria-label="Close gallery">×</button>
+
+      <div class="gallery-image-wrap">
+        <button class="gallery-arrow gallery-prev" type="button" id="gallery-prev" aria-label="Previous photo">‹</button>
+
+        <div class="gallery-photo-frame">
+          <img class="gallery-image" id="gallery-image" alt="" />
+          <div class="gallery-placeholder" id="gallery-placeholder">
+            <span>No photo found yet</span>
+          </div>
+        </div>
+
+        <button class="gallery-arrow gallery-next" type="button" id="gallery-next" aria-label="Next photo">›</button>
+      </div>
+
+      <footer class="gallery-caption-bar">
+        <div>
+          <p class="gallery-kicker" id="gallery-meta">Road Trip 2K15</p>
+          <h2 id="gallery-title">Place</h2>
+          <p id="gallery-caption">Add photos to this folder to build the gallery.</p>
+        </div>
+
+        <div class="gallery-count" id="gallery-count">1 / 1</div>
+      </footer>
+    </section>
+  </div>
+
+  <script src="js/places.js"></script>
+</body>
+</html>
