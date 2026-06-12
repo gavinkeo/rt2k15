@@ -128,7 +128,6 @@ function renderEvents() {
     const venue = item.venue;
     const location = item.location;
     const date = formatDate(item.date);
-    const mapUrl = `index.html?day=${encodeURIComponent(day.day)}&events=1`;
 
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
@@ -145,10 +144,6 @@ function renderEvents() {
             ${location ? `<div><strong>Location:</strong> ${escapeHtml(location)}</div>` : ""}
             ${date ? `<div><strong>Date:</strong> ${escapeHtml(date)}</div>` : ""}
           </div>
-
-          <div class="ticket-actions">
-            <a class="ticket-link" href="${mapUrl}">View on map</a>
-          </div>
         </div>
 
         <aside class="ticket-stub">
@@ -161,9 +156,8 @@ function renderEvents() {
   }).join("");
 }
 
-function renderSummary(tripData) {
+function renderSummary() {
   const total = allEvents.length;
-
   const types = [...new Set(allEvents.map(item => item.type))].sort();
 
   summary.textContent = `${total} events · ${types.join(" / ")}`;
@@ -194,7 +188,7 @@ async function init() {
 
     allEvents = buildEventList(tripData);
 
-    renderSummary(tripData);
+    renderSummary();
     setupFilters();
     renderEvents();
   } catch (error) {
