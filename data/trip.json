@@ -519,6 +519,7 @@
         "name": "Imagine Dragons - Smoke + Mirrors Tour",
         "venue": "Pepsi Center",
         "location": "Denver",
+        "stubGraphic": "assets/logos/events/imaginedragons.png",
         "ticket": {
           "section": "334",
           "row": "11",
