@@ -767,3 +767,28 @@ body {
     font-size: 11px;
   }
 }
+
+/* Remove Day XX from stub and rebalance spacing */
+
+.ticket-stub {
+  justify-content: center;
+  gap: 16px;
+}
+
+.stub-seat-info {
+  margin: 0;
+}
+
+.barcode {
+  margin: 12px 0 18px;
+}
+
+@media (max-width: 700px) {
+  .ticket-stub {
+    gap: 13px;
+  }
+
+  .barcode {
+    margin: 10px 0 16px;
+  }
+}
