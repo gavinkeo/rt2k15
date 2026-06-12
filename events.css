@@ -1,8 +1,243 @@
-/* Float event logo without wasting vertical space */
+:root {
+  --paper: #faf7ec;
+  --paper-dark: #efe4c8;
+  --ink: #111111;
+  --muted: rgba(17, 17, 17, 0.62);
+  --line: rgba(17, 17, 17, 0.16);
+  --accent: #ff00ff;
+  --cyan: #00e5ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(255, 0, 255, 0.18), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(0, 229, 255, 0.13), transparent 32rem),
+    linear-gradient(135deg, #101010 0%, #181818 48%, #070707 100%);
+}
+
+.events-page {
+  width: min(1220px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 24px 0 56px;
+}
+
+.events-hero {
+  color: #fff;
+  padding: 8px 0 18px;
+}
+
+.events-nav {
+  margin-bottom: 42px;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.back-link:hover {
+  color: #fff;
+}
+
+.events-hero-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.eyebrow,
+.hero-kicker {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(17px, 2vw, 25px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.events-hero h1 {
+  margin: 0;
+  font-size: clamp(54px, 8vw, 104px);
+  line-height: 0.86;
+  letter-spacing: -0.085em;
+  font-weight: 950;
+}
+
+.events-subtitle {
+  display: none;
+}
+
+.events-summary {
+  display: flex;
+  gap: 10px;
+  flex: 0 0 auto;
+  margin-bottom: 6px;
+}
+
+.summary-card {
+  min-width: 104px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.07);
+  backdrop-filter: blur(10px);
+}
+
+.summary-value {
+  display: block;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.summary-label {
+  display: block;
+  margin-top: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
+
+.events-main {
+  margin-top: 18px;
+}
+
+.events-controls {
+  margin: 0 0 24px;
+}
+
+.filter-buttons,
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+}
+
+.filter-buttons::-webkit-scrollbar,
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
+.filter-btn {
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.78);
+  border-radius: 999px;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.filter-btn:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.36);
+}
+
+.filter-btn.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+  box-shadow:
+    0 0 18px rgba(255,0,255,0.36),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.events-meta-row {
+  display: none;
+}
+
+.ticket-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 26px;
+  padding-top: 4px;
+}
+
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 92px;
+  min-height: 190px;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 14% 18%, rgba(255,255,255,0.55), transparent 17%),
+    radial-gradient(circle at 80% 82%, rgba(0,0,0,0.045), transparent 22%),
+    linear-gradient(90deg, #fbf7e9 0%, #fbf7e9 70%, #eee1c1 70%, #eee1c1 100%);
+  border: 1px solid rgba(255,255,255,0.5);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow:
+    0 16px 40px rgba(0,0,0,0.32),
+    inset 0 0 0 1px rgba(255,255,255,0.5);
+  transform: rotate(var(--tilt, -1deg));
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.ticket::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.18;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      rgba(17,17,17,0.035) 0,
+      rgba(17,17,17,0.035) 1px,
+      transparent 1px,
+      transparent 5px
+    );
+  mix-blend-mode: multiply;
+}
+
+.ticket::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(90deg, rgba(17,17,17,0.03) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(17,17,17,0.022) 1px, transparent 1px);
+  background-size: 7px 7px;
+  mix-blend-mode: multiply;
+}
+
+.ticket:hover {
+  transform: rotate(0deg) translateY(-4px);
+  box-shadow:
+    0 22px 52px rgba(0,0,0,0.42),
+    0 0 0 1px rgba(255,0,255,0.3),
+    0 0 26px rgba(255,0,255,0.16);
+}
 
 .ticket-main {
   position: relative;
-  padding-top: 16px;
+  z-index: 1;
+  display: block;
+  padding: 16px 24px 16px;
 }
 
 .ticket-corner-brand {
@@ -33,40 +268,414 @@
 }
 
 .ticket h2 {
+  margin: 0;
   padding-right: 96px;
-  margin-top: 0;
-}
-
-/* Tighten the stub so detailed tickets don't become square */
-.ticket {
-  min-height: 190px;
-}
-
-.ticket-main {
-  padding-bottom: 16px;
+  max-width: 100%;
+  font-size: clamp(27px, 3.1vw, 34px);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
+  font-weight: 950;
 }
 
 .ticket-meta {
   margin-top: 13px;
+  display: grid;
+  gap: 7px;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.ticket-meta strong {
+  color: var(--ink);
+  font-weight: 950;
 }
 
 .ticket-extra-grid {
   margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.ticket-extra-cell {
+  border-top: 1px solid rgba(17,17,17,0.16);
+  padding-top: 6px;
+  min-width: 0;
+}
+
+.ticket-extra-cell span {
+  display: block;
+  margin-bottom: 3px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.45);
+}
+
+.ticket-extra-cell strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 900;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ticket-actions {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.ticket-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 2px solid #111;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 2px 2px 0 rgba(17,17,17,0.22);
+}
+
+.youtube-link {
+  background: #ff0000;
+}
+
+.boxscore-link {
+  background: #111;
+}
+
+.ticket-action:hover {
+  background: var(--accent);
+  color: #fff;
 }
 
 .ticket-fineprint {
   margin-top: 12px;
   padding-top: 10px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7.5px;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.52);
 }
 
-/* Stop the fineprint being forced to the bottom with a big blank gap */
-.ticket-main {
+.ticket-stub {
+  position: relative;
+  z-index: 1;
+  padding: 16px 12px;
+  border-left: 2px dashed rgba(17,17,17,0.24);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.35), transparent 30%),
+    repeating-linear-gradient(
+      0deg,
+      rgba(17,17,17,0.025) 0,
+      rgba(17,17,17,0.025) 1px,
+      transparent 1px,
+      transparent 6px
+    );
+}
+
+.ticket-stub::before,
+.ticket-stub::after {
+  content: "";
+  position: absolute;
+  left: -13px;
+  width: 24px;
+  height: 24px;
+  background: #111;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.16),
+    inset 0 0 0 1px rgba(0,0,0,0.3);
+}
+
+.ticket-stub::before {
+  top: -12px;
+}
+
+.ticket-stub::after {
+  bottom: -12px;
+}
+
+.day-number {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  letter-spacing: 0.12em;
+}
+
+.stub-seat-info {
+  width: 100%;
+  display: grid;
+  gap: 7px;
+  margin: 8px 0 10px;
+  padding: 8px 6px;
+  border-top: 1px solid rgba(17,17,17,0.16);
+  border-bottom: 1px solid rgba(17,17,17,0.16);
+  text-align: center;
+}
+
+.stub-seat-label {
   display: block;
+  margin-bottom: 2px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  color: rgba(17,17,17,0.48);
+}
+
+.stub-seat-value {
+  display: block;
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: -0.05em;
+  color: var(--ink);
+}
+
+.barcode {
+  position: relative;
+  width: 128px;
+  height: 52px;
+  margin: 20px 0 24px;
+  background:
+    repeating-linear-gradient(
+      to right,
+      #111 0px,
+      #111 1px,
+      transparent 1px,
+      transparent 3px,
+      #111 3px,
+      #111 5px,
+      transparent 5px,
+      transparent 8px,
+      #111 8px,
+      #111 9px,
+      transparent 9px,
+      transparent 13px,
+      #111 13px,
+      #111 16px,
+      transparent 16px,
+      transparent 18px,
+      #111 18px,
+      #111 19px,
+      transparent 19px,
+      transparent 22px
+    );
+  background-size: 128px 52px;
+  opacity: 0.86;
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+.barcode::before {
+  content: "";
+  position: absolute;
+  inset: -5px -6px;
+  border: 1px solid rgba(17,17,17,0.18);
+  border-radius: 3px;
+}
+
+.barcode::after {
+  content: "RT2K15 0618 0915";
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  transform: translateX(-50%);
+  width: max-content;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 7px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: rgba(17,17,17,0.78);
+  background: rgba(250, 247, 236, 0.82);
+  padding: 0 3px;
+}
+
+.ticket-brand {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 68px;
+  max-width: 108px;
+  min-height: 34px;
+}
+
+.event-logo {
+  max-width: 96px;
+  max-height: 38px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+}
+
+.event-logo-ufc,
+.event-logo-wwe,
+.event-logo-nfl,
+.event-logo-mlb {
+  max-height: 34px;
+}
+
+.event-logo-tennis {
+  max-width: 86px;
+  max-height: 36px;
+}
+
+.ticket-brand.has-logo .event-type {
+  display: none;
+}
+
+.ticket-brand.has-logo.logo-missing .event-type,
+.ticket-brand.no-logo .event-type {
+  display: inline-flex;
+}
+
+.event-type {
+  align-items: center;
+  justify-content: center;
+  min-width: 54px;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  background: #111;
+  color: var(--paper);
+  box-shadow: 2px 2px 0 rgba(17,17,17,0.18);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 34px;
+  border-radius: 18px;
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.75);
+  text-align: center;
+  font-weight: 800;
 }
 
 @media (max-width: 700px) {
+  .events-page {
+    width: calc(100% - 24px);
+    padding: 18px 0 42px;
+  }
+
+  .events-hero {
+    padding-top: 4px;
+    padding-bottom: 12px;
+  }
+
+  .events-nav {
+    margin-bottom: 34px;
+  }
+
+  .back-link {
+    font-size: 14px;
+  }
+
+  .events-hero-main {
+    display: block;
+  }
+
+  .eyebrow,
+  .hero-kicker {
+    margin-bottom: 6px;
+    font-size: 20px;
+  }
+
+  .events-hero h1 {
+    font-size: 50px;
+    line-height: 0.88;
+    letter-spacing: -0.085em;
+  }
+
+  .events-summary {
+    margin-top: 14px;
+    margin-bottom: 0;
+    gap: 8px;
+  }
+
+  .summary-card {
+    min-width: 82px;
+    padding: 9px 11px;
+    border-radius: 13px;
+  }
+
+  .summary-value {
+    font-size: 23px;
+  }
+
+  .summary-label {
+    margin-top: 5px;
+    font-size: 9px;
+  }
+
+  .events-main {
+    margin-top: 14px;
+  }
+
+  .events-controls {
+    margin-bottom: 18px;
+  }
+
+  .filter-buttons,
+  .filters {
+    gap: 8px;
+    margin-left: -2px;
+    margin-right: -2px;
+    padding: 2px 2px 8px;
+  }
+
+  .filter-btn {
+    padding: 10px 15px;
+    font-size: 13px;
+  }
+
+  .ticket-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-top: 2px;
+  }
+
+  .ticket {
+    grid-template-columns: minmax(0, 1fr) 74px;
+    min-height: 184px;
+    border-radius: 16px;
+    transform: none !important;
+  }
+
+  .ticket:hover {
+    transform: none !important;
+  }
+
   .ticket-main {
-    padding-top: 15px;
+    padding: 15px 18px 15px;
   }
 
   .ticket-corner-brand {
@@ -82,9 +691,79 @@
 
   .ticket h2 {
     padding-right: 68px;
+    font-size: 25px;
+    line-height: 0.98;
   }
 
-  .ticket {
-    min-height: 184px;
+  .ticket-meta {
+    margin-top: 12px;
+    gap: 6px;
+    font-size: 13px;
+  }
+
+  .ticket-extra-grid {
+    margin-top: 11px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .ticket-extra-cell strong {
+    font-size: 10.5px;
+  }
+
+  .ticket-actions {
+    margin-top: 13px;
+    gap: 8px;
+  }
+
+  .ticket-action {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+
+  .ticket-fineprint {
+    margin-top: 11px;
+    padding-top: 9px;
+    font-size: 6.8px;
+    gap: 8px;
+  }
+
+  .ticket-stub {
+    padding: 15px 10px;
+  }
+
+  .day-number {
+    font-size: 11px;
+  }
+
+  .stub-seat-info {
+    gap: 6px;
+    padding: 7px 4px;
+  }
+
+  .stub-seat-label {
+    font-size: 6.5px;
+  }
+
+  .stub-seat-value {
+    font-size: 15px;
+  }
+
+  .barcode {
+    width: 112px;
+    height: 44px;
+    margin: 18px 0 22px;
+    background-size: 112px 44px;
+  }
+
+  .barcode::after {
+    font-size: 6px;
+    bottom: -12px;
+  }
+
+  .event-type {
+    min-width: 50px;
+    padding: 6px 9px;
+    font-size: 11px;
   }
 }
