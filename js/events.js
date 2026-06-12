@@ -35,10 +35,8 @@ function formatDate(dateString) {
 
 function normaliseType(type) {
   if (!type) return "Other";
-
   if (type === "UFC189") return "UFC";
   if (type === "CFB") return "NCAAF";
-
   return type;
 }
 
@@ -114,6 +112,7 @@ function buildEventList(tripData) {
       location: getEventLocation(day),
       date: day.event.date || day.date,
       logo: day.event.logo || getLogoPath(day.event.type),
+      stubGraphic: day.event.stubGraphic || "",
       youtube: day.event.youtube || day.event.youtubeUrl || "",
       boxscore: day.event.boxscore || day.event.boxScore || day.event.boxscoreUrl || "",
       ticket: day.event.ticket || {}
@@ -122,15 +121,8 @@ function buildEventList(tripData) {
 
 function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
-
-  if (activeFilter === "Combat") {
-    return item.group === "Combat";
-  }
-
-  if (activeFilter === "Other") {
-    return item.group === "Other";
-  }
-
+  if (activeFilter === "Combat") return item.group === "Combat";
+  if (activeFilter === "Other") return item.group === "Other";
   return item.type === activeFilter || item.group === activeFilter;
 }
 
@@ -154,7 +146,6 @@ function renderEvents() {
     const venue = item.venue;
     const location = item.location;
     const date = formatDate(item.date);
-    const logo = item.logo;
     const ticket = item.ticket || {};
 
     const ticketCode = getTicketCode(day, type, ticket);
@@ -171,13 +162,15 @@ function renderEvents() {
     const showYoutube = Boolean(item.youtube);
     const showBoxscore = type === "MLB" && Boolean(item.boxscore);
 
-    const brandClass = logo ? "ticket-brand has-logo" : "ticket-brand no-logo";
+    const usingStubGraphic = Boolean(item.stubGraphic);
+    const graphicPath = usingStubGraphic ? item.stubGraphic : item.logo;
+    const brandClass = graphicPath ? "stub-brand has-logo" : "stub-brand no-logo";
 
-    const logoMarkup = logo
+    const logoMarkup = graphicPath
       ? `<img
-          class="event-logo event-logo-${escapeHtml(classSafe(type))}"
-          src="${escapeHtml(logo)}"
-          alt="${escapeHtml(type)} logo"
+          class="event-logo ${usingStubGraphic ? "event-logo-custom" : `event-logo-${escapeHtml(classSafe(type))}`}"
+          src="${escapeHtml(graphicPath)}"
+          alt="${escapeHtml(item.name)} graphic"
           loading="lazy"
           onerror="this.style.display='none'; this.parentElement.classList.add('logo-missing');"
         >`
@@ -290,7 +283,7 @@ function renderEvents() {
         <aside class="ticket-stub">
           ${stubActionsMarkup}
 
-          <span class="stub-brand ${brandClass}">
+          <span class="${brandClass}">
             ${logoMarkup}
             <span class="event-type">${escapeHtml(type)}</span>
           </span>
