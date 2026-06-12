@@ -198,6 +198,7 @@
         "name": "San Diego Padres v Seattle Mariners",
         "venue": "Petco Park",
         "location": "San Diego",
+          "stubGraphic": "assets/logos/events/padres-mariners.png",
         "ticket": {
           "section": "UI306",
           "row": "9",
@@ -236,6 +237,7 @@
         "name": "Arizona Diamondbacks v Colorado Rockies",
         "venue": "Chase Field",
         "location": "Phoenix",
+          "stubGraphic": "assets/logos/events/dbacks-rockies.png",
         "ticket": {
           "section": "316",
           "row": "10",
@@ -766,6 +768,7 @@
         "name": "Chicago White Sox v Chicago Cubs",
         "venue": "U.S. Cellular Field",
         "location": "Chicago",
+          "stubGraphic": "assets/logos/events/whitesox-cubs.png",
         "ticket": {
           "section": "155",
           "row": "16",
@@ -860,6 +863,7 @@
         "name": "Boston Red Sox v Kansas City Royals",
         "venue": "Fenway Park",
         "location": "Boston",
+          "stubGraphic": "assets/logos/events/redsox-royals.png",
         "ticket": {
           "section": "RF Box 94",
           "row": "XX",
@@ -941,6 +945,7 @@
         "name": "New York Yankees v Houston Astros",
         "venue": "Yankee Stadium",
         "location": "New York",
+          "stubGraphic": "assets/logos/events/yankees-astros.png",
         "ticket": {
           "section": "432A",
           "row": "1",
@@ -977,6 +982,7 @@
         "name": "New York Mets v Boston Red Sox",
         "venue": "Citi Field",
         "location": "New York",
+          "stubGraphic": "assets/logos/events/mets-redsox.png",
         "ticket": {
           "section": "503",
           "row": "10",
