@@ -1,7 +1,9 @@
 const playlistWrap = document.getElementById("playlist-frame-wrap");
-const playlistLink = document.getElementById("playlist-link");
+const youtubeMusicLink = document.getElementById("youtube-music-link");
+const youtubeLink = document.getElementById("youtube-link");
 const trackCount = document.getElementById("track-count");
-const memoryGrid = document.getElementById("memory-grid");
+const playlistTitle = document.getElementById("playlist-title");
+const playlistDescription = document.getElementById("playlist-description");
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -29,31 +31,41 @@ function extractPlaylistId(value) {
   }
 }
 
-function buildPlaylistUrl(playlistId) {
+function buildYoutubeUrl(playlistId) {
   return `https://www.youtube.com/playlist?list=${encodeURIComponent(playlistId)}`;
+}
+
+function buildYoutubeMusicUrl(playlistId) {
+  return `https://music.youtube.com/playlist?list=${encodeURIComponent(playlistId)}`;
 }
 
 function buildEmbedUrl(playlistId) {
   return `https://www.youtube.com/embed/videoseries?list=${encodeURIComponent(playlistId)}`;
 }
 
-function tiltForIndex(index) {
-  const tilts = ["-1deg", "0.8deg", "-0.5deg", "1.1deg", "-0.8deg", "0.4deg"];
-  return tilts[index % tilts.length];
+function setHidden(el, hidden) {
+  if (!el) return;
+  el.style.display = hidden ? "none" : "";
 }
 
 function renderPlaylist(config) {
-  const playlistId = extractPlaylistId(config.playlistId || config.playlistUrl || "");
+  const playlistId = extractPlaylistId(config.playlistId || config.playlistUrl || config.youtubeMusicUrl || "");
 
   if (trackCount) {
     trackCount.textContent = config.trackCount || "42";
   }
 
-  if (!playlistId) {
-    if (playlistLink) {
-      playlistLink.style.display = "none";
-    }
+  if (playlistTitle && config.title) {
+    playlistTitle.textContent = config.title;
+  }
 
+  if (playlistDescription && config.description) {
+    playlistDescription.textContent = config.description;
+  }
+
+  if (!playlistId) {
+    setHidden(youtubeMusicLink, true);
+    setHidden(youtubeLink, true);
     return;
   }
 
@@ -68,45 +80,15 @@ function renderPlaylist(config) {
     `;
   }
 
-  if (playlistLink) {
-    playlistLink.href = config.playlistUrl || buildPlaylistUrl(playlistId);
-    playlistLink.style.display = "inline-flex";
-  }
-}
-
-function renderMemories(memories = []) {
-  if (!memoryGrid) return;
-
-  if (!memories.length) {
-    memoryGrid.innerHTML = `
-      <div class="empty-state">
-        Add featured memories in data/soundtrack.json.
-      </div>
-    `;
-    return;
+  if (youtubeMusicLink) {
+    youtubeMusicLink.href = config.youtubeMusicUrl || buildYoutubeMusicUrl(playlistId);
+    setHidden(youtubeMusicLink, false);
   }
 
-  memoryGrid.innerHTML = memories.map((memory, index) => {
-    const title = memory.title || "Untitled song";
-    const artist = memory.artist || "";
-    const note = memory.memory || memory.note || "";
-    const location = memory.location || "Road Trip";
-    const track = memory.track ? `Track ${String(memory.track).padStart(2, "0")}` : `Memory ${String(index + 1).padStart(2, "0")}`;
-
-    return `
-      <article class="memory-card" style="--tilt: ${tiltForIndex(index)}">
-        <div class="memory-topline">
-          <span>${escapeHtml(track)}</span>
-          <span>${escapeHtml(location)}</span>
-        </div>
-
-        <h3>${escapeHtml(title)}</h3>
-
-        ${artist ? `<p class="memory-artist">${escapeHtml(artist)}</p>` : ""}
-        ${note ? `<p class="memory-note">${escapeHtml(note)}</p>` : ""}
-      </article>
-    `;
-  }).join("");
+  if (youtubeLink) {
+    youtubeLink.href = config.playlistUrl || buildYoutubeUrl(playlistId);
+    setHidden(youtubeLink, false);
+  }
 }
 
 async function init() {
@@ -118,19 +100,21 @@ async function init() {
     }
 
     const config = await response.json();
-
     renderPlaylist(config);
-    renderMemories(config.featuredMemories || []);
   } catch (error) {
     console.error(error);
 
-    if (memoryGrid) {
-      memoryGrid.innerHTML = `
-        <div class="empty-state">
-          Could not load data/soundtrack.json.
+    if (playlistWrap) {
+      playlistWrap.innerHTML = `
+        <div class="playlist-placeholder">
+          <strong>Could not load soundtrack</strong>
+          <span>Check <code>data/soundtrack.json</code>.</span>
         </div>
       `;
     }
+
+    setHidden(youtubeMusicLink, true);
+    setHidden(youtubeLink, true);
   }
 }
 
