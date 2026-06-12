@@ -286,13 +286,11 @@ function renderEvents() {
 </div>
         </div>
 
-        <aside class="ticket-stub">
-          <div class="day-number">Day ${escapeHtml(day.day)}</div>
+<aside class="ticket-stub">
+  ${seatInfoMarkup}
 
-          ${seatInfoMarkup}
-
-          <div class="barcode" aria-hidden="true"></div>
-        </aside>
+  <div class="barcode" aria-hidden="true"></div>
+</aside>
       </article>
     `;
   }).join("");
