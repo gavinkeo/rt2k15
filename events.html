@@ -4,40 +4,91 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Sports & Events | Road Trip 2K15</title>
+  <title>Sports & Events · RT2K15</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
   <link rel="stylesheet" href="events.css" />
 </head>
 
 <body>
-  <main class="events-page">
+  <div class="events-page">
     <header class="events-hero">
-      <a class="back-link" href="index.html">← Back to map</a>
+      <nav class="events-nav">
+        <a class="back-link" href="index.html">← Back to map</a>
+      </nav>
 
-      <div class="hero-kicker">Road Trip 2K15</div>
-      <h1>Sports & Events</h1>
+      <div class="events-hero-main">
+        <div>
+          <p class="eyebrow">Road Trip 2K15</p>
+          <h1>Sports & Events</h1>
+          <p class="events-subtitle">
+            Stadiums, games, shows and one-off stops from the 90-day route.
+          </p>
+        </div>
 
-            <div class="event-summary" id="event-summary">
-        Loading events…
+        <div class="events-summary">
+          <div class="summary-card">
+            <span class="summary-value" id="events-total">26</span>
+            <span class="summary-label">Events</span>
+          </div>
+
+          <div class="summary-card">
+            <span class="summary-value">90</span>
+            <span class="summary-label">Days</span>
+          </div>
+        </div>
       </div>
-      
     </header>
 
-    <section class="filters" aria-label="Event filters">
-      <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="MLB">MLB</button>
-      <button class="filter-btn" data-filter="NFL">NFL</button>
-      <button class="filter-btn" data-filter="Concert">Concerts</button>
-      <button class="filter-btn" data-filter="Combat">Combat</button>
-      <button class="filter-btn" data-filter="Other">Other</button>
-    </section>
+    <main class="events-main">
+      <section class="events-controls" aria-label="Event filters">
+        <div class="filter-buttons" id="event-filters">
+          <button class="filter-btn active" type="button" data-filter="all">All</button>
+          <button class="filter-btn" type="button" data-filter="MLB">MLB</button>
+          <button class="filter-btn" type="button" data-filter="NFL">NFL</button>
+          <button class="filter-btn" type="button" data-filter="CFB">CFB</button>
+          <button class="filter-btn" type="button" data-filter="NHL">NHL</button>
+          <button class="filter-btn" type="button" data-filter="MLS">MLS</button>
+          <button class="filter-btn" type="button" data-filter="UFC">UFC</button>
+          <button class="filter-btn" type="button" data-filter="Boxing">Boxing</button>
+          <button class="filter-btn" type="button" data-filter="WWE">WWE</button>
+          <button class="filter-btn" type="button" data-filter="Tennis">Tennis</button>
+          <button class="filter-btn" type="button" data-filter="Concert">Concert</button>
+          <button class="filter-btn" type="button" data-filter="Comedy">Comedy</button>
+          <button class="filter-btn" type="button" data-filter="TV Show">TV Show</button>
+        </div>
 
-    <section class="ticket-grid" id="ticket-grid" aria-live="polite"></section>
-  </main>
+        <label class="events-search-wrap" for="events-search">
+          <span>Search</span>
+          <input
+            id="events-search"
+            class="events-search"
+            type="search"
+            placeholder="Search events, venues or cities..."
+            autocomplete="off"
+          />
+        </label>
+      </section>
+
+      <section class="events-meta-row">
+        <p class="events-count">
+          Showing <strong id="events-visible-count">0</strong> events
+        </p>
+      </section>
+
+      <section class="events-list" id="events-list" aria-live="polite">
+        <div class="events-loading">
+          Loading events…
+        </div>
+      </section>
+    </main>
+  </div>
 
   <script src="js/events.js"></script>
 </body>
