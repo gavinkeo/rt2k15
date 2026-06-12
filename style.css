@@ -1309,3 +1309,11 @@ body {
 .trip-menu .stat-label-row {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
+
+/* Remove CX-5 from menu header */
+
+#trip-menu-toggle::after,
+.trip-menu-toggle::after {
+  content: none !important;
+  display: none !important;
+}
