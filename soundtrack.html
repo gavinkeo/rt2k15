@@ -18,22 +18,18 @@
 
 <body>
   <div class="soundtrack-page">
-    <header class="soundtrack-hero">
-      <nav class="soundtrack-nav">
-        <a class="back-link" href="index.html">← Back to map</a>
-      </nav>
+    <header class="soundtrack-header">
+      <a class="back-link" href="index.html">← Back to map</a>
 
-      <div class="soundtrack-hero-main">
+      <div class="soundtrack-title-row">
         <div>
           <p class="eyebrow">Road Trip 2K15</p>
           <h1>Soundtrack</h1>
         </div>
 
-        <div class="soundtrack-summary">
-          <div class="summary-card">
-            <span class="summary-value" id="track-count">42</span>
-            <span class="summary-label">Tracks</span>
-          </div>
+        <div class="track-pill">
+          <strong id="track-count">42</strong>
+          <span>Tracks</span>
         </div>
       </div>
     </header>
@@ -42,36 +38,42 @@
       <section class="player-shell">
         <div class="player-copy">
           <p class="section-kicker">YouTube Music Playlist</p>
-          <h2 id="playlist-title">The songs from the summer</h2>
+          <h2 id="playlist-title">RT2K15 YouTube Music Playlist</h2>
         </div>
 
-        <div class="player-stage">
-          <div class="playlist-frame-wrap" id="playlist-frame-wrap">
-            <div class="playlist-placeholder">
-              <strong>Playlist not connected yet</strong>
-              <span>Add your playlist ID or playlist URL in <code>data/soundtrack.json</code>.</span>
+        <div class="player-layout">
+          <div class="player-column">
+            <div class="playlist-frame-wrap" id="playlist-frame-wrap">
+              <div class="playlist-placeholder">
+                <strong>Playlist not connected yet</strong>
+                <span>Add your playlist ID or playlist URL in <code>data/soundtrack.json</code>.</span>
+              </div>
+            </div>
+
+            <div class="playlist-actions">
+              <a class="playlist-link primary" id="youtube-music-link" href="#" target="_blank" rel="noopener noreferrer">
+                Open in YouTube Music
+              </a>
+
+              <a class="playlist-link secondary" id="youtube-link" href="#" target="_blank" rel="noopener noreferrer">
+                Open in YouTube
+              </a>
             </div>
           </div>
+
+          <aside class="tracklist-panel">
+            <div class="tracklist-head">
+              <span>Tracklist</span>
+              <strong id="visible-track-count">0 songs</strong>
+            </div>
+
+            <div class="tracklist" id="tracklist">
+              <div class="empty-tracklist">
+                Add songs to <code>tracks</code> in <code>data/soundtrack.json</code>.
+              </div>
+            </div>
+          </aside>
         </div>
-
-        <div class="playlist-actions">
-          <a class="playlist-link primary" id="youtube-music-link" href="#" target="_blank" rel="noopener noreferrer">
-            Open in YouTube Music
-          </a>
-
-          <a class="playlist-link secondary" id="youtube-link" href="#" target="_blank" rel="noopener noreferrer">
-            Open in YouTube
-          </a>
-        </div>
-      </section>
-
-      <section class="note-strip">
-        <span>San Francisco</span>
-        <span>Desert drives</span>
-        <span>Vegas</span>
-        <span>National parks</span>
-        <span>New York</span>
-        <span>Miami</span>
       </section>
     </main>
   </div>
