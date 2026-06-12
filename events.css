@@ -887,3 +887,41 @@ body {
     max-height: 146px;
   }
 }
+
+/* Compact page title */
+
+.compact-page-title {
+  margin: 0;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.66);
+}
+
+.events-hero {
+  padding-bottom: 10px;
+}
+
+.events-nav {
+  margin-bottom: 22px;
+}
+
+.events-hero-main {
+  align-items: center;
+}
+
+.events-hero h1 {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .compact-page-title {
+    font-size: 11px;
+  }
+
+  .events-nav {
+    margin-bottom: 18px;
+  }
+}
