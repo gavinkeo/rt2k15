@@ -131,7 +131,7 @@
       "drivingTime": "1:10",
       "event": {
         "type": "Concert",
-        "name": "Ed Sheeran- x Tour Live",
+        "name": "Ed Sheeran - x Tour",
         "venue": "Hollywood Bowl",
         "location": "Los Angeles",
         "ticket": {
@@ -151,7 +151,7 @@
       "type": "stay",
       "event": {
         "type": "TV Show",
-        "name": "ESPN Sports Nation LIVE",
+        "name": "ESPN Sports Nation",
         "venue": "ESPN Los Angeles Production Center",
         "location": "Los Angeles",
                         "ticket": {
