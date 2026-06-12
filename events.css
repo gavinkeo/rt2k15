@@ -277,6 +277,34 @@ body {
   color: var(--ink);
 }
 
+.ticket-actions {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.youtube-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 2px solid #111;
+  background: #ff0000;
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 2px 2px 0 rgba(17,17,17,0.22);
+}
+
+.youtube-link:hover {
+  background: #111;
+  color: #fff;
+}
+
 .day-number {
   font-family: "JetBrains Mono", monospace;
   font-size: 12px;
