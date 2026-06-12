@@ -1135,7 +1135,7 @@ body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   text-transform: none !important;
   letter-spacing: 0 !important;
-  font-weight: 850 !important;
+  font-weight: 700 !important;
   background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%) !important;
   color: #ffffff !important;
   border: 1px solid rgba(0, 229, 255, 0.34) !important;
@@ -1171,12 +1171,17 @@ body {
   color: #111111 !important;
 }
 
-.trip-menu .stat-label-row,
+.trip-menu .stat-label-row {
+  text-transform: uppercase !important;
+  letter-spacing: 0.11em !important;
+  font-weight: 500 !important;
+}
+
 .timeline-stat-label,
 .timeline-day-label {
   text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  font-weight: 800 !important;
+  letter-spacing: 0.13em !important;
+  font-weight: 950 !important;
 }
 
 #play-pause,
@@ -1264,5 +1269,43 @@ body {
 
 .timeline-day-label,
 .timeline-stat-label {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+
+/* Final controller slider colour + original controller typography */
+#timeline-slider {
+  accent-color: #0b6f86 !important;
+}
+
+#timeline-slider::-webkit-slider-runnable-track {
+  background: #083c4d !important;
+}
+
+#timeline-slider::-webkit-slider-thumb {
+  background: #0b6f86 !important;
+  border: 3px solid #FAFAF7 !important;
+}
+
+#timeline-slider::-moz-range-track {
+  background: #083c4d !important;
+}
+
+#timeline-slider::-moz-range-thumb {
+  background: #0b6f86 !important;
+  border: 3px solid #FAFAF7 !important;
+}
+
+#current-day,
+.timeline-slash,
+#total-days,
+.timeline-stat-value,
+.timeline-stat-value strong {
+  font-family: "JetBrains Mono", monospace !important;
+}
+
+.timeline-day-label,
+.timeline-stat-label,
+.trip-menu .stat-label-row {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
