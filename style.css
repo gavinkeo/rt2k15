@@ -1478,15 +1478,3 @@ input[type="range"]::-moz-range-thumb {
   align-items: center !important;
   line-height: 1 !important;
 }
-
-/* Optional tiny car mark beside the title */
-
-.trip-menu-toggle::after {
-  content: "";
-  width: 42px;
-  height: 18px;
-  margin-left: auto;
-  margin-right: 14px;
-  background: url("assets/mazda-cx5-side.png") center / contain no-repeat;
-  opacity: 0.92;
-}
