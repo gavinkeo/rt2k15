@@ -18,20 +18,24 @@ body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(255, 0, 255, 0.16), transparent 34rem),
-    radial-gradient(circle at bottom right, rgba(0, 229, 255, 0.14), transparent 34rem),
-    linear-gradient(135deg, #101010 0%, #1b1b1b 48%, #070707 100%);
+    radial-gradient(circle at top left, rgba(255, 0, 255, 0.18), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(0, 229, 255, 0.13), transparent 32rem),
+    linear-gradient(135deg, #101010 0%, #181818 48%, #070707 100%);
 }
 
 .events-page {
-  width: min(1180px, calc(100% - 32px));
+  width: min(1220px, calc(100% - 40px));
   margin: 0 auto;
-  padding: 28px 0 56px;
+  padding: 24px 0 56px;
 }
 
 .events-hero {
   color: #fff;
-  padding: 18px 0 28px;
+  padding: 8px 0 18px;
+}
+
+.events-nav {
+  margin-bottom: 42px;
 }
 
 .back-link {
@@ -40,73 +44,118 @@ body {
   color: rgba(255, 255, 255, 0.78);
   text-decoration: none;
   font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 36px;
+  font-weight: 800;
 }
 
 .back-link:hover {
   color: #fff;
 }
 
+.events-hero-main {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.eyebrow,
 .hero-kicker {
-  font-family: "JetBrains Mono", monospace;
-  color: var(--cyan);
-  font-size: 13px;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  margin-bottom: 8px;
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(17px, 2vw, 25px);
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
 .events-hero h1 {
   margin: 0;
-  font-size: clamp(42px, 8vw, 92px);
-  line-height: 0.92;
-  letter-spacing: -0.075em;
+  font-size: clamp(54px, 8vw, 104px);
+  line-height: 0.86;
+  letter-spacing: -0.085em;
   font-weight: 950;
 }
 
 .events-hero p {
   max-width: 680px;
-  margin: 18px 0 0;
+  margin: 14px 0 0;
   color: rgba(255, 255, 255, 0.72);
   font-size: clamp(16px, 2vw, 20px);
   line-height: 1.5;
 }
 
-.event-summary {
-  display: inline-flex;
-  margin-top: 22px;
-  padding: 10px 13px;
-  border: 1px solid rgba(255,255,255,0.18);
-  border-radius: 999px;
-  color: rgba(255,255,255,0.78);
-  background: rgba(255,255,255,0.06);
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12px;
-  font-weight: 700;
+.events-subtitle {
+  display: none;
 }
 
-.filters {
+.events-summary {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
-  margin: 10px 0 28px;
-  padding: 12px;
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 18px;
-  background: rgba(255,255,255,0.06);
+  flex: 0 0 auto;
+  margin-bottom: 6px;
+}
+
+.summary-card {
+  min-width: 104px;
+  padding: 12px 14px;
+  border: 1px solid rgba(255,255,255,0.16);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.07);
   backdrop-filter: blur(10px);
 }
 
+.summary-value {
+  display: block;
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+.summary-label {
+  display: block;
+  margin-top: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.62);
+}
+
+.events-main {
+  margin-top: 18px;
+}
+
+.events-controls {
+  margin: 0 0 24px;
+}
+
+.filter-buttons,
+.filters {
+  display: flex;
+  gap: 10px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding: 4px 2px 8px;
+  scrollbar-width: none;
+}
+
+.filter-buttons::-webkit-scrollbar,
+.filters::-webkit-scrollbar {
+  display: none;
+}
+
 .filter-btn {
-  border: 1px solid rgba(255,255,255,0.16);
+  flex: 0 0 auto;
+  border: 1px solid rgba(255,255,255,0.18);
   background: rgba(255,255,255,0.08);
   color: rgba(255,255,255,0.78);
   border-radius: 999px;
-  padding: 10px 14px;
-  font-weight: 800;
+  padding: 11px 18px;
+  font-size: 14px;
+  font-weight: 900;
   cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .filter-btn:hover {
@@ -118,12 +167,20 @@ body {
   background: var(--accent);
   color: #fff;
   border-color: var(--accent);
+  box-shadow:
+    0 0 18px rgba(255,0,255,0.36),
+    inset 0 1px 0 rgba(255,255,255,0.25);
+}
+
+.events-meta-row {
+  display: none;
 }
 
 .ticket-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 26px;
+  padding-top: 4px;
 }
 
 .ticket {
@@ -173,7 +230,7 @@ body {
 .ticket-main {
   position: relative;
   z-index: 1;
-  padding: 20px 22px;
+  padding: 22px 24px;
 }
 
 .ticket-stub {
@@ -211,7 +268,7 @@ body {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   min-height: 38px;
 }
 
@@ -280,23 +337,24 @@ body {
 
 .ticket h2 {
   margin: 0;
-  font-size: 28px;
-  line-height: 1;
-  letter-spacing: -0.05em;
+  font-size: clamp(27px, 3.1vw, 34px);
+  line-height: 0.96;
+  letter-spacing: -0.055em;
   font-weight: 950;
 }
 
 .ticket-meta {
-  margin-top: 16px;
+  margin-top: 18px;
   display: grid;
-  gap: 7px;
+  gap: 8px;
   color: var(--muted);
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 750;
 }
 
 .ticket-meta strong {
   color: var(--ink);
+  font-weight: 950;
 }
 
 .ticket-actions {
@@ -357,22 +415,18 @@ body {
       #111 1px,
       transparent 1px,
       transparent 3px,
-
       #111 3px,
       #111 5px,
       transparent 5px,
       transparent 8px,
-
       #111 8px,
       #111 9px,
       transparent 9px,
       transparent 13px,
-
       #111 13px,
       #111 16px,
       transparent 16px,
       transparent 18px,
-
       #111 18px,
       #111 19px,
       transparent 19px,
@@ -420,60 +474,143 @@ body {
 
 @media (max-width: 700px) {
   .events-page {
-    width: min(100% - 22px, 1180px);
-    padding-top: 18px;
+    width: calc(100% - 24px);
+    padding: 18px 0 42px;
+  }
+
+  .events-hero {
+    padding-top: 4px;
+    padding-bottom: 12px;
+  }
+
+  .events-nav {
+    margin-bottom: 34px;
   }
 
   .back-link {
-    margin-bottom: 28px;
+    font-size: 14px;
   }
 
+  .events-hero-main {
+    display: block;
+  }
+
+  .eyebrow,
+  .hero-kicker {
+    margin-bottom: 6px;
+    font-size: 20px;
+  }
+
+  .events-hero h1 {
+    font-size: 50px;
+    line-height: 0.88;
+    letter-spacing: -0.085em;
+  }
+
+  .events-summary {
+    margin-top: 14px;
+    margin-bottom: 0;
+    gap: 8px;
+  }
+
+  .summary-card {
+    min-width: 82px;
+    padding: 9px 11px;
+    border-radius: 13px;
+  }
+
+  .summary-value {
+    font-size: 23px;
+  }
+
+  .summary-label {
+    margin-top: 5px;
+    font-size: 9px;
+  }
+
+  .events-main {
+    margin-top: 14px;
+  }
+
+  .events-controls {
+    margin-bottom: 18px;
+  }
+
+  .filter-buttons,
   .filters {
     gap: 8px;
-    border-radius: 14px;
-    overflow-x: auto;
-    flex-wrap: nowrap;
+    margin-left: -2px;
+    margin-right: -2px;
+    padding: 2px 2px 8px;
   }
 
   .filter-btn {
-    white-space: nowrap;
+    padding: 10px 15px;
+    font-size: 13px;
   }
 
   .ticket-grid {
     grid-template-columns: 1fr;
     gap: 18px;
+    padding-top: 2px;
   }
 
   .ticket {
-    grid-template-columns: minmax(0, 1fr) 76px;
-    min-height: 208px;
+    grid-template-columns: minmax(0, 1fr) 74px;
+    min-height: 206px;
+    border-radius: 16px;
+    transform: none !important;
+  }
+
+  .ticket:hover {
+    transform: none !important;
   }
 
   .ticket-main {
     padding: 18px;
   }
 
+  .ticket-topline {
+    margin-bottom: 18px;
+  }
+
+  .admit {
+    font-size: 11px;
+    letter-spacing: 0.17em;
+  }
+
   .ticket h2 {
-    font-size: 24px;
+    font-size: 25px;
+    line-height: 0.98;
+  }
+
+  .ticket-meta {
+    margin-top: 15px;
+    gap: 7px;
+    font-size: 13px;
   }
 
   .ticket-brand {
     min-width: 54px;
-    max-width: 86px;
+    max-width: 84px;
   }
 
   .event-logo {
-    max-width: 78px;
-    max-height: 32px;
+    max-width: 76px;
+    max-height: 31px;
   }
 
-  .ticket-actions {
-    margin-top: 16px;
-    gap: 8px;
+  .event-type {
+    min-width: 50px;
+    padding: 6px 9px;
+    font-size: 11px;
   }
 
-  .ticket-action {
-    padding: 8px 10px;
+  .ticket-stub {
+    padding: 16px 10px;
+  }
+
+  .day-number {
     font-size: 11px;
   }
 
@@ -487,5 +624,15 @@ body {
   .barcode::after {
     font-size: 6px;
     bottom: -12px;
+  }
+
+  .ticket-actions {
+    margin-top: 16px;
+    gap: 8px;
+  }
+
+  .ticket-action {
+    padding: 8px 10px;
+    font-size: 11px;
   }
 }
