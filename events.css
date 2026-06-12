@@ -1,10 +1,12 @@
 :root {
-  --paper: #faf7ec;
-  --paper-dark: #efe4c8;
+  --paper: #fffaf6;
+  --paper-dark: #f6e8c9;
   --ink: #111111;
-  --muted: rgba(17, 17, 17, 0.62);
-  --line: rgba(17, 17, 17, 0.16);
-  --accent: #ff00ff;
+  --muted: rgba(17, 17, 17, 0.58);
+  --line: rgba(17, 17, 17, 0.14);
+  --accent: #ff00c8;
+  --accent-2: #00d9ff;
+  --accent-3: #ff9d00;
   --cyan: #00e5ff;
 }
 
@@ -18,8 +20,9 @@ body {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--ink);
   background:
-    radial-gradient(circle at top left, rgba(255, 0, 255, 0.18), transparent 30rem),
-    radial-gradient(circle at bottom right, rgba(0, 229, 255, 0.13), transparent 32rem),
+    radial-gradient(circle at top left, rgba(255, 0, 200, 0.22), transparent 30rem),
+    radial-gradient(circle at bottom right, rgba(0, 217, 255, 0.16), transparent 32rem),
+    radial-gradient(circle at 70% 10%, rgba(255, 157, 0, 0.10), transparent 24rem),
     linear-gradient(135deg, #101010 0%, #181818 48%, #070707 100%);
 }
 
@@ -160,7 +163,7 @@ body {
   color: #fff;
   border-color: var(--accent);
   box-shadow:
-    0 0 18px rgba(255,0,255,0.36),
+    0 0 18px rgba(255,0,200,0.36),
     inset 0 1px 0 rgba(255,255,255,0.25);
 }
 
@@ -176,21 +179,31 @@ body {
 }
 
 .ticket {
+  --stub-width: 104px;
+
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 118px;
-  min-height: 200px;
+  grid-template-columns: minmax(0, 1fr) var(--stub-width);
+  min-height: 190px;
   color: var(--ink);
   background:
-    radial-gradient(circle at 14% 18%, rgba(255,255,255,0.55), transparent 17%),
-    radial-gradient(circle at 80% 82%, rgba(0,0,0,0.045), transparent 22%),
-    linear-gradient(90deg, #fbf7e9 0%, #fbf7e9 69%, #eee1c1 69%, #eee1c1 100%);
-  border: 1px solid rgba(255,255,255,0.5);
+    radial-gradient(circle at 14% 18%, rgba(255,255,255,0.50), transparent 17%),
+    radial-gradient(circle at 80% 82%, rgba(255,0,200,0.035), transparent 22%),
+    linear-gradient(
+      90deg,
+      var(--paper) 0%,
+      var(--paper) calc(100% - var(--stub-width)),
+      var(--paper-dark) calc(100% - var(--stub-width)),
+      var(--paper-dark) 100%
+    );
+  border: 1px solid rgba(255,255,255,0.55);
   border-radius: 18px;
   overflow: hidden;
   box-shadow:
     0 16px 40px rgba(0,0,0,0.32),
-    inset 0 0 0 1px rgba(255,255,255,0.5);
+    0 0 0 1px rgba(255,0,200,0.12),
+    0 0 24px rgba(0,217,255,0.08),
+    inset 0 0 0 1px rgba(255,255,255,0.48);
   transform: rotate(var(--tilt, -1deg));
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
@@ -200,7 +213,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.16;
   background-image:
     repeating-linear-gradient(
       0deg,
@@ -217,7 +230,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.16;
+  opacity: 0.14;
   background-image:
     linear-gradient(90deg, rgba(17,17,17,0.03) 1px, transparent 1px),
     linear-gradient(0deg, rgba(17,17,17,0.022) 1px, transparent 1px);
@@ -229,8 +242,9 @@ body {
   transform: rotate(0deg) translateY(-4px);
   box-shadow:
     0 22px 52px rgba(0,0,0,0.42),
-    0 0 0 1px rgba(255,0,255,0.3),
-    0 0 26px rgba(255,0,255,0.16);
+    0 0 0 1px rgba(255,0,200,0.30),
+    0 0 18px rgba(255,0,200,0.18),
+    0 0 30px rgba(0,217,255,0.10);
 }
 
 .ticket-main {
@@ -251,7 +265,7 @@ body {
 }
 
 .ticket-meta {
-  margin-top: 14px;
+  margin-top: 13px;
   display: grid;
   gap: 7px;
   color: var(--muted);
@@ -265,14 +279,14 @@ body {
 }
 
 .ticket-extra-grid {
-  margin-top: 14px;
+  margin-top: 13px;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 8px;
 }
 
 .ticket-extra-cell {
-  border-top: 1px solid rgba(17,17,17,0.16);
+  border-top: 1px solid rgba(17,17,17,0.15);
   padding-top: 6px;
   min-width: 0;
 }
@@ -285,7 +299,7 @@ body {
   font-weight: 900;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(17,17,17,0.45);
+  color: rgba(120, 70, 90, 0.55);
 }
 
 .ticket-extra-cell strong {
@@ -300,7 +314,7 @@ body {
 
 .ticket-fineprint {
   margin-top: auto;
-  padding-top: 14px;
+  padding-top: 13px;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
@@ -309,20 +323,22 @@ body {
   font-weight: 800;
   letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: rgba(17,17,17,0.52);
+  color: rgba(120, 70, 90, 0.62);
 }
 
 .ticket-stub {
   position: relative;
   z-index: 1;
-  padding: 10px 8px 8px;
+  padding: 14px 10px;
   border-left: 2px dashed rgba(17,17,17,0.24);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
   background:
-    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.35), transparent 30%),
+    radial-gradient(circle at 50% 20%, rgba(255,255,255,0.34), transparent 30%),
+    linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,157,0,0.035)),
     repeating-linear-gradient(
       0deg,
       rgba(17,17,17,0.025) 0,
@@ -354,27 +370,51 @@ body {
   bottom: -12px;
 }
 
-.stub-top {
+.stub-top,
+.stub-logo-row {
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+}
+
+/* barcode fully cut */
+.barcode-wrap,
+.barcode {
+  display: none !important;
 }
 
 .stub-brand {
-  display: inline-flex;
+  width: 100%;
+  min-height: 42px;
+  display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  min-height: 30px;
 }
 
 .stub-brand .event-logo {
   max-width: 74px;
-  max-height: 32px;
+  max-height: 44px;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.12));
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.14));
+}
+
+.stub-brand .event-logo-ncaaf,
+.stub-brand .event-logo-nfl {
+  max-width: 94px;
+  max-height: 60px;
+}
+
+.stub-brand .event-logo-wwe {
+  max-width: 111px;
+  max-height: 48px;
+}
+
+.stub-brand .event-logo-ufc {
+  max-width: 86px;
+  max-height: 52px;
 }
 
 .stub-brand.has-logo .event-type {
@@ -387,30 +427,31 @@ body {
 }
 
 .stub-actions {
+  width: 100%;
+  min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  width: 100%;
-  min-height: 30px;
+  gap: 7px;
 }
 
 .stub-actions-empty {
-  min-height: 30px;
+  display: none;
 }
 
 .stub-action {
+  width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
   text-decoration: none;
   border: 1.5px solid #111;
   color: #fff;
   border-radius: 999px;
-  padding: 6px 8px;
-  font-size: 10px;
+  padding: 7px 7px;
+  font-size: 9px;
   font-weight: 900;
   line-height: 1;
+  text-align: center;
   box-shadow: 1px 1px 0 rgba(17,17,17,0.18);
 }
 
@@ -425,63 +466,6 @@ body {
 .stub-action:hover {
   background: var(--accent);
   color: #fff;
-}
-
-.barcode-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  min-height: 0;
-  padding-top: 10px;
-}
-
-.barcode {
-  position: relative;
-  width: 150px;
-  height: 32px;
-  margin: 0;
-  transform: rotate(90deg);
-  transform-origin: center;
-  background:
-    repeating-linear-gradient(
-      to right,
-      #111 0px,
-      #111 1px,
-      transparent 1px,
-      transparent 3px,
-      #111 3px,
-      #111 5px,
-      transparent 5px,
-      transparent 8px,
-      #111 8px,
-      #111 9px,
-      transparent 9px,
-      transparent 13px,
-      #111 13px,
-      #111 16px,
-      transparent 16px,
-      transparent 18px,
-      #111 18px,
-      #111 19px,
-      transparent 19px,
-      transparent 22px
-    );
-  background-size: 150px 32px;
-  background-repeat: no-repeat;
-  opacity: 0.92;
-}
-
-.barcode::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border: 1px solid rgba(17,17,17,0.18);
-  border-radius: 3px;
-}
-
-.barcode::after {
-  content: none;
 }
 
 .ticket-brand {
@@ -611,8 +595,10 @@ body {
   }
 
   .ticket {
-    grid-template-columns: minmax(0, 1fr) 92px;
-    min-height: 188px;
+    --stub-width: 82px;
+
+    grid-template-columns: minmax(0, 1fr) var(--stub-width);
+    min-height: 184px;
     border-radius: 16px;
     transform: none !important;
   }
@@ -658,224 +644,12 @@ body {
   }
 
   .ticket-stub {
-    padding: 8px 6px 6px;
-  }
-
-  .stub-top {
-    gap: 8px;
-  }
-
-  .stub-brand .event-logo {
-    max-width: 58px;
-    max-height: 24px;
-  }
-
-  .stub-action {
-    font-size: 9px;
-    padding: 5px 6px;
-  }
-
-  .stub-actions,
-  .stub-actions-empty {
-    min-height: 24px;
-    gap: 5px;
-  }
-
-  .barcode-wrap {
-    padding-top: 8px;
-  }
-
-  .barcode {
-    width: 116px;
-    height: 24px;
-    background-size: 116px 24px;
-  }
-
-  .event-type {
-    min-width: 50px;
-    padding: 6px 9px;
-    font-size: 11px;
-  }
-}
-
-/* Stub layout: logo top, rotated barcode middle, actions bottom */
-
-.ticket-stub {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  align-items: center;
-  justify-items: center;
-  gap: 8px;
-  padding: 10px 8px 8px;
-}
-
-.stub-logo-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-}
-
-.stub-brand {
-  justify-content: center;
-  width: 100%;
-  min-height: 30px;
-}
-
-.stub-brand .event-logo {
-  max-width: 72px;
-  max-height: 30px;
-}
-
-.barcode-wrap {
-  width: 100%;
-  min-height: 112px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-}
-
-.barcode {
-  width: 142px;
-  height: 30px;
-  margin: 0;
-  transform: rotate(90deg);
-  transform-origin: center;
-  background-size: 142px 30px;
-}
-
-.barcode::after {
-  content: none;
-}
-
-.stub-actions {
-  width: 100%;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.stub-actions-empty {
-  display: none;
-}
-
-.stub-action {
-  width: 100%;
-  padding: 5px 6px;
-  font-size: 9px;
-}
-
-@media (max-width: 700px) {
-  .ticket-stub {
-    gap: 6px;
-    padding: 8px 6px 6px;
-  }
-
-  .stub-brand .event-logo {
-    max-width: 56px;
-    max-height: 24px;
-  }
-
-  .barcode-wrap {
-    min-height: 92px;
-  }
-
-  .barcode {
-    width: 116px;
-    height: 24px;
-    background-size: 116px 24px;
-  }
-
-  .stub-action {
-    padding: 5px 5px;
-    font-size: 8.5px;
-  }
-}
-
-/* Remove barcode and clean up right stub */
-
-.barcode-wrap,
-.barcode {
-  display: none !important;
-}
-
-.ticket {
-  grid-template-columns: minmax(0, 1fr) 104px;
-}
-
-.ticket-stub {
-  padding: 14px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-}
-
-.stub-top,
-.stub-logo-row {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-/* Centre the SVG/event badge nicely */
-.stub-brand {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.stub-brand .event-logo {
-  max-width: 72px;
-  max-height: 42px;
-  object-fit: contain;
-}
-
-.stub-brand.no-logo .event-type,
-.stub-brand.has-logo.logo-missing .event-type {
-  display: inline-flex;
-}
-
-/* Keep YouTube / Box Score as clean stub buttons */
-.stub-actions {
-  width: 100%;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.stub-actions-empty {
-  display: none;
-}
-
-.stub-action {
-  width: 100%;
-  padding: 7px 7px;
-  font-size: 9px;
-  border-radius: 999px;
-  text-align: center;
-}
-
-/* Slightly tighter ticket now barcode is gone */
-.ticket-main {
-  padding-right: 22px;
-}
-
-@media (max-width: 700px) {
-  .ticket {
-    grid-template-columns: minmax(0, 1fr) 82px;
-  }
-
-  .ticket-stub {
     padding: 12px 7px;
     gap: 10px;
+  }
+
+  .stub-brand {
+    min-height: 34px;
   }
 
   .stub-brand .event-logo {
@@ -883,38 +657,30 @@ body {
     max-height: 32px;
   }
 
-  .stub-action {
-    padding: 6px 5px;
-    font-size: 8px;
-  }
-}
-
-/* Make NCAA and NFL stub logos bigger */
-
-.stub-brand .event-logo-ncaaf,
-.stub-brand .event-logo-nfl {
-  max-width: 86px;
-  max-height: 54px;
-}
-
-@media (max-width: 700px) {
   .stub-brand .event-logo-ncaaf,
   .stub-brand .event-logo-nfl {
     max-width: 68px;
     max-height: 42px;
   }
-}
 
-/* Make WWE logo about 50% bigger */
-
-.stub-brand .event-logo-wwe {
-  max-width: 111px;
-  max-height: 48px;
-}
-
-@media (max-width: 700px) {
   .stub-brand .event-logo-wwe {
     max-width: 87px;
     max-height: 36px;
+  }
+
+  .stub-brand .event-logo-ufc {
+    max-width: 66px;
+    max-height: 40px;
+  }
+
+  .stub-action {
+    padding: 6px 5px;
+    font-size: 8px;
+  }
+
+  .event-type {
+    min-width: 50px;
+    padding: 6px 9px;
+    font-size: 11px;
   }
 }
