@@ -60,6 +60,9 @@ const LOCATIONS = {
   "San Rafael Bridge": [37.9365, -122.4458],
   "Golden Gate Bridge": [37.8199, -122.4783],
   "Yosemite NP": [37.7456, -119.5936],
+  "17-Mile Drive": [36.5725, -121.9496],
+  "Pebble Beach Golf Club": [36.5687, -121.9506],
+  "Piedras Blancas Elephant Seal Rookery": [35.6638, -121.2576],
   "Monterey": [36.6002, -121.8947],
   "Carmel": [36.5552, -121.9233],
   "Santa Monica": [34.0195, -118.4912],
@@ -67,6 +70,7 @@ const LOCATIONS = {
   "Long Beach": [33.7701, -118.1937],
   "La Jolla": [32.8328, -117.2713],
   "Las Cruces": [32.3199, -106.7637],
+  "Four Corners Monument": [36.9989, -109.0452],
   "Grand Canyon": [36.0544, -112.1401],
   "Cedar City": [37.6775, -113.0619],
   "Salt Lake City": [40.7608, -111.8910],
@@ -183,6 +187,9 @@ const LOCATION_REGION_LABELS = {
   "San Rafael Bridge": "CA",
   "Golden Gate Bridge": "CA",
   "Yosemite NP": "CA",
+  "17-Mile Drive": "CA",
+  "Pebble Beach Golf Club": "CA",
+  "Piedras Blancas Elephant Seal Rookery": "CA",
   "Monterey": "CA",
   "Carmel": "CA",
   "Santa Monica": "CA",
@@ -190,6 +197,7 @@ const LOCATION_REGION_LABELS = {
   "Long Beach": "CA",
   "La Jolla": "CA",
   "Las Cruces": "NM",
+  "Four Corners Monument": "AZ/NM/CO/UT",
   "Grand Canyon": "AZ",
   "Cedar City": "UT",
   "Salt Lake City": "UT",
@@ -270,23 +278,6 @@ const EVENT_VENUE_OVERRIDES = {
   78: "Bank of America Stadium"
 };
 
-const EVENT_ICONS = {
-  "MLB": "⚾",
-  "NFL": "🏈",
-  "NCAAF": "🏈",
-  "CFB": "🏈",
-  "MLS": "⚽",
-  "MotoGP": "🏁",
-  "UFC": "🥊",
-  "UFC189": "🥊",
-  "Boxing": "🥊",
-  "WWE": "🤼",
-  "Tennis": "🎾",
-  "Concert": "🎤",
-  "Comedy": "🎭",
-  "Show": "📺"
-};
-
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
 
@@ -300,10 +291,7 @@ let lastEngineTime = null;
 let isRouteAnimating = false;
 let routeAnimationResolvers = [];
 
-let eventsModeActive = false;
-
 const CAR_SPEED = 250000;
-
 const LOCAL_DRIVING_MARKUP = 1.10;
 const MILES_TO_KM = 1.609344;
 const COUNTRIES_VISITED = 2;
@@ -338,13 +326,6 @@ style.innerHTML = `
     background-color: #FFFFFF;
     border-color: #00E5FF;
     box-shadow: 0 0 12px rgba(0, 229, 255, 0.95);
-  }
-
-  .marker-event {
-    background-color: #FF00FF;
-    border-color: #FFF;
-    font-size: 14px;
-    box-shadow: 0 0 12px #FF00FF;
   }
 
   .marker-airport {
@@ -427,27 +408,11 @@ style.innerHTML = `
     margin-bottom: 16px;
   }
 
-  .stats-compact {
-    display: none;
-    margin-bottom: 12px;
-    padding: 10px 11px;
-    border: 1px solid rgba(0,0,0,0.10);
-    border-radius: 8px;
-    background: rgba(255,255,255,0.72);
-    font-size: 11px;
-    line-height: 1.55;
-    color: rgba(0,0,0,0.66);
-    font-weight: 750;
-    letter-spacing: 0.01em;
-  }
-
   .trip-menu .stat {
     border: 1px solid rgba(0,0,0,0.10);
     border-radius: 8px;
     padding: 11px 12px;
     background: rgba(255,255,255,0.68);
-    position: relative;
-    overflow: hidden;
     min-height: 58px;
   }
 
@@ -569,12 +534,6 @@ style.innerHTML = `
     text-decoration: none;
   }
 
-  .detail-subvalue {
-    margin-top: 4px;
-    font-size: 13px;
-    opacity: 0.72;
-  }
-
   .detail-day-row {
     padding: 9px 0;
     border-bottom: 1px solid rgba(0,0,0,0.08);
@@ -640,53 +599,6 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-function formatLocationWithRegion(place) {
-  if (!place) return "";
-
-  const region = LOCATION_REGION_LABELS[place];
-
-  if (!region) return place;
-
-  if (place.endsWith(`, ${region}`) || place.endsWith(` ${region}`)) {
-    return place;
-  }
-
-  return `${place}, ${region}`;
-}
-
-function getEventVenuePlace(day) {
-  if (!day || !day.event) return null;
-
-  const dayNumber = Number(day.day);
-  const overrideVenue = EVENT_VENUE_OVERRIDES[dayNumber];
-
-  if (overrideVenue && LOCATIONS[overrideVenue]) {
-    return overrideVenue;
-  }
-
-  if (day.event.venue && LOCATIONS[day.event.venue]) {
-    return day.event.venue;
-  }
-
-  if (day.event.location && LOCATIONS[day.event.location]) {
-    return day.event.location;
-  }
-
-  return null;
-}
-
-function getEventWithVenue(day) {
-  if (!day?.event) return null;
-
-  const venuePlace = getEventVenuePlace(day);
-
-  return {
-    ...day.event,
-    venue: venuePlace || day.event.venue || "",
-    location: venuePlace || day.event.location || day.finish || ""
-  };
-}
-
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -694,6 +606,14 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function formatLocationWithRegion(place) {
+  if (!place) return "";
+  const region = LOCATION_REGION_LABELS[place];
+  if (!region) return place;
+  if (place.endsWith(`, ${region}`) || place.endsWith(` ${region}`)) return place;
+  return `${place}, ${region}`;
 }
 
 function formatFullStat(value) {
@@ -716,18 +636,14 @@ function formatDate(dateString) {
 
 function parseDrivingTimeToMinutes(value) {
   if (!value) return 0;
-
   const [hours, minutes] = String(value).split(":").map(Number);
-
   if (!Number.isFinite(hours)) return 0;
-
   return (hours * 60) + (Number.isFinite(minutes) ? minutes : 0);
 }
 
 function formatDrivenTime(totalMinutes) {
   const hours = Math.floor(totalMinutes / 60);
   const minutes = totalMinutes % 60;
-
   return `${hours}h ${String(minutes).padStart(2, "0")}m`;
 }
 
@@ -793,68 +709,33 @@ function addBoundaryLayers() {
     .catch(error => console.warn("Canadian province borders failed to load:", error));
 }
 
-function greatCircleArc(start, end, segments = 64) {
-  const [lat1, lon1] = start.map(d => d * Math.PI / 180);
-  const [lat2, lon2] = end.map(d => d * Math.PI / 180);
+function getEventVenuePlace(day) {
+  if (!day?.event) return null;
 
-  const d = 2 * Math.asin(
-    Math.sqrt(
-      Math.pow(Math.sin((lat1 - lat2) / 2), 2) +
-      Math.cos(lat1) * Math.cos(lat2) *
-      Math.pow(Math.sin((lon1 - lon2) / 2), 2)
-    )
-  );
+  const overrideVenue = EVENT_VENUE_OVERRIDES[Number(day.day)];
 
-  const points = [];
+  if (overrideVenue && LOCATIONS[overrideVenue]) return overrideVenue;
+  if (day.event.venue && LOCATIONS[day.event.venue]) return day.event.venue;
+  if (day.event.location && LOCATIONS[day.event.location]) return day.event.location;
 
-  for (let i = 0; i <= segments; i++) {
-    const f = i / segments;
-    const A = Math.sin((1 - f) * d) / Math.sin(d);
-    const B = Math.sin(f * d) / Math.sin(d);
-
-    const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
-    const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.sin(lon2);
-    const z = A * Math.sin(lat1) + B * Math.sin(lat2);
-
-    points.push([
-      Math.atan2(z, Math.sqrt(x * x + y * y)) * 180 / Math.PI,
-      Math.atan2(y, x) * 180 / Math.PI
-    ]);
-  }
-
-  return points;
+  return null;
 }
 
-function resolveRouteAnimationWaiters() {
-  const waiters = routeAnimationResolvers.splice(0);
-  waiters.forEach(resolve => resolve());
-}
+function getEventWithVenue(day) {
+  if (!day?.event) return null;
 
-function waitForRouteAnimation() {
-  if (!isRouteAnimating && animationQueue.length === 0) {
-    return Promise.resolve();
-  }
+  const venuePlace = getEventVenuePlace(day);
 
-  return new Promise(resolve => {
-    routeAnimationResolvers.push(resolve);
-  });
-}
-
-function finishRouteAnimationIfComplete() {
-  if (!isRouteAnimating) return;
-  if (animationQueue.length > 0) return;
-
-  isRouteAnimating = false;
-  resolveRouteAnimationWaiters();
-}
-
-function getMaxDay() {
-  if (!tripData || !tripData.days || !tripData.days.length) return 90;
-  return Math.max(...tripData.days.map(day => Number(day.day)));
+  return {
+    ...day.event,
+    venue: venuePlace || day.event.venue || "",
+    location: venuePlace || day.event.location || day.finish || ""
+  };
 }
 
 function getRoutePlaces(day, includeEventVenue = false) {
   const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
+
   const routePlaces = [
     day.start,
     ...viaStops,
@@ -883,12 +764,13 @@ function getUniqueRoutePlaces(day, includeEventVenue = false) {
 
 function getDayMarkerCoord(day) {
   const eventVenue = getEventVenuePlace(day);
-
-  if (eventVenue && LOCATIONS[eventVenue]) {
-    return LOCATIONS[eventVenue];
-  }
-
+  if (eventVenue && LOCATIONS[eventVenue]) return LOCATIONS[eventVenue];
   return LOCATIONS[day.finish];
+}
+
+function getMaxDay() {
+  if (!tripData?.days?.length) return 90;
+  return Math.max(...tripData.days.map(day => Number(day.day)));
 }
 
 function getDaysDisplay(daysInput) {
@@ -917,16 +799,13 @@ function getDaysDisplay(daysInput) {
 
   ranges.push(start === previous ? `${start}` : `${start}–${previous}`);
 
-  const label = days.length === 1 ? "Day" : "Days";
-  return `${label} ${ranges.join(", ")}`;
+  return `${days.length === 1 ? "Day" : "Days"} ${ranges.join(", ")}`;
 }
 
 function getDateRangeDisplay(daysInput) {
   const days = [...new Set(daysInput.map(Number))]
     .filter(Number.isFinite)
     .sort((a, b) => a - b);
-
-  if (!days.length) return "";
 
   const matchingDays = days
     .map(dayNumber => tripData.days.find(day => Number(day.day) === dayNumber))
@@ -938,7 +817,6 @@ function getDateRangeDisplay(daysInput) {
   const lastDate = matchingDays[matchingDays.length - 1].date;
 
   if (!firstDate || !lastDate) return "";
-
   if (firstDate === lastDate) return formatDate(firstDate);
 
   return `${formatDate(firstDate)} – ${formatDate(lastDate)}`;
@@ -1083,6 +961,7 @@ function showPlaceDetail(placeData) {
   visitsByDay.forEach(item => {
     const day = item.day;
     const roleLabel = getRoleLabel(item.roles);
+
     const driveLine = day.type === "drive" && day.miles
       ? `${escapeHtml(day.miles)} mi · ${escapeHtml(day.drivingTime || "")}`
       : day.type === "stay"
@@ -1180,19 +1059,19 @@ function createPlaceMarker(placeData) {
   let html = "";
   let size = 12;
 
-if (hasEvent) {
-  className = "marker-dot marker-via";
-  html = "";
-  size = 10;
-} else if (viaOnly) {
-  className = "marker-dot marker-via";
-  html = "";
-  size = 10;
-} else if (multiDay) {
-  className = "marker-dot marker-multi";
-  html = "";
-  size = 16;
-}
+  if (hasEvent) {
+    className = "marker-dot marker-via";
+    html = "";
+    size = 10;
+  } else if (viaOnly) {
+    className = "marker-dot marker-via";
+    html = "";
+    size = 10;
+  } else if (multiDay) {
+    className = "marker-dot marker-multi";
+    html = "";
+    size = 16;
+  }
 
   const icon = L.divIcon({
     className,
@@ -1338,44 +1217,8 @@ function updateRollingCounters(upToDay) {
   }
 }
 
-function getEventDays() {
-  if (!tripData || !tripData.days) return [];
-  return tripData.days.filter(day => day.event);
-}
-
-function updateEventsModeUi() {
-  const menu = document.getElementById("trip-menu");
-  const button = document.getElementById("events-toggle");
-
-  if (menu) {
-    menu.classList.toggle("events-open", eventsModeActive);
-  }
-
-  if (button) {
-    button.classList.toggle("active", eventsModeActive);
-    button.setAttribute("aria-pressed", eventsModeActive ? "true" : "false");
-    button.textContent = eventsModeActive ? "Hide events on map" : "Highlight events on map";
-  }
-}
-
-function setEventsMode(active) {
-  eventsModeActive = Boolean(active);
-  updateEventsModeUi();
-
-  const targetDay = eventsModeActive ? getMaxDay() : lastUpToDay;
-  renderRoute(targetDay, { instant: true });
-
-  if (eventsModeActive) {
-    const eventCoords = getEventDays()
-      .map(day => getDayMarkerCoord(day))
-      .filter(Boolean);
-
-    if (eventCoords.length) {
-      map.fitBounds(L.latLngBounds(eventCoords), {
-        padding: [80, 80]
-      });
-    }
-  }
+function setEventsMode() {
+  renderRoute(getMaxDay(), { instant: true });
 }
 
 function focusDay(day, zoom = 7) {
@@ -1453,15 +1296,6 @@ function setupTripMenu() {
         </div>
       </div>
 
-      <div class="stats-compact" id="stats-compact">
-        <span id="compact-days">—</span>d ·
-        <span id="compact-countries">—</span> countries ·
-        <span id="compact-states">—</span> states ·
-        <span id="compact-provinces">—</span> provinces ·
-        <span id="compact-km">—</span> km ·
-        <span id="compact-miles">—</span> mi
-      </div>
-
       <div class="menu-section">
         <a class="menu-page-link" href="events.html">Sports & Events</a>
       </div>
@@ -1525,6 +1359,61 @@ function engineLoop(timestamp) {
   }
 
   requestAnimationFrame(engineLoop);
+}
+
+function resolveRouteAnimationWaiters() {
+  const waiters = routeAnimationResolvers.splice(0);
+  waiters.forEach(resolve => resolve());
+}
+
+function waitForRouteAnimation() {
+  if (!isRouteAnimating && animationQueue.length === 0) {
+    return Promise.resolve();
+  }
+
+  return new Promise(resolve => {
+    routeAnimationResolvers.push(resolve);
+  });
+}
+
+function finishRouteAnimationIfComplete() {
+  if (!isRouteAnimating) return;
+  if (animationQueue.length > 0) return;
+
+  isRouteAnimating = false;
+  resolveRouteAnimationWaiters();
+}
+
+function greatCircleArc(start, end, segments = 64) {
+  const [lat1, lon1] = start.map(d => d * Math.PI / 180);
+  const [lat2, lon2] = end.map(d => d * Math.PI / 180);
+
+  const d = 2 * Math.asin(
+    Math.sqrt(
+      Math.pow(Math.sin((lat1 - lat2) / 2), 2) +
+      Math.cos(lat1) * Math.cos(lat2) *
+      Math.pow(Math.sin((lon1 - lon2) / 2), 2)
+    )
+  );
+
+  const points = [];
+
+  for (let i = 0; i <= segments; i++) {
+    const f = i / segments;
+    const A = Math.sin((1 - f) * d) / Math.sin(d);
+    const B = Math.sin(f * d) / Math.sin(d);
+
+    const x = A * Math.cos(lat1) * Math.cos(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+    const y = A * Math.cos(lat1) * Math.sin(lon1) + B * Math.cos(lat2) * Math.cos(lon2);
+    const z = A * Math.sin(lat1) + B * Math.sin(lat2);
+
+    points.push([
+      Math.atan2(z, Math.sqrt(x * x + y * y)) * 180 / Math.PI,
+      Math.atan2(y, x) * 180 / Math.PI
+    ]);
+  }
+
+  return points;
 }
 
 function renderRoute(upToDay, options = {}) {
@@ -1698,9 +1587,10 @@ async function loadRealisticRoads() {
       return;
     }
 
-    const routePlaces = getRoutePlaces(day);
+    const routePlaces = getRoutePlaces(day, true);
     const hasViaStops = Array.isArray(day.viaStops) && day.viaStops.length > 0;
-    const shouldRoute = day.type === "drive" || hasViaStops;
+    const hasEventVenue = Boolean(getEventVenuePlace(day));
+    const shouldRoute = day.type === "drive" || hasViaStops || hasEventVenue;
 
     if (shouldRoute && routePlaces.length >= 2) {
       const coords = routePlaces
@@ -1782,13 +1672,7 @@ function applyStatsToMenu() {
     "stat-states": stats.states,
     "stat-provinces": stats.provinces,
     "stat-km": stats.km,
-    "stat-miles": stats.miles,
-    "compact-days": stats.days,
-    "compact-countries": stats.countries,
-    "compact-states": stats.states,
-    "compact-provinces": stats.provinces,
-    "compact-km": stats.km,
-    "compact-miles": stats.miles
+    "stat-miles": stats.miles
   };
 
   Object.entries(values).forEach(([id, value]) => {
@@ -1815,12 +1699,6 @@ function applyTimelineMax() {
 function handleInitialUrlParams() {
   const params = new URLSearchParams(window.location.search);
   const dayNumber = Number(params.get("day"));
-  const shouldShowEvents = params.get("events") === "1";
-
-  if (shouldShowEvents) {
-    eventsModeActive = true;
-    updateEventsModeUi();
-  }
 
   if (!Number.isFinite(dayNumber) || dayNumber <= 0) return;
 
