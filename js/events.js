@@ -39,7 +39,7 @@ function filterGroup(type) {
   const normalised = normaliseType(type);
 
   if (["Boxing", "UFC", "WWE"].includes(normalised)) return "Combat";
-  if (["MLB", "NFL", "NCAAF", "MLS", "Tennis", "MotoGP"].includes(normalised)) return normalised;
+  if (["MLB", "NFL", "NCAAF", "MLS", "NHL", "Tennis", "MotoGP"].includes(normalised)) return normalised;
   if (normalised === "Concert") return "Concert";
 
   return "Other";
@@ -62,6 +62,7 @@ function getLogoPath(type) {
     NCAAF: "assets/logos/ncaa.svg",
     CFB: "assets/logos/ncaa.svg",
     MLS: "assets/logos/mls.svg",
+    NHL: "assets/logos/nhl.svg",
     Tennis: "assets/logos/us-open.svg",
     UFC: "assets/logos/ufc.svg",
     UFC189: "assets/logos/ufc.svg",
