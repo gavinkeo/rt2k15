@@ -485,3 +485,68 @@ body::before {
     font-size: 14px;
   }
 }
+
+/* Desktop final polish */
+
+@media (min-width: 821px) {
+  .soundtrack-title-row {
+    justify-content: flex-start;
+  }
+
+  .soundtrack-page {
+    width: min(1260px, calc(100% - 56px));
+    padding: 22px 0;
+  }
+
+  .soundtrack-title-row h1 {
+    font-size: clamp(44px, 5vw, 72px);
+  }
+
+  .player-shell {
+    padding: 18px 20px 20px;
+  }
+
+  .player-copy {
+    margin-bottom: 6px;
+  }
+
+  .section-kicker {
+    font-size: 9px;
+    margin-bottom: 5px;
+  }
+
+  .player-copy h2 {
+    font-size: 28px;
+    line-height: 1;
+    letter-spacing: -0.055em;
+  }
+
+  .player-layout {
+    gap: 20px;
+    grid-template-columns: minmax(0, 1fr) 390px;
+  }
+
+  .tracklist-panel {
+    border-radius: 18px;
+  }
+
+  .tracklist-head {
+    padding: 11px 14px;
+  }
+
+  .track {
+    grid-template-columns: 30px minmax(0, 1fr);
+    gap: 9px;
+    padding: 8px 8px;
+  }
+
+  .track-title {
+    font-size: 13px;
+    line-height: 1.08;
+  }
+
+  .track-artist {
+    margin-top: 2px;
+    font-size: 8px;
+  }
+}
