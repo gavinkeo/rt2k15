@@ -1,122 +1,50 @@
-[
-  {
-    "title": "Shut Up and Dance",
-    "artist": "WALK THE MOON",
-    "categories": [
-      "anthem",
-      "summer",
-      "drive"
-    ],
-    "location": "Summer 2015",
-    "memory": "Big obvious road-trip energy. Replace this note with your actual memory if needed."
-  },
-  {
-    "title": "Can't Feel My Face",
-    "artist": "The Weeknd",
-    "categories": [
-      "summer",
-      "anthem"
-    ],
-    "location": "Radio everywhere",
-    "memory": "One of those songs that was impossible to avoid that summer."
-  },
-  {
-    "title": "Lean On",
-    "artist": "Major Lazer & DJ Snake feat. M\u00d8",
-    "categories": [
-      "summer",
-      "drive"
-    ],
-    "location": "West Coast",
-    "memory": "Perfect for long sunny stretches of road."
-  },
-  {
-    "title": "Trap Queen",
-    "artist": "Fetty Wap",
-    "categories": [
-      "anthem",
-      "drive"
-    ],
-    "location": "USA radio",
-    "memory": "A very 2015 road-trip track."
-  },
-  {
-    "title": "Cheerleader",
-    "artist": "OMI",
-    "categories": [
-      "summer"
-    ],
-    "location": "Summer 2015",
-    "memory": "Pure summer-pop timestamp."
-  },
-  {
-    "title": "The Nights",
-    "artist": "Avicii",
-    "categories": [
-      "anthem",
-      "drive"
-    ],
-    "location": "Open road",
-    "memory": "A fitting travel song for the whole trip."
-  },
-  {
-    "title": "Where Are \u00dc Now",
-    "artist": "Skrillex, Diplo & Justin Bieber",
-    "categories": [
-      "summer",
-      "drive"
-    ],
-    "location": "Big cities",
-    "memory": "Another one that felt glued to 2015."
-  },
-  {
-    "title": "Budapest",
-    "artist": "George Ezra",
-    "categories": [
-      "chill",
-      "drive"
-    ],
-    "location": "Long drives",
-    "memory": "Good softer one between the louder road-trip songs."
-  },
-  {
-    "title": "Renegades",
-    "artist": "X Ambassadors",
-    "categories": [
-      "drive",
-      "anthem"
-    ],
-    "location": "National parks",
-    "memory": "Works well for the parks/nature side of the trip."
-  },
-  {
-    "title": "Riptide",
-    "artist": "Vance Joy",
-    "categories": [
-      "chill",
-      "summer"
-    ],
-    "location": "Coast roads",
-    "memory": "Good coastal-drive soundtrack."
-  },
-  {
-    "title": "Take Me To Church",
-    "artist": "Hozier",
-    "categories": [
-      "chill",
-      "anthem"
-    ],
-    "location": "Irish representation",
-    "memory": "Worth having in the list even if it was everywhere before the trip too."
-  },
-  {
-    "title": "See You Again",
-    "artist": "Wiz Khalifa feat. Charlie Puth",
-    "categories": [
-      "chill",
-      "anthem"
-    ],
-    "location": "Road-trip closer",
-    "memory": "A proper reflective one for the end of the trip."
-  }
-]
+{
+  "title": "Road Trip 2K15 Soundtrack",
+  "playlistId": "PASTE_YOUR_PLAYLIST_ID_HERE",
+  "playlistUrl": "",
+  "trackCount": 42,
+  "featuredMemories": [
+    {
+      "track": 1,
+      "title": "Shut Up and Dance",
+      "artist": "WALK THE MOON",
+      "location": "Summer 2015",
+      "memory": "Big obvious road-trip energy. Swap this for one of your actual playlist tracks if needed."
+    },
+    {
+      "track": 7,
+      "title": "Can't Feel My Face",
+      "artist": "The Weeknd",
+      "location": "Radio everywhere",
+      "memory": "A proper 2015 timestamp \u2014 the kind of song that instantly places the trip in that summer."
+    },
+    {
+      "track": 14,
+      "title": "Lean On",
+      "artist": "Major Lazer & DJ Snake feat. M\u00d8",
+      "location": "West Coast",
+      "memory": "Good fit for the long sunny stretches through California and the desert."
+    },
+    {
+      "track": 22,
+      "title": "The Nights",
+      "artist": "Avicii",
+      "location": "Open road",
+      "memory": "Feels like a travel montage song. Very on-theme for a 90-day trip."
+    },
+    {
+      "track": 35,
+      "title": "Renegades",
+      "artist": "X Ambassadors",
+      "location": "National parks",
+      "memory": "Works well for the parks and wide-open-road side of the site."
+    },
+    {
+      "track": 42,
+      "title": "See You Again",
+      "artist": "Wiz Khalifa feat. Charlie Puth",
+      "location": "Final stretch",
+      "memory": "A natural closing-track vibe for the end of the trip."
+    }
+  ]
+}
