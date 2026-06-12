@@ -143,8 +143,6 @@ function renderEvents() {
     const day = item.day;
     const event = item.event;
     const type = item.type;
-    const logoLabel = getLogoLabel(event.type);
-    const logoClass = `logo-${normaliseType(event.type).toLowerCase().replaceAll(" ", "-")}`;
     const venue = item.venue;
     const location = item.location;
     const date = formatDate(item.date);
@@ -152,10 +150,10 @@ function renderEvents() {
     return `
       <article class="ticket" style="--tilt: ${tiltForIndex(index)}">
         <div class="ticket-main">
-          <div class="ticket-topline">
-            <span class="admit">Admit One</span>
-            <span class="event-type">${escapeHtml(type)}</span>
-          </div>
+<div class="ticket-topline">
+  <span class="admit">Admit One</span>
+  <span class="event-type event-type-${normaliseType(event.type).toLowerCase()}">${escapeHtml(type)}</span>
+</div>
 
           <h2>${escapeHtml(item.name)}</h2>
 
@@ -168,7 +166,6 @@ function renderEvents() {
 
         <aside class="ticket-stub">
           <div class="day-number">Day ${escapeHtml(day.day)}</div>
-          <div class="ticket-logo ${logoClass}" aria-hidden="true">${escapeHtml(logoLabel)}</div>
           <div class="barcode" aria-hidden="true"></div>
         </aside>
       </article>
