@@ -793,3 +793,98 @@ body {
     font-size: 8.5px;
   }
 }
+
+/* Remove barcode and clean up right stub */
+
+.barcode-wrap,
+.barcode {
+  display: none !important;
+}
+
+.ticket {
+  grid-template-columns: minmax(0, 1fr) 104px;
+}
+
+.ticket-stub {
+  padding: 14px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.stub-top,
+.stub-logo-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Centre the SVG/event badge nicely */
+.stub-brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stub-brand .event-logo {
+  max-width: 72px;
+  max-height: 42px;
+  object-fit: contain;
+}
+
+.stub-brand.no-logo .event-type,
+.stub-brand.has-logo.logo-missing .event-type {
+  display: inline-flex;
+}
+
+/* Keep YouTube / Box Score as clean stub buttons */
+.stub-actions {
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.stub-actions-empty {
+  display: none;
+}
+
+.stub-action {
+  width: 100%;
+  padding: 7px 7px;
+  font-size: 9px;
+  border-radius: 999px;
+  text-align: center;
+}
+
+/* Slightly tighter ticket now barcode is gone */
+.ticket-main {
+  padding-right: 22px;
+}
+
+@media (max-width: 700px) {
+  .ticket {
+    grid-template-columns: minmax(0, 1fr) 82px;
+  }
+
+  .ticket-stub {
+    padding: 12px 7px;
+    gap: 10px;
+  }
+
+  .stub-brand .event-logo {
+    max-width: 58px;
+    max-height: 32px;
+  }
+
+  .stub-action {
+    padding: 6px 5px;
+    font-size: 8px;
+  }
+}
