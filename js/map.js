@@ -1230,11 +1230,13 @@ async function init() {
     maxZoom: 19
   }).addTo(map);
 
-  L.tileLayer("https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}", {
-    attribution: "Labels &copy; Esri",
-    maxZoom: 19,
-    pane: "labelsPane"
-  }).addTo(map);
+L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png", {
+  attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+  subdomains: "abcd",
+  maxZoom: 20,
+  opacity: 0.85,
+  pane: "labelsPane"
+}).addTo(map);
 
   const res = await fetch("data/trip.json");
   tripData = await res.json();
