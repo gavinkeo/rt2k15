@@ -359,3 +359,189 @@ html, body { height: 100%; font-family: 'Inter', system-ui, sans-serif; color: v
     overflow-y: auto;
   }
 }
+
+/* Upgraded homepage timeline/controller */
+.timeline {
+  position: absolute;
+  left: 50%;
+  bottom: 24px;
+  transform: translateX(-50%);
+  z-index: 650;
+  width: min(720px, calc(100% - 48px));
+  background: rgba(250, 250, 247, 0.96);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(20, 20, 20, 0.12);
+  border-radius: 18px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.18);
+  padding: 14px 16px 13px;
+  display: grid;
+  gap: 10px;
+}
+
+.timeline-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.play-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: none;
+  background: #111;
+  color: #FAFAF7;
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  flex: 0 0 auto;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.16);
+}
+
+.play-btn:hover {
+  background: #000;
+}
+
+.timeline-main-counter {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 6px;
+  font-family: "JetBrains Mono", monospace;
+  color: #111;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.timeline-day-label {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: rgba(0,0,0,0.52);
+  margin-right: 4px;
+}
+
+#current-day,
+#total-days {
+  font-size: 34px;
+  line-height: 1;
+}
+
+.timeline-slash {
+  font-size: 26px;
+  color: rgba(0,0,0,0.42);
+}
+
+.timeline-stats {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 800;
+  color: rgba(0,0,0,0.62);
+  white-space: nowrap;
+}
+
+.timeline-stats strong {
+  color: #111;
+  font-weight: 950;
+}
+
+.timeline-dot {
+  color: rgba(0,0,0,0.28);
+}
+
+.timeline-track {
+  display: grid;
+  gap: 7px;
+}
+
+#timeline-slider {
+  width: 100%;
+  accent-color: #F05A28;
+}
+
+.timeline-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(0,0,0,0.55);
+}
+
+.day-counter {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .timeline {
+    left: 12px;
+    right: 12px;
+    bottom: calc(env(safe-area-inset-bottom) + 12px);
+    transform: none;
+    width: auto;
+    padding: 12px 13px;
+    border-radius: 18px;
+    gap: 9px;
+  }
+
+  .timeline-top {
+    gap: 12px;
+  }
+
+  .play-btn {
+    width: 48px;
+    height: 48px;
+    font-size: 15px;
+  }
+
+  #current-day,
+  #total-days {
+    font-size: 28px;
+  }
+
+  .timeline-slash {
+    font-size: 22px;
+  }
+
+  .timeline-day-label {
+    font-size: 11px;
+    letter-spacing: 0.10em;
+  }
+
+  .timeline-stats {
+    justify-content: space-between;
+    gap: 5px;
+    font-size: 10.5px;
+    overflow-x: auto;
+    padding-bottom: 1px;
+  }
+
+  .timeline-labels {
+    display: none;
+  }
+
+  .leaflet-bottom.leaflet-left {
+    bottom: calc(env(safe-area-inset-bottom) + 138px) !important;
+    left: 12px !important;
+  }
+
+  .leaflet-bottom.leaflet-right {
+    bottom: calc(env(safe-area-inset-bottom) + 2px) !important;
+    right: 6px !important;
+  }
+
+  .leaflet-control-attribution {
+    font-size: 10px;
+    max-width: 52vw;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: 0.75;
+  }
+}
