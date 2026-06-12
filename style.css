@@ -1304,3 +1304,119 @@ body {
 .menu-page-link * {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
+
+
+/* FINAL v7: ONE FONT SYSTEM — INTER EVERYWHERE */
+#trip-menu,
+#trip-menu *,
+.timeline,
+.timeline *,
+.playback-controller,
+.playback-controller *,
+.timeline-stat-box,
+.timeline-stat-box *,
+.menu-page-link,
+.menu-page-link * {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-feature-settings: normal !important;
+  font-variant-numeric: normal !important;
+}
+
+/* Menu title: bigger, but still Inter */
+#trip-menu-toggle > .trip-menu-title-text,
+.trip-menu-toggle > .trip-menu-title-text,
+#trip-menu-toggle > span:first-child,
+.trip-menu-toggle > span:first-child {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 27px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.025em !important;
+  text-transform: uppercase !important;
+  color: #083c4d !important;
+}
+
+#trip-menu-toggle,
+.trip-menu-toggle {
+  min-height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Keep all numeric values on Inter too */
+#stat-days,
+#stat-countries,
+#stat-states,
+#stat-provinces,
+#stat-km,
+#stat-miles,
+#current-day,
+#total-days,
+.timeline-slash,
+#driven-kilometres,
+#driven-distance,
+#driven-time,
+.timeline-stat-value,
+.timeline-stat-value strong {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-feature-settings: normal !important;
+  font-variant-numeric: normal !important;
+  color: #111111 !important;
+}
+
+#stat-days,
+#stat-countries,
+#stat-states,
+#stat-provinces,
+#stat-km,
+#stat-miles {
+  font-size: 23px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.045em !important;
+}
+
+#current-day {
+  font-size: 34px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.055em !important;
+}
+
+#total-days,
+.timeline-slash {
+  font-size: 18px !important;
+  font-weight: 850 !important;
+}
+
+.timeline-stat-value {
+  font-size: 12.5px !important;
+  font-weight: 850 !important;
+  letter-spacing: -0.035em !important;
+}
+
+.trip-menu .stat-label-row,
+.timeline-day-label,
+.timeline-stat-label {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.12em !important;
+  font-weight: 800 !important;
+}
+
+#trip-menu .menu-page-link,
+.menu-page-link {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* No car beside title */
+#trip-menu-toggle::after,
+.trip-menu-toggle::after {
+  content: none !important;
+  display: none !important;
+}
