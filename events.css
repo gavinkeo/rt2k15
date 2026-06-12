@@ -888,3 +888,19 @@ body {
     font-size: 8px;
   }
 }
+
+/* Make NCAA and NFL stub logos bigger */
+
+.stub-brand .event-logo-ncaaf,
+.stub-brand .event-logo-nfl {
+  max-width: 86px;
+  max-height: 54px;
+}
+
+@media (max-width: 700px) {
+  .stub-brand .event-logo-ncaaf,
+  .stub-brand .event-logo-nfl {
+    max-width: 68px;
+    max-height: 42px;
+  }
+}
