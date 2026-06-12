@@ -1611,20 +1611,9 @@ function renderRoute(upToDay, options = {}) {
   if (carCurrentPos) {
     if (!carMarker) {
       const carHtml = `
-        <div class="cx5-car">
-          <svg viewBox="0 0 180 100" xmlns="http://www.w3.org/2000/svg">
-            <ellipse cx="90" cy="82" rx="75" ry="10" fill="rgba(0,0,0,0.4)" filter="blur(3px)"/>
-            <circle cx="45" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
-            <circle cx="45" cy="75" r="7" fill="#555"/>
-            <circle cx="135" cy="75" r="16" fill="#111" stroke="#333" stroke-width="2"/>
-            <circle cx="135" cy="75" r="7" fill="#555"/>
-            <path d="M 15 65 Q 12 55 20 45 L 45 42 L 75 25 Q 95 22 135 25 L 160 45 Q 168 55 165 65 Q 160 70 150 70 L 148 68 Q 135 58 122 68 L 58 68 Q 45 58 32 68 L 20 70 Z" fill="#181818" stroke="#444" stroke-width="1.5"/>
-            <path d="M 52 40 L 74 27 L 102 27 L 108 40 Z" fill="#080808"/>
-            <path d="M 112 40 L 105 27 L 132 27 L 145 40 Z" fill="#080808"/>
-            <path d="M 160 46 L 165 48 L 162 54 Z" fill="#FFFFEE"/>
-            <path d="M 20 46 L 15 48 L 17 54 Z" fill="#FF2222"/>
-          </svg>
-        </div>
+       <div class="cx5-car">
+    <img src="assets/mazda-cx5-side.png" alt="Mazda CX-5" />
+  </div>
       `;
 
       carMarker = L.marker(carCurrentPos, {
