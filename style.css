@@ -728,3 +728,14 @@ body .timeline-track {
     grid-area: track !important;
   }
 }
+
+/* Reduce visible raster tile seams */
+.leaflet-tile {
+  border: none !important;
+  outline: 1px solid transparent !important;
+}
+
+.leaflet-tile-container img {
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
