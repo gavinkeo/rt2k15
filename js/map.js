@@ -1241,24 +1241,25 @@ function getCumulativeTripStats(upToDay) {
 }
 
 function updateRollingCounters(upToDay) {
+  const drivenKilometresEl = document.getElementById("driven-kilometres");
   const drivenDistanceEl = document.getElementById("driven-distance");
   const drivenTimeEl = document.getElementById("driven-time");
-  const statesVisitedEl = document.getElementById("states-visited");
 
   const stats = getCumulativeTripStats(upToDay);
-  const maxDay = getMaxDay();
-  const totalStates = Number(tripData?.stats?.states) || 48;
+
+  const adjustedMiles = stats.miles * LOCAL_DRIVING_MARKUP;
+  const adjustedKilometres = adjustedMiles * MILES_TO_KM;
+
+  if (drivenKilometresEl) {
+    drivenKilometresEl.textContent = formatFullStat(adjustedKilometres);
+  }
 
   if (drivenDistanceEl) {
-    drivenDistanceEl.textContent = formatFullStat(stats.miles * LOCAL_DRIVING_MARKUP);
+    drivenDistanceEl.textContent = formatFullStat(adjustedMiles);
   }
 
   if (drivenTimeEl) {
     drivenTimeEl.textContent = formatDrivenTime(stats.minutes);
-  }
-
-  if (statesVisitedEl) {
-    statesVisitedEl.textContent = stats.states || (Number(upToDay) >= maxDay ? totalStates : 0);
   }
 }
 
