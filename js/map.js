@@ -51,8 +51,8 @@ const LOCATIONS = {
   "Key West": [24.5551, -81.7800],
   "Miami": [25.7617, -80.1918],
   "Fort Lauderdale": [26.1224, -80.1373],
-  "Fort Lauderdale Airport": [26.0742, -80.1506]
-    "Oakland": [37.8044, -122.2712],
+  "Fort Lauderdale Airport": [26.0742, -80.1506],
+  "Oakland": [37.8044, -122.2712],
   "San Mateo Hayward Bridge": [37.6096, -122.1474],
   "Richmond": [37.9358, -122.3477],
   "San Rafael Bridge": [37.9365, -122.4458],
@@ -90,7 +90,7 @@ const LOCATIONS = {
   "New Haven": [41.3083, -72.9279],
   "Delaware": [39.7391, -75.5398],
   "Baltimore": [39.2904, -76.6122],
-  "Harpers Ferry": [39.3254, -77.7389],  
+  "Harpers Ferry": [39.3254, -77.7389]  
 };
 
 const STATE_CODES = {
