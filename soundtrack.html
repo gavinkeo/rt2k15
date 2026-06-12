@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Road Trip Soundtrack · RT2K15</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="soundtrack.css" />
+</head>
+
+<body>
+  <div class="soundtrack-page">
+    <header class="soundtrack-hero">
+      <nav class="soundtrack-nav">
+        <a class="back-link" href="index.html">← Back to map</a>
+      </nav>
+
+      <div class="soundtrack-hero-main">
+        <div>
+          <p class="eyebrow">Road Trip 2K15</p>
+          <h1>Soundtrack</h1>
+        </div>
+
+        <div class="soundtrack-summary">
+          <div class="summary-card">
+            <span class="summary-value" id="song-count">—</span>
+            <span class="summary-label">Songs</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="soundtrack-main">
+      <section class="soundtrack-controls" aria-label="Soundtrack filters">
+        <button class="filter-btn active" type="button" data-filter="all">All</button>
+        <button class="filter-btn" type="button" data-filter="anthem">Anthems</button>
+        <button class="filter-btn" type="button" data-filter="summer">Summer</button>
+        <button class="filter-btn" type="button" data-filter="drive">Driving</button>
+        <button class="filter-btn" type="button" data-filter="chill">Chill</button>
+      </section>
+
+      <section class="soundtrack-meta">
+        <p id="soundtrack-summary">Loading soundtrack…</p>
+      </section>
+
+      <section class="song-grid" id="song-grid" aria-live="polite">
+        <div class="empty-state">Loading soundtrack…</div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/soundtrack.js"></script>
+</body>
+</html>
