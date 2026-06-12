@@ -697,3 +697,99 @@ body {
     font-size: 11px;
   }
 }
+
+/* Stub layout: logo top, rotated barcode middle, actions bottom */
+
+.ticket-stub {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  justify-items: center;
+  gap: 8px;
+  padding: 10px 8px 8px;
+}
+
+.stub-logo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.stub-brand {
+  justify-content: center;
+  width: 100%;
+  min-height: 30px;
+}
+
+.stub-brand .event-logo {
+  max-width: 72px;
+  max-height: 30px;
+}
+
+.barcode-wrap {
+  width: 100%;
+  min-height: 112px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.barcode {
+  width: 142px;
+  height: 30px;
+  margin: 0;
+  transform: rotate(90deg);
+  transform-origin: center;
+  background-size: 142px 30px;
+}
+
+.barcode::after {
+  content: none;
+}
+
+.stub-actions {
+  width: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stub-actions-empty {
+  display: none;
+}
+
+.stub-action {
+  width: 100%;
+  padding: 5px 6px;
+  font-size: 9px;
+}
+
+@media (max-width: 700px) {
+  .ticket-stub {
+    gap: 6px;
+    padding: 8px 6px 6px;
+  }
+
+  .stub-brand .event-logo {
+    max-width: 56px;
+    max-height: 24px;
+  }
+
+  .barcode-wrap {
+    min-height: 92px;
+  }
+
+  .barcode {
+    width: 116px;
+    height: 24px;
+    background-size: 116px 24px;
+  }
+
+  .stub-action {
+    padding: 5px 5px;
+    font-size: 8.5px;
+  }
+}
