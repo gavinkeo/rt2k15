@@ -134,6 +134,7 @@
         "name": "Ed Sheeran - x Tour",
         "venue": "Hollywood Bowl",
         "location": "Los Angeles",
+          "stubGraphic": "assets/logos/events/edsheeran.png",
         "ticket": {
           "section": "S",
           "row": "19",
