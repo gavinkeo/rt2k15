@@ -550,3 +550,85 @@ body::before {
     font-size: 8px;
   }
 }
+
+/* Mobile final polish */
+
+@media (max-width: 820px) {
+  .soundtrack-page {
+    width: calc(100% - 28px);
+    padding-top: 16px;
+  }
+
+  .back-link {
+    margin-bottom: 22px;
+  }
+
+  .eyebrow {
+    font-size: 19px;
+    margin-bottom: 4px;
+  }
+
+  .soundtrack-title-row h1 {
+    font-size: 46px;
+    line-height: 0.88;
+  }
+
+  .player-shell {
+    margin-top: 2px;
+    padding: 14px;
+    border-radius: 22px;
+  }
+
+  .player-copy {
+    margin-bottom: 12px;
+  }
+
+  .section-kicker {
+    font-size: 9px;
+    letter-spacing: 0.16em;
+    margin-bottom: 6px;
+  }
+
+  .player-copy h2 {
+    font-size: 28px;
+    line-height: 0.98;
+    letter-spacing: -0.055em;
+    max-width: 95%;
+  }
+
+  .playlist-frame-wrap {
+    aspect-ratio: 16 / 9;
+    border-radius: 17px;
+  }
+
+  .playlist-actions {
+    margin-top: 13px;
+    gap: 9px;
+  }
+
+  .playlist-link {
+    min-height: 44px;
+    font-size: 13.5px;
+  }
+
+  .tracklist-panel {
+    margin-top: 14px;
+    max-height: 390px;
+  }
+
+  .tracklist-head {
+    padding: 12px 14px;
+  }
+
+  .track {
+    padding: 9px 8px;
+  }
+
+  .track-title {
+    font-size: 13px;
+  }
+
+  .track-artist {
+    font-size: 8px;
+  }
+}
