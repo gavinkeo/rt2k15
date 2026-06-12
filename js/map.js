@@ -1340,21 +1340,6 @@ menu.innerHTML = `
           <span class="stat-label-row">Provinces</span>
         </div>
 
-        <div class="stat">
-          <div class="stat-main-row">
-            <span class="stat-value" id="stat-km">—</span>
-          </div>
-          <span class="stat-label-row">Kilometres</span>
-        </div>
-
-        <div class="stat">
-          <div class="stat-main-row">
-            <span class="stat-value" id="stat-miles">—</span>
-          </div>
-          <span class="stat-label-row">Miles</span>
-        </div>
-      </div>
-
       <div class="menu-section">
       <a class="menu-page-link" href="parks.html">NATURE</a>
       <a class="menu-page-link" href="cities.html">CITIES</a>
@@ -1722,8 +1707,6 @@ function applyStatsToMenu() {
     "stat-countries": stats.countries,
     "stat-states": stats.states,
     "stat-provinces": stats.provinces,
-    "stat-km": stats.km,
-    "stat-miles": stats.miles
   };
 
   Object.entries(values).forEach(([id, value]) => {
