@@ -1257,3 +1257,65 @@ input[type="range"]::-moz-range-thumb {
   background: var(--ocean-ink-hover) !important;
   border-color: var(--ocean-ink-hover-light) !important;
 }
+
+/* Force playback play button to ocean teal */
+
+.playback-controller button,
+.playback-controller .play-button,
+.playback-controller .playback-play,
+.playback-controller .play-pause,
+.playback-controller .play-toggle,
+.playback-controller .play-btn,
+.playback-controller [aria-label*="Play"],
+.playback-controller [aria-label*="Pause"],
+.timeline-controller button,
+.timeline-controls button,
+#play-button,
+#play-pause-button,
+#playback-play {
+  background: linear-gradient(135deg, #083c4d 0%, #062f3c 100%) !important;
+  background-color: #083c4d !important;
+  color: #ffffff !important;
+  border-color: rgba(0, 229, 255, 0.38) !important;
+  box-shadow:
+    0 10px 26px rgba(0, 0, 0, 0.26),
+    0 0 18px rgba(0, 229, 255, 0.16) !important;
+}
+
+.playback-controller button:hover,
+.playback-controller .play-button:hover,
+.playback-controller .playback-play:hover,
+.playback-controller .play-pause:hover,
+.playback-controller .play-toggle:hover,
+.playback-controller .play-btn:hover,
+.playback-controller [aria-label*="Play"]:hover,
+.playback-controller [aria-label*="Pause"]:hover,
+.timeline-controller button:hover,
+.timeline-controls button:hover,
+#play-button:hover,
+#play-pause-button:hover,
+#playback-play:hover {
+  background: linear-gradient(135deg, #0b6f86 0%, #083c4d 100%) !important;
+  background-color: #0b6f86 !important;
+  border-color: rgba(0, 229, 255, 0.62) !important;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.30),
+    0 0 24px rgba(0, 229, 255, 0.26) !important;
+}
+
+/* Keep play/pause icon white */
+.playback-controller button svg,
+.playback-controller button path,
+.timeline-controller button svg,
+.timeline-controller button path,
+.timeline-controls button svg,
+.timeline-controls button path,
+#play-button svg,
+#play-button path,
+#play-pause-button svg,
+#play-pause-button path,
+#playback-play svg,
+#playback-play path {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
