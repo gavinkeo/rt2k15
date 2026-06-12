@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>RT2K15 — San Fran → Miami, 18 Jun → 16 Sep</title>
+  <title>RT2K15</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,36 @@
   </aside>
 
   <div class="timeline">
-    <button class="play-btn" id="play-btn" aria-label="Play">▶</button>
+    <div class="timeline-top">
+      <button class="play-btn" id="play-btn" aria-label="Play">
+        ▶
+      </button>
+
+      <div class="timeline-main-counter">
+        <span class="timeline-day-label">Day</span>
+        <span id="current-day">90</span>
+        <span class="timeline-slash">/</span>
+        <span id="total-days">90</span>
+      </div>
+    </div>
+
+    <div class="timeline-stats">
+      <span>
+        <strong id="driven-distance">15,809</strong> mi
+      </span>
+
+      <span class="timeline-dot">·</span>
+
+      <span>
+        <strong id="driven-time">228h 36m</strong>
+      </span>
+
+      <span class="timeline-dot">·</span>
+
+      <span>
+        States <strong id="states-visited">48</strong>/48
+      </span>
+    </div>
 
     <div class="timeline-track">
       <input
@@ -45,10 +74,6 @@
         <span>Aug</span>
         <span>16 Sep</span>
       </div>
-    </div>
-
-    <div class="day-counter">
-      Day <span id="current-day">90</span> / <span id="total-days">90</span>
     </div>
   </div>
 
