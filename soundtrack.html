@@ -31,28 +31,73 @@
 
         <div class="soundtrack-summary">
           <div class="summary-card">
-            <span class="summary-value" id="song-count">—</span>
-            <span class="summary-label">Songs</span>
+            <span class="summary-value" id="track-count">42</span>
+            <span class="summary-label">Tracks</span>
           </div>
         </div>
       </div>
     </header>
 
     <main class="soundtrack-main">
-      <section class="soundtrack-controls" aria-label="Soundtrack filters">
-        <button class="filter-btn active" type="button" data-filter="all">All</button>
-        <button class="filter-btn" type="button" data-filter="anthem">Anthems</button>
-        <button class="filter-btn" type="button" data-filter="summer">Summer</button>
-        <button class="filter-btn" type="button" data-filter="drive">Driving</button>
-        <button class="filter-btn" type="button" data-filter="chill">Chill</button>
+      <section class="mixtape-panel">
+        <div class="cassette">
+          <div class="cassette-top">
+            <span>Side A</span>
+            <span>Summer 2015</span>
+          </div>
+
+          <div class="cassette-label">
+            <p>Road Trip 2K15</p>
+            <strong>North America Mixtape</strong>
+          </div>
+
+          <div class="cassette-reels" aria-hidden="true">
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="cassette-strip">
+            <span>SF</span>
+            <span>LA</span>
+            <span>Vegas</span>
+            <span>NYC</span>
+            <span>Miami</span>
+          </div>
+        </div>
+
+        <div class="playlist-panel">
+          <div class="playlist-copy">
+            <p class="section-kicker">YouTube Music Playlist</p>
+            <h2>42 songs from the summer</h2>
+            <p>
+              Drop your playlist ID into <strong>data/soundtrack.json</strong> and this page becomes
+              a proper embedded road-trip mixtape.
+            </p>
+          </div>
+
+          <div class="playlist-frame-wrap" id="playlist-frame-wrap">
+            <div class="playlist-placeholder">
+              Add your YouTube playlist ID in <code>data/soundtrack.json</code>
+            </div>
+          </div>
+
+          <div class="playlist-actions">
+            <a class="playlist-link" id="playlist-link" href="#" target="_blank" rel="noopener noreferrer">
+              Open playlist
+            </a>
+          </div>
+        </div>
       </section>
 
-      <section class="soundtrack-meta">
-        <p id="soundtrack-summary">Loading soundtrack…</p>
-      </section>
+      <section class="featured-section">
+        <div class="section-heading">
+          <p class="section-kicker">Featured memories</p>
+          <h2>Not just songs — timestamps</h2>
+        </div>
 
-      <section class="song-grid" id="song-grid" aria-live="polite">
-        <div class="empty-state">Loading soundtrack…</div>
+        <div class="memory-grid" id="memory-grid">
+          <div class="empty-state">Loading soundtrack memories…</div>
+        </div>
       </section>
     </main>
   </div>
