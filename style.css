@@ -739,3 +739,16 @@ body .timeline-track {
   backface-visibility: hidden;
   transform: translateZ(0);
 }
+
+/* Desktop Chrome tile seam fix only */
+@media (min-width: 641px) {
+  .leaflet-tile.map-base-tile,
+  .leaflet-tile.map-label-tile {
+    width: 256.75px !important;
+    height: 256.75px !important;
+    margin-left: -0.375px !important;
+    margin-top: -0.375px !important;
+    border: none !important;
+    outline: none !important;
+  }
+}
