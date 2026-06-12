@@ -412,10 +412,35 @@ style.innerHTML = `
     display: flex;
     align-items: center;
     justify-content: space-between;
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 18px;
     font-weight: 800;
     letter-spacing: -0.02em;
     cursor: pointer;
+  }
+
+  .trip-menu-title-text {
+    font-family: "Bebas Neue", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.055em;
+    font-weight: 400;
+    color: #083c4d;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    order: 1;
+  }
+
+  .trip-menu-toggle::after {
+    content: "";
+    width: 84px;
+    height: 36px;
+    margin-left: auto;
+    margin-right: 12px;
+    background: url("assets/mazda-cx5-side.png") center / contain no-repeat;
+    opacity: 0.95;
+    flex: 0 0 auto;
+    order: 2;
   }
 
   .trip-menu-toggle:hover {
@@ -423,8 +448,11 @@ style.innerHTML = `
   }
 
   .trip-menu-chevron {
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-size: 14px;
+    letter-spacing: 0;
     transition: transform 0.2s ease;
+    order: 3;
   }
 
   .trip-menu.open .trip-menu-chevron {
@@ -556,9 +584,9 @@ style.innerHTML = `
     box-sizing: border-box;
     text-align: center;
     text-decoration: none;
-    border: 1px solid #111;
-    background: #111;
-    color: #FAFAF7;
+    border: 1px solid rgba(0, 229, 255, 0.34);
+    background: linear-gradient(135deg, #083c4d 0%, #062f3c 100%);
+    color: #ffffff;
     border-radius: 8px;
     padding: 10px 12px;
     font-size: 13px;
@@ -568,8 +596,8 @@ style.innerHTML = `
   }
 
   .menu-page-link:hover {
-    background: #000;
-    color: #FAFAF7;
+    background: linear-gradient(135deg, #0b6f86 0%, #083c4d 100%);
+    color: #ffffff;
     text-decoration: none;
   }
 
