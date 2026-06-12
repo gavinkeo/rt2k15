@@ -379,10 +379,10 @@ style.innerHTML = `
   }
 
 .cx5-car {
-  width: 88px;
-  height: 50px;
-  margin-left: -44px;
-  margin-top: -25px;
+  width: 76px;
+  height: 43px;
+  margin-left: -38px;
+  margin-top: -21.5px;
   position: relative;
   z-index: 99999;
   pointer-events: none;
