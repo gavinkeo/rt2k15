@@ -754,3 +754,43 @@ body {
     max-height: 38px;
   }
 }
+
+/* Bigger key stub logos */
+
+.ticket {
+  --stub-width: 118px;
+}
+
+.stub-brand .event-logo-wwe,
+.stub-brand .event-logo-nfl,
+.stub-brand .event-logo-nhl,
+.stub-brand .event-logo-ncaaf,
+.stub-brand .event-logo-comedy,
+.stub-brand .event-logo-mls {
+  max-width: 118px;
+  max-height: 72px;
+}
+
+.stub-brand {
+  min-height: 64px;
+}
+
+@media (max-width: 700px) {
+  .ticket {
+    --stub-width: 94px;
+  }
+
+  .stub-brand .event-logo-wwe,
+  .stub-brand .event-logo-nfl,
+  .stub-brand .event-logo-nhl,
+  .stub-brand .event-logo-ncaaf,
+  .stub-brand .event-logo-comedy,
+  .stub-brand .event-logo-mls {
+    max-width: 88px;
+    max-height: 54px;
+  }
+
+  .stub-brand {
+    min-height: 48px;
+  }
+}
