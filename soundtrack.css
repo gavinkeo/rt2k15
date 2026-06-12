@@ -680,3 +680,77 @@ body::before {
     margin-bottom: 18px;
   }
 }
+
+/* Soundtrack: black car-stereo theme */
+
+body {
+  background:
+    radial-gradient(circle at top left, rgba(255, 0, 0, 0.12), transparent 28rem),
+    radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.055), transparent 34rem),
+    linear-gradient(135deg, #030303 0%, #101010 48%, #000 100%);
+}
+
+body::before {
+  opacity: 0.08;
+}
+
+.player-shell {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.035)),
+    #080808;
+  border-color: rgba(255,255,255,0.13);
+  box-shadow:
+    0 26px 70px rgba(0,0,0,0.62),
+    0 0 0 1px rgba(255,255,255,0.035),
+    inset 0 0 0 1px rgba(255,255,255,0.045);
+}
+
+.playlist-frame-wrap {
+  background: #000;
+  border-color: rgba(255,255,255,0.12);
+  box-shadow:
+    0 22px 54px rgba(0,0,0,0.58),
+    0 0 28px rgba(255,0,0,0.10);
+}
+
+.tracklist-panel {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.075), rgba(255,255,255,0.03)),
+    #070707;
+  border-color: rgba(255,255,255,0.12);
+}
+
+.tracklist-head {
+  background: rgba(255,255,255,0.035);
+  border-bottom-color: rgba(255,255,255,0.10);
+}
+
+.track:hover {
+  background: rgba(255,255,255,0.07);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.playlist-link.primary {
+  background: #e60000;
+  border-color: rgba(255,255,255,0.88);
+}
+
+.playlist-link.primary:hover,
+.playlist-link.secondary:hover {
+  background: #fff;
+  color: #111;
+}
+
+.playlist-link.secondary {
+  background: rgba(255,255,255,0.055);
+  border-color: rgba(255,255,255,0.16);
+}
+
+.back-link,
+.eyebrow,
+.section-kicker,
+.tracklist-head span,
+.track-number,
+.track-artist {
+  color: rgba(255,255,255,0.58);
+}
