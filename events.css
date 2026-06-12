@@ -329,13 +329,13 @@ body {
 .ticket-stub {
   position: relative;
   z-index: 1;
-  padding: 14px 10px;
+  padding: 12px 10px;
   border-left: 2px dashed rgba(17,17,17,0.24);
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 38px 1fr auto;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
+  justify-items: center;
+  gap: 10px;
   background:
     radial-gradient(circle at 50% 20%, rgba(255,255,255,0.34), transparent 30%),
     linear-gradient(180deg, rgba(255,255,255,0.18), rgba(255,157,0,0.035)),
@@ -370,24 +370,52 @@ body {
   bottom: -12px;
 }
 
-.stub-top,
-.stub-logo-row {
+.stub-actions {
   width: 100%;
+  min-height: 34px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 6px;
 }
 
-/* barcode fully cut */
-.barcode-wrap,
-.barcode {
-  display: none !important;
+.stub-actions-empty {
+  visibility: hidden;
+}
+
+.stub-action {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1.5px solid #111;
+  color: #fff;
+  border-radius: 999px;
+  padding: 6px 6px;
+  font-size: 8.5px;
+  font-weight: 900;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 1px 1px 0 rgba(17,17,17,0.18);
+}
+
+.youtube-link {
+  background: #ff0000;
+}
+
+.boxscore-link {
+  background: #111;
+}
+
+.stub-action:hover {
+  background: var(--accent);
+  color: #fff;
 }
 
 .stub-brand {
   width: 100%;
-  min-height: 42px;
+  min-height: 52px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -398,11 +426,16 @@ body {
   max-height: 44px;
   object-fit: contain;
   display: block;
+  margin: 0 auto;
   filter: drop-shadow(0 1px 1px rgba(0,0,0,0.14));
+  transform: translateX(-2px);
 }
 
 .stub-brand .event-logo-ncaaf,
-.stub-brand .event-logo-nfl {
+.stub-brand .event-logo-nfl,
+.stub-brand .event-logo-nhl,
+.stub-brand .event-logo-comedy,
+.stub-brand .event-logo-mls {
   max-width: 94px;
   max-height: 60px;
 }
@@ -426,46 +459,20 @@ body {
   display: inline-flex;
 }
 
-.stub-actions {
+.stub-admit {
   width: 100%;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-}
-
-.stub-actions-empty {
-  display: none;
-}
-
-.stub-action {
-  width: 100%;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  border: 1.5px solid #111;
-  color: #fff;
-  border-radius: 999px;
-  padding: 7px 7px;
-  font-size: 9px;
-  font-weight: 900;
-  line-height: 1;
   text-align: center;
-  box-shadow: 1px 1px 0 rgba(17,17,17,0.18);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(120, 70, 90, 0.62);
 }
 
-.youtube-link {
-  background: #ff0000;
-}
-
-.boxscore-link {
-  background: #111;
-}
-
-.stub-action:hover {
-  background: var(--accent);
-  color: #fff;
+.barcode-wrap,
+.barcode {
+  display: none !important;
 }
 
 .ticket-brand {
@@ -595,7 +602,7 @@ body {
   }
 
   .ticket {
-    --stub-width: 82px;
+    --stub-width: 92px;
 
     grid-template-columns: minmax(0, 1fr) var(--stub-width);
     min-height: 184px;
@@ -608,7 +615,7 @@ body {
   }
 
   .ticket-main {
-    padding: 15px 18px 15px;
+    padding: 15px 16px 15px;
   }
 
   .ticket h2 {
@@ -644,23 +651,38 @@ body {
   }
 
   .ticket-stub {
-    padding: 12px 7px;
-    gap: 10px;
+    padding: 10px 7px;
+    grid-template-rows: 34px 1fr auto;
+    gap: 8px;
+  }
+
+  .stub-actions {
+    min-height: 30px;
+    gap: 5px;
+  }
+
+  .stub-action {
+    padding: 5px 5px;
+    font-size: 8px;
   }
 
   .stub-brand {
-    min-height: 34px;
+    min-height: 46px;
   }
 
   .stub-brand .event-logo {
     max-width: 58px;
     max-height: 32px;
+    transform: translateX(-1px);
   }
 
   .stub-brand .event-logo-ncaaf,
-  .stub-brand .event-logo-nfl {
-    max-width: 68px;
-    max-height: 42px;
+  .stub-brand .event-logo-nfl,
+  .stub-brand .event-logo-nhl,
+  .stub-brand .event-logo-comedy,
+  .stub-brand .event-logo-mls {
+    max-width: 72px;
+    max-height: 46px;
   }
 
   .stub-brand .event-logo-wwe {
@@ -673,124 +695,14 @@ body {
     max-height: 40px;
   }
 
-  .stub-action {
-    padding: 6px 5px;
-    font-size: 8px;
+  .stub-admit {
+    font-size: 7px;
+    letter-spacing: 0.12em;
   }
 
   .event-type {
     min-width: 50px;
     padding: 6px 9px;
     font-size: 11px;
-  }
-}
-
-/* Centre logos in the cream stub section */
-
-.ticket-stub {
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
-.stub-top,
-.stub-logo-row {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.stub-brand {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-}
-
-/* Slight visual nudge left so it feels centred within the cream area,
-   not centred against the whole ticket including the perforation line */
-.stub-brand .event-logo,
-.stub-brand .event-type {
-  transform: translateX(-2px);
-}
-
-/* NFL + NCAA specific centring */
-.stub-brand .event-logo-nfl,
-.stub-brand .event-logo-ncaaf {
-  display: block;
-  margin: 0 auto;
-  transform: translateX(-2px);
-}
-
-@media (max-width: 700px) {
-  .stub-brand .event-logo,
-  .stub-brand .event-type,
-  .stub-brand .event-logo-nfl,
-  .stub-brand .event-logo-ncaaf {
-    transform: translateX(-1px);
-  }
-}
-
-/* Extra category logo sizing */
-
-.stub-brand .event-logo-concert,
-.stub-brand .event-logo-tv-show,
-.stub-brand .event-logo-boxing,
-.stub-brand .event-logo-nhl,
-.stub-brand .event-logo-comedy {
-  max-width: 82px;
-  max-height: 48px;
-}
-
-@media (max-width: 700px) {
-  .stub-brand .event-logo-concert,
-  .stub-brand .event-logo-tv-show,
-  .stub-brand .event-logo-boxing,
-  .stub-brand .event-logo-nhl,
-  .stub-brand .event-logo-comedy {
-    max-width: 64px;
-    max-height: 38px;
-  }
-}
-
-/* Bigger key stub logos */
-
-.ticket {
-  --stub-width: 118px;
-}
-
-.stub-brand .event-logo-wwe,
-.stub-brand .event-logo-nfl,
-.stub-brand .event-logo-nhl,
-.stub-brand .event-logo-ncaaf,
-.stub-brand .event-logo-comedy,
-.stub-brand .event-logo-mls {
-  max-width: 118px;
-  max-height: 72px;
-}
-
-.stub-brand {
-  min-height: 64px;
-}
-
-@media (max-width: 700px) {
-  .ticket {
-    --stub-width: 94px;
-  }
-
-  .stub-brand .event-logo-wwe,
-  .stub-brand .event-logo-nfl,
-  .stub-brand .event-logo-nhl,
-  .stub-brand .event-logo-ncaaf,
-  .stub-brand .event-logo-comedy,
-  .stub-brand .event-logo-mls {
-    max-width: 88px;
-    max-height: 54px;
-  }
-
-  .stub-brand {
-    min-height: 48px;
   }
 }
