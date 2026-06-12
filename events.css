@@ -1023,3 +1023,13 @@ body {
     font-size: 11px;
   }
 }
+
+/* Events page: small breathing room under compact header */
+
+.events-hero {
+  padding-bottom: 18px !important;
+}
+
+.events-controls {
+  margin-top: 8px !important;
+}
