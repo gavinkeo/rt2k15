@@ -807,3 +807,39 @@ body {
     font-size: 15px;
   }
 }
+
+/* Slimmer ticket header */
+
+.ticket-topline-compact {
+  min-height: 28px;
+  margin-bottom: 13px;
+}
+
+.ticket-mini-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(17,17,17,0.58);
+}
+
+.ticket-fineprint {
+  align-items: center;
+}
+
+.ticket-fineprint span:first-child {
+  color: rgba(17,17,17,0.78);
+  font-weight: 950;
+}
+
+@media (max-width: 700px) {
+  .ticket-topline-compact {
+    min-height: 24px;
+    margin-bottom: 11px;
+  }
+
+  .ticket-mini-label {
+    font-size: 9px;
+  }
+}
