@@ -925,3 +925,27 @@ body {
     margin-bottom: 18px;
   }
 }
+
+/* Events page: remove summary boxes and tighten header */
+
+.events-summary {
+  display: none !important;
+}
+
+.events-hero-main {
+  justify-content: flex-start;
+}
+
+@media (min-width: 701px) {
+  .events-hero {
+    padding-bottom: 6px;
+  }
+
+  .events-nav {
+    margin-bottom: 22px;
+  }
+
+  .events-main {
+    margin-top: 0;
+  }
+}
