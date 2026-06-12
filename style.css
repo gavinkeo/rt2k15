@@ -1056,8 +1056,8 @@ body {
   }
 }
 
-/* FINAL CLEAN MAP UI OVERRIDES
-   Bebas only on ROAD TRIP 2K15. Inter everywhere else. */
+/* FINAL MAP UI CLEANUP
+   Minimal overrides only. Do not globally change UI fonts. */
 
 :root {
   --ocean-main: #083c4d;
@@ -1065,125 +1065,54 @@ body {
   --ocean-hover: #0b6f86;
 }
 
-#trip-menu,
-#trip-menu-content,
-#trip-menu-content *,
-.trip-menu-content,
-.trip-menu-content *,
-.trip-menu .stat,
-.trip-menu .stat *,
-.menu-page-link,
-.menu-page-link *,
-.timeline-stat-box,
-.timeline-stat-box * {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-}
-
-#trip-menu-toggle,
-.trip-menu-toggle {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  min-height: 58px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-  line-height: 1 !important;
-  color: #111111 !important;
-}
-
-#trip-menu-toggle > span:first-child,
-.trip-menu-toggle > span:first-child,
-.trip-menu-title-text {
+/* Brand title only */
+#trip-menu-toggle > .trip-menu-title-text,
+.trip-menu-toggle > .trip-menu-title-text {
   font-family: "Bebas Neue", sans-serif !important;
   text-transform: uppercase !important;
   letter-spacing: 0.055em !important;
   font-weight: 400 !important;
   color: var(--ocean-main) !important;
   line-height: 1 !important;
+}
+
+#trip-menu-toggle,
+.trip-menu-toggle {
   display: flex !important;
   align-items: center !important;
-  order: 1 !important;
+  justify-content: space-between !important;
+  min-height: 58px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
 }
 
-#trip-menu-toggle > span:last-child,
-.trip-menu-toggle > span:last-child,
-.trip-menu-chevron {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 13px !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-  color: #111111 !important;
-  order: 3 !important;
-}
-
+/* No car image in the menu header */
 #trip-menu-toggle::after,
 .trip-menu-toggle::after {
-  content: "" !important;
-  width: 84px !important;
-  height: 36px !important;
-  margin-left: auto !important;
-  margin-right: 12px !important;
-  background: url("assets/mazda-cx5-side.png") center / contain no-repeat !important;
-  opacity: 0.95 !important;
-  flex: 0 0 auto !important;
-  order: 2 !important;
+  content: none !important;
+  display: none !important;
 }
 
+/* Page buttons: teal, but keep normal UI font/weight */
 #trip-menu .menu-page-link,
 .menu-page-link {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  text-transform: none !important;
-  letter-spacing: 0 !important;
   font-weight: 700 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
   background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%) !important;
   color: #ffffff !important;
   border: 1px solid rgba(0, 229, 255, 0.34) !important;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.22),
-    0 0 12px rgba(0, 229, 255, 0.08),
-    inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
 }
 
 #trip-menu .menu-page-link:hover,
 .menu-page-link:hover {
   background: linear-gradient(135deg, var(--ocean-hover) 0%, var(--ocean-main) 100%) !important;
-  border-color: rgba(0, 229, 255, 0.58) !important;
-  box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.28),
-    0 0 20px rgba(0, 229, 255, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
 }
 
-.trip-menu .stat-value,
-.trip-menu .stat-label-row,
-.timeline,
-.timeline strong,
-.timeline-stat-box,
-.timeline-stat-box strong,
-.timeline-stat-label,
-.timeline-stat-value,
-.timeline-stat-value strong,
-.timeline-day-label,
-#current-day,
-#total-days,
-.timeline-slash {
-  color: #111111 !important;
-}
-
-.trip-menu .stat-label-row {
-  text-transform: uppercase !important;
-  letter-spacing: 0.11em !important;
-  font-weight: 500 !important;
-}
-
-.timeline-stat-label,
-.timeline-day-label {
-  text-transform: uppercase !important;
-  letter-spacing: 0.13em !important;
-  font-weight: 950 !important;
-}
-
+/* Play button: teal */
+.play-btn,
 #play-pause,
 #play-button,
 #playPause,
@@ -1194,21 +1123,15 @@ body {
 .playback-play,
 .play-pause,
 .play-toggle,
-.play-btn,
 .timeline-play,
-.timeline-play-button,
-.playback-controller button:first-of-type,
-.timeline-controller button:first-of-type,
-.timeline-controls button:first-of-type {
+.timeline-play-button {
   background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%) !important;
   background-color: var(--ocean-main) !important;
   color: #ffffff !important;
   border-color: rgba(0, 229, 255, 0.38) !important;
-  box-shadow:
-    0 10px 26px rgba(0, 0, 0, 0.26),
-    0 0 18px rgba(0, 229, 255, 0.16) !important;
 }
 
+.play-btn:hover,
 #play-pause:hover,
 #play-button:hover,
 #playPause:hover,
@@ -1219,101 +1142,30 @@ body {
 .playback-play:hover,
 .play-pause:hover,
 .play-toggle:hover,
-.play-btn:hover,
 .timeline-play:hover,
-.timeline-play-button:hover,
-.playback-controller button:first-of-type:hover,
-.timeline-controller button:first-of-type:hover,
-.timeline-controls button:first-of-type:hover {
+.timeline-play-button:hover {
   background: linear-gradient(135deg, var(--ocean-hover) 0%, var(--ocean-main) 100%) !important;
-  background-color: var(--ocean-hover) !important;
-  border-color: rgba(0, 229, 255, 0.62) !important;
 }
 
-#play-pause *,
-#play-button *,
-#playPause *,
-#play *,
-#play-pause-button *,
-#playback-play *,
-.play-button *,
-.playback-play *,
-.play-pause *,
-.play-toggle *,
-.play-btn *,
-.timeline-play *,
-.timeline-play-button *,
-.playback-controller button:first-of-type * {
-  color: #ffffff !important;
-  fill: #ffffff !important;
-}
-
-@media (max-width: 640px) {
-  #trip-menu-toggle::after,
-  .trip-menu-toggle::after {
-    width: 70px !important;
-    height: 30px !important;
-    margin-right: 10px !important;
-  }
-}
-
-
-/* Restore original controller typography */
-#current-day,
-.timeline-slash,
-#total-days,
-.timeline-stat-value,
-.timeline-stat-value strong {
-  font-family: "JetBrains Mono", monospace !important;
-}
-
-.timeline-day-label,
-.timeline-stat-label {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-}
-
-
-/* Final controller slider colour + original controller typography */
+/* Slider: teal track and knob */
 #timeline-slider {
-  accent-color: #0b6f86 !important;
+  accent-color: var(--ocean-hover) !important;
 }
 
 #timeline-slider::-webkit-slider-runnable-track {
-  background: #083c4d !important;
+  background: var(--ocean-main) !important;
 }
 
 #timeline-slider::-webkit-slider-thumb {
-  background: #0b6f86 !important;
+  background: var(--ocean-hover) !important;
   border: 3px solid #FAFAF7 !important;
 }
 
 #timeline-slider::-moz-range-track {
-  background: #083c4d !important;
+  background: var(--ocean-main) !important;
 }
 
 #timeline-slider::-moz-range-thumb {
-  background: #0b6f86 !important;
+  background: var(--ocean-hover) !important;
   border: 3px solid #FAFAF7 !important;
-}
-
-#current-day,
-.timeline-slash,
-#total-days,
-.timeline-stat-value,
-.timeline-stat-value strong {
-  font-family: "JetBrains Mono", monospace !important;
-}
-
-.timeline-day-label,
-.timeline-stat-label,
-.trip-menu .stat-label-row {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-}
-
-/* Remove CX-5 from menu header */
-
-#trip-menu-toggle::after,
-.trip-menu-toggle::after {
-  content: none !important;
-  display: none !important;
 }
