@@ -1169,3 +1169,95 @@ body {
   background: var(--ocean-hover) !important;
   border: 3px solid #FAFAF7 !important;
 }
+
+
+/* FINAL TYPOGRAPHY SYSTEM v5
+   One clear rule: title = Bebas, numbers = JetBrains Mono, labels/buttons = Inter. */
+
+#trip-menu-toggle > .trip-menu-title-text,
+.trip-menu-toggle > .trip-menu-title-text {
+  font-family: "Bebas Neue", sans-serif !important;
+  font-size: 31px !important;
+  line-height: 1 !important;
+  letter-spacing: 0.055em !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+  color: #083c4d !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+#trip-menu-toggle,
+.trip-menu-toggle {
+  min-height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Numeric values: same mono style across menu + controller */
+.trip-menu .stat-value,
+#current-day,
+#total-days,
+.timeline-slash,
+.timeline-stat-value,
+.timeline-stat-value strong {
+  font-family: "JetBrains Mono", monospace !important;
+  color: #111111 !important;
+}
+
+.trip-menu .stat-value {
+  font-size: 23px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.06em !important;
+}
+
+/* Labels + buttons: same clean UI family */
+.trip-menu .stat-label-row,
+.timeline-day-label,
+.timeline-stat-label,
+.menu-page-link,
+.menu-page-link * {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+
+.trip-menu .stat-label-row,
+.timeline-day-label,
+.timeline-stat-label {
+  text-transform: uppercase !important;
+  letter-spacing: 0.13em !important;
+  font-weight: 850 !important;
+}
+
+.trip-menu .stat-label-row {
+  font-size: 8.5px !important;
+}
+
+.timeline-day-label,
+.timeline-stat-label {
+  font-size: 8px !important;
+}
+
+#trip-menu .menu-page-link,
+.menu-page-link {
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+/* Keep the menu header uncluttered: no car beside title */
+#trip-menu-toggle::after,
+.trip-menu-toggle::after {
+  content: none !important;
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  #trip-menu-toggle > .trip-menu-title-text,
+  .trip-menu-toggle > .trip-menu-title-text {
+    font-size: 30px !important;
+  }
+}
