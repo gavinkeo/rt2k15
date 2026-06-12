@@ -130,7 +130,7 @@
       "drivingTime": "1:10",
       "event": {
         "type": "Concert",
-        "name": "Ed Sheeran",
+        "name": "Ed Sheeran- x Tour Live",
         "venue": "Hollywood Bowl",
         "location": "Los Angeles",
         "ticket": {
@@ -511,7 +511,7 @@
       "drivingTime": "5:20",
       "event": {
         "type": "Concert",
-        "name": "Imagine Dragons",
+        "name": "Imagine Dragons - Smoke + Mirrors Tour",
         "venue": "Pepsi Center",
         "location": "Denver",
         "ticket": {
@@ -957,9 +957,12 @@
       "type": "stay",
       "event": {
         "type": "Tennis",
-        "name": "US Open",
+        "name": "US Open Practice",
         "venue": "USTA Billie Jean King National Tennis Center",
-        "location": "New York"
+        "location": "New York",
+        "ticket": {
+          "price": "FREE"
+        }
       }
     },
     {
