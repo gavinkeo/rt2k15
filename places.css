@@ -674,3 +674,46 @@ body.gallery-open {
     gap: 18px;
   }
 }
+
+/* Places pages: single-line compact header */
+
+.places-intro {
+  display: none;
+}
+
+.compact-page-title {
+  max-width: 100%;
+  margin: 0 0 14px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.66);
+}
+
+@media (min-width: 701px) {
+  .places-nav {
+    margin-bottom: 24px;
+  }
+
+  .places-hero {
+    padding-bottom: 4px;
+  }
+
+  .places-main {
+    margin-top: 0;
+  }
+
+  .place-grid {
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 700px) {
+  .compact-page-title {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+}
