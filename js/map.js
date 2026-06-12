@@ -378,15 +378,26 @@ style.innerHTML = `
     z-index: 99999 !important;
   }
 
-  .cx5-car {
-    width: 56px;
-    height: 32px;
-    margin-left: -28px;
-    margin-top: -16px;
-    position: relative;
-    z-index: 99999;
-    pointer-events: none;
-  }
+.cx5-car {
+  width: 88px;
+  height: 50px;
+  margin-left: -44px;
+  margin-top: -25px;
+  position: relative;
+  z-index: 99999;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cx5-car img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.35));
+}
 
   .trip-menu {
     position: absolute;
