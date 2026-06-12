@@ -752,3 +752,10 @@ body .timeline-track {
     outline: none !important;
   }
 }
+
+/* Hide Leaflet zoom buttons on mobile */
+@media (max-width: 640px) {
+  .leaflet-control-zoom {
+    display: none !important;
+  }
+}
