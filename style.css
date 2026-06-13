@@ -1704,14 +1704,17 @@ body {
 }
 
 #current-day {
-  font-size: 36px !important;
+  font-size: 34px !important;
   font-weight: 900 !important;
-  letter-spacing: -0.055em !important;
+  letter-spacing: -0.05em !important;
 }
 
 .timeline-slash,
 #total-days {
-  font-size: 20px !important;
+  font-size: 19px !important;
   font-weight: 850 !important;
-  color: #111 !important;
+}
+
+.timeline-day-value {
+  gap: 5px !important;
 }
