@@ -1497,6 +1497,12 @@ function renderRoute(upToDay, options = {}) {
   const totalDayEl = document.getElementById("total-days");
   if (totalDayEl) totalDayEl.textContent = maxDay;
 
+  const tripPercentEl = document.getElementById("trip-percent");
+if (tripPercentEl) {
+  const percent = Math.round((upToDay / maxDay) * 100);
+  tripPercentEl.textContent = `${percent}%`;
+}
+
   const sliderEl = document.getElementById("timeline-slider");
   if (sliderEl) {
     sliderEl.max = maxDay;
