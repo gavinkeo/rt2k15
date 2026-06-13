@@ -1509,138 +1509,92 @@ body {
   }
 }
 
+
+/* FINAL v10: compact RT2K15 title with proper SVG flags */
+#trip-menu-toggle,
+.trip-menu-toggle {
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  min-height: 64px !important;
+}
+
 .trip-menu-title-wrap {
   display: flex !important;
   flex-direction: column !important;
   align-items: flex-start !important;
   justify-content: center !important;
-  gap: 3px !important;
+  gap: 5px !important;
   line-height: 1 !important;
+  min-width: 0 !important;
+}
+
+.trip-menu-title-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  line-height: 1 !important;
+  min-width: 0 !important;
+}
+
+#trip-menu-toggle .trip-menu-title-text,
+.trip-menu-toggle .trip-menu-title-text {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 900 !important;
+  line-height: 0.95 !important;
+  letter-spacing: 0.055em !important;
+  text-transform: uppercase !important;
+  color: #083c4d !important;
+  white-space: nowrap !important;
 }
 
 .trip-menu-subtitle {
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
   font-size: 9px !important;
   font-weight: 850 !important;
+  line-height: 1 !important;
   letter-spacing: 0.14em !important;
   text-transform: uppercase !important;
-  color: rgba(8, 60, 77, 0.62) !important;
-}
-
-.trip-menu-title-line {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  line-height: 1 !important;
-}
-
-.hybrid-flag {
-  width: 46px;
-  height: 24px;
-  display: inline-flex;
-  overflow: hidden;
-  border-radius: 5px;
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,0.18),
-    0 1px 2px rgba(0,0,0,0.16);
-  flex: 0 0 auto;
-}
-
-.hybrid-flag::before {
-  content: "";
-  flex: 1;
-  background:
-    linear-gradient(90deg, #3c3b6e 0 42%, transparent 42%),
-    repeating-linear-gradient(
-      to bottom,
-      #b22234 0,
-      #b22234 2px,
-      #ffffff 2px,
-      #ffffff 4px
-    );
-}
-
-.hybrid-flag::after {
-  content: "✦";
-  flex: 1;
-  display: grid;
-  place-items: center;
-  color: #d52b1e;
-  font-size: 11px;
-  line-height: 1;
-  background:
-    linear-gradient(
-      to right,
-      #d52b1e 0%,
-      #d52b1e 25%,
-      #ffffff 25%,
-      #ffffff 75%,
-      #d52b1e 75%,
-      #d52b1e 100%
-    );
-}
-
-.trip-menu-title-line {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  line-height: 1 !important;
+  color: rgba(8, 60, 77, 0.58) !important;
+  white-space: nowrap !important;
 }
 
 .title-flags {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: 0 0 auto;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  flex: 0 0 auto !important;
 }
 
-.flag-us,
-.flag-ca {
-  width: 24px;
-  height: 16px;
-  display: inline-block;
-  border-radius: 3px;
+.title-flags img {
+  width: 26px !important;
+  height: 18px !important;
+  display: block !important;
+  object-fit: cover !important;
+  border-radius: 3px !important;
   box-shadow:
-    0 0 0 1px rgba(0,0,0,0.18),
-    0 1px 2px rgba(0,0,0,0.14);
-  overflow: hidden;
+    0 0 0 1px rgba(0,0,0,0.22),
+    0 1px 2px rgba(0,0,0,0.14) !important;
 }
 
-/* USA flag */
-.flag-us {
-  background:
-    linear-gradient(90deg, #3c3b6e 0 40%, transparent 40%),
-    repeating-linear-gradient(
-      to bottom,
-      #b22234 0px,
-      #b22234 1.23px,
-      #ffffff 1.23px,
-      #ffffff 2.46px
-    );
+.trip-menu-chevron {
+  margin-left: auto !important;
 }
 
-/* Canada flag */
-.flag-ca {
-  position: relative;
-  background:
-    linear-gradient(
-      to right,
-      #d52b1e 0%,
-      #d52b1e 25%,
-      #ffffff 25%,
-      #ffffff 75%,
-      #d52b1e 75%,
-      #d52b1e 100%
-    );
-}
+@media (max-width: 390px) {
+  #trip-menu-toggle .trip-menu-title-text,
+  .trip-menu-toggle .trip-menu-title-text {
+    font-size: 26px !important;
+    letter-spacing: 0.045em !important;
+  }
 
-.flag-ca::after {
-  content: "✦";
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  color: #d52b1e;
-  font-size: 9px;
-  line-height: 1;
+  .trip-menu-subtitle {
+    font-size: 8px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .title-flags img {
+    width: 24px !important;
+    height: 16px !important;
+  }
 }
