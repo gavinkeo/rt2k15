@@ -1894,3 +1894,27 @@ body {
 .timeline-percent-label {
   color: #111 !important;
 }
+
+/* Softer label colour to match subtitle */
+.stat-label-row,
+.timeline-day-label,
+.timeline-percent-label,
+.timeline-stat-label {
+  color: rgba(8, 60, 77, 0.58) !important;
+}
+
+/* Move bottom controller labels below their figures */
+.timeline-stat-box {
+  flex-direction: column !important;
+}
+
+.timeline-stat-value {
+  order: 1 !important;
+  margin-bottom: 0 !important;
+}
+
+.timeline-stat-label {
+  order: 2 !important;
+  margin-top: 5px !important;
+  margin-bottom: 0 !important;
+}
