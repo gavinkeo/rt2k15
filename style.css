@@ -1889,15 +1889,6 @@ body {
   color: rgba(0, 0, 0, 0.48) !important;
 }
 
-/* Match controller width to the menu box */
-.timeline {
-  width: min(420px, calc(100vw - 40px)) !important;
-  max-width: 420px !important;
-  box-sizing: border-box !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-}
-
 /* Desktop: keep controller compact and anchored near the menu */
 @media (min-width: 900px) {
   .timeline {
@@ -1947,5 +1938,35 @@ body {
   html body .timeline .timeline-stats {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     gap: 10px !important;
+  }
+}
+
+/* FINAL controller width + position */
+@media (min-width: 900px) {
+  .timeline {
+    width: 420px !important;
+    min-width: 0 !important;
+    max-width: 420px !important;
+    inline-size: 420px !important;
+    max-inline-size: 420px !important;
+
+    left: 20px !important;
+    right: auto !important;
+    bottom: 24px !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 899px) {
+  .timeline {
+    width: min(420px, calc(100vw - 40px)) !important;
+    min-width: 0 !important;
+    max-width: 420px !important;
+
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    box-sizing: border-box !important;
   }
 }
