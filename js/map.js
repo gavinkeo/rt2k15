@@ -1308,7 +1308,7 @@ menu.innerHTML = `
     <span class="trip-menu-title-text">${escapeHtml(tripData?.title || "RT2K15")}</span>
     <span class="hybrid-flag" aria-label="United States of America & Canada Road Trip"></span>
   </span>
-  <span class="trip-menu-subtitle">United States & Canada Road Trip</span>
+  <span class="trip-menu-subtitle">United States of America & Canada Road Trip</span>
 </span>
 
 <span class="trip-menu-chevron">▾</span>
