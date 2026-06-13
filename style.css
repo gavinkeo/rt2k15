@@ -1633,3 +1633,47 @@ body {
   transform: translateY(-50%) !important;
   margin-left: 0 !important;
 }
+
+/* Controller percent complete box */
+.timeline-top {
+  display: grid !important;
+  grid-template-columns: auto minmax(0, 1fr) 96px !important;
+  align-items: center !important;
+  gap: 12px !important;
+  min-width: 0 !important;
+}
+
+.timeline-main-counter,
+.timeline-percent-box {
+  min-height: 58px !important;
+  border-radius: 14px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  border: 1px solid rgba(0, 0, 0, 0.09) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.timeline-percent-box {
+  flex-direction: column !important;
+  gap: 4px !important;
+  padding: 6px 8px !important;
+}
+
+.timeline-percent-value {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  color: #111 !important;
+  letter-spacing: -0.04em !important;
+}
+
+.timeline-percent-label {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-size: 8px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: rgba(0, 0, 0, 0.48) !important;
+}
