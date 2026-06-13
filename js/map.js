@@ -217,6 +217,7 @@ const LOCATION_REGION_LABELS = {
   "Lake Louise": "AB",
   "Banff": "AB",
   "Rapid City": "SD",
+  "Mount Rushmore": "SD",
   "Scottsbluff": "NE",
   "Welcome to Oklahoma Sign, Devol OK": "OK",
   "Jackson": "MS",
