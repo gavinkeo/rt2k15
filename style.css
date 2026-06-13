@@ -1889,12 +1889,6 @@ body {
   color: rgba(0, 0, 0, 0.48) !important;
 }
 
-/* Make controller DAY / COMPLETE labels match other labels */
-.timeline-day-label,
-.timeline-percent-label {
-  color: #111 !important;
-}
-
 /* Softer label colour to match subtitle */
 .stat-label-row,
 .timeline-day-label,
@@ -1917,4 +1911,13 @@ body {
   order: 2 !important;
   margin-top: 5px !important;
   margin-bottom: 0 !important;
+}
+
+/* FINAL label colour override — all small labels same muted colour */
+html body #trip-menu .stat-label-row,
+html body .trip-menu .stat-label-row,
+html body .timeline .timeline-day-label,
+html body .timeline .timeline-percent-label,
+html body .timeline .timeline-stat-label {
+  color: rgba(8, 60, 77, 0.58) !important;
 }
