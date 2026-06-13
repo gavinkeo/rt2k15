@@ -1526,3 +1526,56 @@ body {
   text-transform: uppercase !important;
   color: rgba(8, 60, 77, 0.62) !important;
 }
+
+.trip-menu-title-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  line-height: 1 !important;
+}
+
+.hybrid-flag {
+  width: 46px;
+  height: 24px;
+  display: inline-flex;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.18),
+    0 1px 2px rgba(0,0,0,0.16);
+  flex: 0 0 auto;
+}
+
+.hybrid-flag::before {
+  content: "";
+  flex: 1;
+  background:
+    linear-gradient(90deg, #3c3b6e 0 42%, transparent 42%),
+    repeating-linear-gradient(
+      to bottom,
+      #b22234 0,
+      #b22234 2px,
+      #ffffff 2px,
+      #ffffff 4px
+    );
+}
+
+.hybrid-flag::after {
+  content: "✦";
+  flex: 1;
+  display: grid;
+  place-items: center;
+  color: #d52b1e;
+  font-size: 11px;
+  line-height: 1;
+  background:
+    linear-gradient(
+      to right,
+      #d52b1e 0%,
+      #d52b1e 25%,
+      #ffffff 25%,
+      #ffffff 75%,
+      #d52b1e 75%,
+      #d52b1e 100%
+    );
+}
