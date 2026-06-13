@@ -722,15 +722,20 @@
         }
       }
     },
-    {
-      "day": 56,
-      "date": "2015-08-12",
-      "start": "Kansas City",
-      "finish": "Onalaska",
-      "type": "drive",
-      "miles": 470,
-      "drivingTime": "6:30"
-    },
+{
+  "day": 56,
+  "date": "2015-08-12",
+  "start": "Kansas City",
+  "finish": "Onalaska",
+  "type": "drive",
+  "via": "National WWI Museum and Memorial, Kansas City, Kansas",
+  "viaStops": [
+    "National WWI Museum and Memorial",
+    "Kansas City, Kansas"
+  ],
+  "miles": 470,
+  "drivingTime": "6:30"
+}
     {
       "day": 57,
       "date": "2015-08-13",
