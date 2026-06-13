@@ -325,6 +325,7 @@ const EVENT_ICONS = {
 
 let map, routeLayer, activeLineLayer, flightLayer, allMarkers = [];
 let tripData = null;
+let activePlaceDetailKey = null;
 
 let carMarker = null;
 let lastUpToDay = -1;
@@ -1003,6 +1004,15 @@ function showPlaceDetail(placeData) {
 
   if (!panel || !content) return;
 
+  const placeKey = `${placeData.place}|${placeData.coord?.join(",") || ""}`;
+
+  if (panel.classList.contains("open") && activePlaceDetailKey === placeKey) {
+    closeDayDetail();
+    return;
+  }
+
+  activePlaceDetailKey = placeKey;
+
   const days = [...placeData.days].sort((a, b) => a - b);
   const daysDisplay = getDaysDisplay(days);
   const dateRange = getDateRangeDisplay(days);
@@ -1167,6 +1177,8 @@ function showDayDetail(day) {
 
   if (!panel || !content) return;
 
+  activePlaceDetailKey = null;
+
   const dateStr = new Date(`${day.date}T12:00:00`).toLocaleDateString("en-GB", {
     weekday: "long",
     day: "numeric",
@@ -1219,6 +1231,7 @@ function closeDayDetail() {
 
   panel.classList.remove("open");
   panel.setAttribute("aria-hidden", "true");
+  activePlaceDetailKey = null;
 }
 
 function getCumulativeTripStats(upToDay) {
