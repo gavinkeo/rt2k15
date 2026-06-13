@@ -489,19 +489,19 @@
       "miles": 350,
       "drivingTime": "5:37"
     },
-    {
-      "day": 39,
-      "date": "2015-07-26",
-      "start": "Glendive",
-      "finish": "Hot Springs",
-      "type": "drive",
-      "via": "Rapid City",
-      "viaStops": [
-        "Rapid City"
-      ],
-      "miles": 330,
-      "drivingTime": "5:11"
-    },
+{
+  "day": 39,
+  "date": "2015-07-26",
+  "start": "Glendive",
+  "finish": "Hot Springs",
+  "type": "drive",
+  "via": "Mount Rushmore",
+  "viaStops": [
+    "Mount Rushmore"
+  ],
+  "miles": 330,
+  "drivingTime": "5:11"
+}
     {
       "day": 40,
       "date": "2015-07-27",
