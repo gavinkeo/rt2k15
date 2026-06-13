@@ -1888,3 +1888,9 @@ body {
   text-transform: uppercase !important;
   color: rgba(0, 0, 0, 0.48) !important;
 }
+
+/* Make controller DAY / COMPLETE labels match other labels */
+.timeline-day-label,
+.timeline-percent-label {
+  color: #111 !important;
+}
