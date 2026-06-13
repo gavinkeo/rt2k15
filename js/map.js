@@ -1310,7 +1310,7 @@ menu.innerHTML = `
       <img src="assets/flags/ca.svg" alt="Canada flag" />
     </span>
   </span>
-  <span class="trip-menu-subtitle">United States & Canada Road Trip</span>
+  <span class="trip-menu-subtitle">USA & Canada Road Trip</span>
 </span>
 <span class="trip-menu-chevron">▾</span>
     </button>
