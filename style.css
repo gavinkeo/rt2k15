@@ -1677,3 +1677,41 @@ body {
   text-transform: uppercase !important;
   color: rgba(0, 0, 0, 0.48) !important;
 }
+
+/* Cleaner day counter layout */
+.timeline-main-counter {
+  flex-direction: column !important;
+  gap: 4px !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.timeline-day-value {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: center !important;
+  gap: 6px !important;
+  line-height: 1 !important;
+}
+
+.timeline-day-label {
+  margin: 0 !important;
+  font-size: 9px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: rgba(0, 0, 0, 0.48) !important;
+}
+
+#current-day {
+  font-size: 36px !important;
+  font-weight: 900 !important;
+  letter-spacing: -0.055em !important;
+}
+
+.timeline-slash,
+#total-days {
+  font-size: 20px !important;
+  font-weight: 850 !important;
+  color: #111 !important;
+}
