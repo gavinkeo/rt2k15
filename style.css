@@ -1598,3 +1598,9 @@ body {
     height: 16px !important;
   }
 }
+
+/* Align subtitle U under the R in RT2K15 */
+#trip-menu-toggle .trip-menu-subtitle,
+.trip-menu-toggle .trip-menu-subtitle {
+  margin-left: 27px !important;
+}
