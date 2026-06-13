@@ -1579,3 +1579,68 @@ body {
       #d52b1e 100%
     );
 }
+
+.trip-menu-title-line {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  line-height: 1 !important;
+}
+
+.title-flags {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.flag-us,
+.flag-ca {
+  width: 24px;
+  height: 16px;
+  display: inline-block;
+  border-radius: 3px;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.18),
+    0 1px 2px rgba(0,0,0,0.14);
+  overflow: hidden;
+}
+
+/* USA flag */
+.flag-us {
+  background:
+    linear-gradient(90deg, #3c3b6e 0 40%, transparent 40%),
+    repeating-linear-gradient(
+      to bottom,
+      #b22234 0px,
+      #b22234 1.23px,
+      #ffffff 1.23px,
+      #ffffff 2.46px
+    );
+}
+
+/* Canada flag */
+.flag-ca {
+  position: relative;
+  background:
+    linear-gradient(
+      to right,
+      #d52b1e 0%,
+      #d52b1e 25%,
+      #ffffff 25%,
+      #ffffff 75%,
+      #d52b1e 75%,
+      #d52b1e 100%
+    );
+}
+
+.flag-ca::after {
+  content: "✦";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #d52b1e;
+  font-size: 9px;
+  line-height: 1;
+}
