@@ -81,6 +81,7 @@ const LOCATIONS = {
   "Lake Louise": [51.4254, -116.1773],
   "Banff": [51.1784, -115.5708],
   "Rapid City": [44.0805, -103.2310],
+  "Mount Rushmore": [43.8789472, -103.459825],
   "Scottsbluff": [41.8666, -103.6672],
   "Welcome to Oklahoma Sign, Devol OK": [34.1954, -98.5906],
   "Jackson": [32.2988, -90.1848],
