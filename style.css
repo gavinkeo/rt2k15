@@ -1599,8 +1599,37 @@ body {
   }
 }
 
-/* Align subtitle U under the R in RT2K15 */
-#trip-menu-toggle .trip-menu-subtitle,
-.trip-menu-toggle .trip-menu-subtitle {
-  margin-left: 34px !important;
+/* Centre RT2K15 title block properly */
+#trip-menu-toggle,
+.trip-menu-toggle {
+  position: relative !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.trip-menu-title-wrap {
+  width: 100% !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+.trip-menu-title-line {
+  width: 100% !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.trip-menu-subtitle {
+  width: 100% !important;
+  text-align: center !important;
+  margin-left: 0 !important;
+}
+
+/* Keep dropdown arrow on the right without pushing the title off-centre */
+.trip-menu-chevron {
+  position: absolute !important;
+  right: 20px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  margin-left: 0 !important;
 }
