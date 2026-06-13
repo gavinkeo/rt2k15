@@ -1888,3 +1888,12 @@ body {
   text-transform: uppercase !important;
   color: rgba(0, 0, 0, 0.48) !important;
 }
+
+/* Match controller width to the menu box */
+.timeline {
+  width: min(420px, calc(100vw - 40px)) !important;
+  max-width: 420px !important;
+  box-sizing: border-box !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
