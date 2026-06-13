@@ -1311,7 +1311,7 @@ menu.innerHTML = `
       <span class="flag-ca"></span>
     </span>
   </span>
-  <span class="trip-menu-subtitle">United States & Canada Road Trip</span>
+  <span class="trip-menu-subtitle">United States of America & Canada</span>
 </span>
 
 <span class="trip-menu-chevron">▾</span>
