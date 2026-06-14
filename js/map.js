@@ -2067,7 +2067,7 @@ async function init() {
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
 
     if (isMobile) {
-      map.setView([39.5, -96.5], 3);
+      map.setView([35.2, -96.5], 3);
     } else {
       const bounds = L.latLngBounds(allCoords);
 
