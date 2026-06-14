@@ -1105,105 +1105,129 @@ body {
   }
 }
 
+
+/* FINAL DESKTOP COMBINED DASHBOARD
+   Desktop: hide old menu box and move site identity/stats into controller.
+   Mobile: keep the original menu because desktop navbar is hidden there. */
+.controller-brand {
+  display: none;
+}
+
 @media (min-width: 900px) {
   #trip-menu.trip-menu,
   .trip-menu {
-    top: 100px !important;
-  }
-}
-
-@media (min-width: 900px) {
-  #timeline-slider::-webkit-slider-runnable-track {
-    background: rgba(255,255,255,0.34) !important;
+    display: none !important;
   }
 
-  #timeline-slider::-moz-range-track {
-    background: rgba(255,255,255,0.34) !important;
-  }
-}
-
-/* Mobile: test dark glass menu + controller */
-@media (max-width: 640px) {
-  #trip-menu.trip-menu,
-  .trip-menu,
   .timeline {
-    background: rgba(17, 17, 17, 0.40) !important;
-    border: 1px solid rgba(255, 255, 255, 0.20) !important;
-    color: #ffffff !important;
-    backdrop-filter: blur(12px) !important;
+    width: 300px;
+    max-width: 300px;
+    grid-template-areas:
+      "brand"
+      "top"
+      "stats"
+      "track" !important;
+    row-gap: 10px !important;
+  }
+
+  .controller-brand {
+    grid-area: brand;
+    display: block;
+    padding: 2px 4px 10px;
+    margin-bottom: 1px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+    text-align: center;
+  }
+
+  .controller-brand-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    line-height: 1;
+  }
+
+  .controller-brand-title {
+    color: #ffffff;
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: 0.055em;
+    text-transform: uppercase;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.18);
+  }
+
+  .controller-brand-flags {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .controller-brand-flags img {
+    width: 24px;
+    height: 16px;
+    display: block;
+    object-fit: cover;
+    border-radius: 3px;
     box-shadow:
-      0 12px 32px rgba(0,0,0,0.24),
-      inset 0 1px 0 rgba(255,255,255,0.08) !important;
+      0 0 0 1px rgba(0,0,0,0.18),
+      0 1px 2px rgba(0,0,0,0.14);
   }
 
-  .trip-menu-title-text,
-  #stat-countries,
-  #stat-provinces,
-  #stat-states,
-  #current-day,
-  .timeline-percent-value,
-  .timeline-stat-value,
-  .timeline-stat-value strong {
-    color: #ffffff !important;
+  .controller-brand-subtitle {
+    margin-top: 7px;
+    color: rgba(255,255,255,0.62);
+    font-size: 8.5px;
+    font-weight: 850;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
-  .trip-menu-subtitle,
-  .trip-menu .stat-label-row,
-  .timeline-day-label,
-  .timeline-percent-label,
-  .timeline-stat-label {
-    color: rgba(255,255,255,0.62) !important;
+  .controller-trip-stats {
+    margin-top: 11px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
   }
 
-  .trip-menu-chevron {
-    color: rgba(255,255,255,0.72) !important;
+  .controller-trip-stat {
+    min-height: 54px;
+    padding: 8px 5px;
+    border-radius: 11px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.14);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
 
-  .trip-menu .stat,
-  .timeline-main-counter,
-  .timeline-percent-box,
-  .timeline-stat-box {
-    background: rgba(255,255,255,0.10) !important;
-    border: 1px solid rgba(255,255,255,0.14) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05) !important;
+  .controller-trip-stat strong {
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.04em;
   }
 
-  .play-btn {
-    background: rgba(255,255,255,0.96) !important;
-    color: var(--ocean-main) !important;
-    border: 1px solid rgba(255,255,255,0.28) !important;
-    box-shadow:
-      0 10px 22px rgba(0,0,0,0.24),
-      inset 0 1px 0 rgba(255,255,255,0.35) !important;
-  }
-
-  .play-btn:hover {
-    background: #ffffff !important;
-    color: var(--ocean-dark) !important;
-  }
-
-  #timeline-slider::-webkit-slider-runnable-track {
-    background: rgba(255,255,255,0.32) !important;
-  }
-
-  #timeline-slider::-moz-range-track {
-    background: rgba(255,255,255,0.32) !important;
-  }
-
-  #timeline-slider::-webkit-slider-thumb {
-    background: #ffffff !important;
-    border: 3px solid rgba(8,60,77,0.90) !important;
-  }
-
-  #timeline-slider::-moz-range-thumb {
-    background: #ffffff !important;
-    border: 3px solid rgba(8,60,77,0.90) !important;
+  .controller-trip-stat em {
+    color: rgba(255,255,255,0.60);
+    font-style: normal;
+    font-size: 7.4px;
+    font-weight: 850;
+    line-height: 1;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 }
 
-@media (min-width: 900px) {
-  #trip-menu.trip-menu,
-  .trip-menu {
-    top: 175px !important;
+@media (max-width: 899px) {
+  .controller-brand {
+    display: none !important;
   }
 }
