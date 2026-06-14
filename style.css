@@ -1809,3 +1809,37 @@ body {
     padding-top: 16px !important;
   }
 }
+
+/* Final controller header spacing + divider */
+html body .timeline .controller-brand {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+html body .timeline .controller-brand-subtitle {
+  margin-bottom: 7px !important;
+}
+
+html body .timeline .controller-brand-route {
+  width: 100% !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  line-height: 1.05 !important;
+  display: block !important;
+}
+
+html body .timeline .controller-brand-route::after {
+  content: "" !important;
+  display: block !important;
+  width: 100% !important;
+  height: 1px !important;
+  margin-top: 8px !important;
+  background: rgba(255,255,255,0.12) !important;
+}
+
+html body .timeline .dashboard-grid {
+  border-top: none !important;
+  margin-top: 0 !important;
+  padding-top: 16px !important;
+}
