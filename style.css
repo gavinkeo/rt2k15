@@ -1301,3 +1301,17 @@ body {
     letter-spacing: 0.075em !important;
   }
 }
+
+/* Super controller divider: move line above the top stat row */
+@media (min-width: 900px) {
+  .controller-brand {
+    border-bottom: none !important;
+    padding-bottom: 8px !important;
+  }
+
+  .controller-trip-stats {
+    border-top: 1px solid rgba(255,255,255,0.12) !important;
+    padding-top: 12px !important;
+    margin-top: 12px !important;
+  }
+}
