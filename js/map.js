@@ -1825,14 +1825,24 @@ async function init() {
 const bounds = L.latLngBounds(allCoords);
 
 map.fitBounds(bounds, {
-  padding: [70, 70]
+  padding: [70, 70],
+  animate: false
 });
 
-requestAnimationFrame(() => {
-  map.panBy([-120, 0], {
+setTimeout(() => {
+  const zoom = map.getZoom();
+  const centre = map.getCenter();
+  const centrePoint = map.project(centre, zoom);
+
+  const shiftedCentre = map.unproject(
+    centrePoint.subtract([90, 0]),
+    zoom
+  );
+
+  map.setView(shiftedCentre, zoom, {
     animate: false
   });
-});
+}, 150);
 
 
       
