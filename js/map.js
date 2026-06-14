@@ -1829,7 +1829,7 @@ map.fitBounds(bounds, {
 });
 
 requestAnimationFrame(() => {
-  map.panBy([-90, 0], {
+  map.panBy([-120, 0], {
     animate: false
   });
 });
