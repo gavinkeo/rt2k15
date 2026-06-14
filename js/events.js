@@ -77,8 +77,22 @@ function filterGroup(type) {
   return "Other";
 }
 
+function isSportsTvItem(item) {
+  const text = [
+    item.type,
+    item.name,
+    item.venue,
+    item.location
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  return item.type === "TV Show" && (
+    text.includes("espn") ||
+    text.includes("sports nation")
+  );
+}
+
 function isSportsItem(item) {
-  return SPORTS_TYPES.has(item.type) || item.group === "Combat";
+  return SPORTS_TYPES.has(item.type) || item.group === "Combat" || isSportsTvItem(item);
 }
 
 function isCorrectPageItem(item) {
