@@ -1241,77 +1241,22 @@ body {
   }
 }
 
-/* Super controller: make all 8 stat/control tiles consistent */
+
+/* FINAL SWAP: completion % lives in top stat row, states lives beside play */
 @media (min-width: 900px) {
-  .controller-trip-stat,
-  .timeline-main-counter,
-  .timeline-percent-box,
-  .timeline-stat-box {
-    height: 64px !important;
-    min-height: 64px !important;
-    padding: 8px 6px !important;
-    border-radius: 14px !important;
-    background: rgba(255,255,255,0.10) !important;
-    border: 1px solid rgba(255,255,255,0.14) !important;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05) !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  .controller-trip-stats,
-  .timeline-stats {
-    gap: 10px !important;
-  }
-
-  .timeline-top {
-    gap: 10px !important;
-  }
-
-  .play-btn {
-    width: 60px !important;
-    height: 60px !important;
-  }
-
-  .controller-trip-stat strong {
+  .controller-trip-stat #trip-percent {
     font-size: 24px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.04em !important;
+    color: #ffffff !important;
   }
 
-  #current-day,
-  .timeline-percent-value {
+  #dash-states.timeline-percent-value {
     font-size: 27px !important;
-  }
-
-  .timeline-stat-value {
-    font-size: 11px !important;
-  }
-
-  .controller-trip-stat em,
-  .timeline-day-label,
-  .timeline-percent-label,
-  .timeline-stat-label {
-    font-size: 7.4px !important;
-    letter-spacing: 0.10em !important;
-  }
-
-  .controller-trip-stat-long em {
-    font-size: 6.4px !important;
-    letter-spacing: 0.075em !important;
-  }
-}
-
-/* Super controller divider: move line above the top stat row */
-@media (min-width: 900px) {
-  .controller-brand {
-    border-bottom: none !important;
-    padding-bottom: 8px !important;
-  }
-
-  .controller-trip-stats {
-    border-top: 1px solid rgba(255,255,255,0.12) !important;
-    padding-top: 12px !important;
-    margin-top: 12px !important;
+    font-weight: 900 !important;
+    line-height: 1 !important;
+    letter-spacing: -0.035em !important;
+    color: #ffffff !important;
   }
 }
