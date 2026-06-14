@@ -1835,7 +1835,7 @@ setTimeout(() => {
   const centrePoint = map.project(centre, zoom);
 
   const shiftedCentre = map.unproject(
-    centrePoint.subtract([70, 0]),
+    centrePoint.subtract([50, 0]),
     zoom
   );
 
