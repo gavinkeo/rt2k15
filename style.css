@@ -1111,3 +1111,13 @@ body {
     top: 100px !important;
   }
 }
+
+@media (min-width: 900px) {
+  #timeline-slider::-webkit-slider-runnable-track {
+    background: rgba(255,255,255,0.34) !important;
+  }
+
+  #timeline-slider::-moz-range-track {
+    background: rgba(255,255,255,0.34) !important;
+  }
+}
