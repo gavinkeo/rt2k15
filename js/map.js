@@ -2067,7 +2067,25 @@ async function init() {
     const isMobile = window.matchMedia("(max-width: 640px)").matches;
 
     if (isMobile) {
-      map.setView([35.2, -96.5], 3);
+      map.setView([35.2, -96.5], 3, {
+        animate: false
+      });
+
+      setTimeout(() => {
+        const zoom = map.getZoom();
+        const centre = map.getCenter();
+        const centrePoint = map.project(centre, zoom);
+
+        // Mobile: push the visible route much higher above the super-controller.
+        const shiftedCentre = map.unproject(
+          centrePoint.add([0, 170]),
+          zoom
+        );
+
+        map.setView(shiftedCentre, zoom, {
+          animate: false
+        });
+      }, 150);
     } else {
       const bounds = L.latLngBounds(allCoords);
 
