@@ -1820,9 +1820,10 @@ async function init() {
     if (isMobile) {
       map.setView([39.5, -96.5], 3);
     } else {
-      map.fitBounds(L.latLngBounds(allCoords), {
-        padding: [70, 70]
-      });
+map.fitBounds(L.latLngBounds(allCoords), {
+  paddingTopLeft: [280, 110],
+  paddingBottomRight: [80, 80]
+});
     }
   }
 
