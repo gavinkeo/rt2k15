@@ -6,10 +6,13 @@
 
   <title>RT2K15 - AMERICA & CANADA ROAD TRIP</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="map-final-overrides.css" />
@@ -17,6 +20,16 @@
 
 <body>
   <div id="map"></div>
+
+  <nav class="home-desktop-nav" aria-label="Road Trip sections">
+    <a class="home-desktop-nav-link active" href="index.html" aria-current="page">ROUTE</a>
+    <a class="home-desktop-nav-link" href="itinerary.html">ITINERARY</a>
+    <a class="home-desktop-nav-link" href="cities.html">CITIES</a>
+    <a class="home-desktop-nav-link" href="parks.html">NATURE</a>
+    <a class="home-desktop-nav-link" href="sports.html">SPORTS</a>
+    <a class="home-desktop-nav-link" href="events.html">EVENTS</a>
+    <a class="home-desktop-nav-link" href="soundtrack.html">SOUNDTRACK</a>
+  </nav>
 
   <!-- map.js builds the full menu inside this -->
   <div id="trip-menu"></div>
@@ -28,48 +41,47 @@
 
   <div class="timeline">
     <div class="timeline-top">
+      <div class="timeline-main-counter">
+        <span class="timeline-day-value">
+          <span id="current-day">90</span>
+          <span class="timeline-slash">/</span>
+          <span id="total-days">90</span>
+        </span>
+        <span class="timeline-day-label">Day</span>
+      </div>
+
       <button class="play-btn" id="play-btn" aria-label="Play">
         ▶
       </button>
 
-      <div class="timeline-main-counter">
-  <span class="timeline-day-value">
-    <span id="current-day">90</span>
-    <span class="timeline-slash">/</span>
-    <span id="total-days">90</span>
-  </span>
-  <span class="timeline-day-label">Day</span>
-</div>
-
-<div class="timeline-percent-box">
-  <span class="timeline-percent-value" id="trip-percent">100%</span>
-  <span class="timeline-percent-label">Complete</span>
-</div>
-      
+      <div class="timeline-percent-box">
+        <span class="timeline-percent-value" id="trip-percent">100%</span>
+        <span class="timeline-percent-label">Complete</span>
+      </div>
     </div>
 
-<div class="timeline-stats">
-  <span class="timeline-stat-box">
-    <span class="timeline-stat-label">Kilometres</span>
-    <span class="timeline-stat-value">
-<strong id="driven-kilometres">0</strong>
-    </span>
-  </span>
+    <div class="timeline-stats">
+      <span class="timeline-stat-box">
+        <span class="timeline-stat-value">
+          <strong id="driven-kilometres">0</strong>
+        </span>
+        <span class="timeline-stat-label">Kilometres</span>
+      </span>
 
- <span class="timeline-stat-box">
-  <span class="timeline-stat-value">
-    <strong id="driven-distance">15,809</strong>
-  </span>
-  <span class="timeline-stat-label">Miles</span>
-</span>
+      <span class="timeline-stat-box">
+        <span class="timeline-stat-value">
+          <strong id="driven-distance">15,809</strong>
+        </span>
+        <span class="timeline-stat-label">Miles</span>
+      </span>
 
-  <span class="timeline-stat-box">
-    <span class="timeline-stat-label">Drive time</span>
-    <span class="timeline-stat-value">
-      <strong id="driven-time">228h 36m</strong>
-    </span>
-  </span>
-</div>
+      <span class="timeline-stat-box">
+        <span class="timeline-stat-value">
+          <strong id="driven-time">228h 36m</strong>
+        </span>
+        <span class="timeline-stat-label">Drive time</span>
+      </span>
+    </div>
 
     <div class="timeline-track">
       <input
