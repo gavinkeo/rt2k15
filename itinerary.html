@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RT2K15 · Itinerary</title>
+  <link rel="stylesheet" href="itinerary.css" />
+</head>
+<body>
+  <main class="page-shell">
+    <header class="itinerary-hero">
+      <nav class="section-nav" aria-label="Road Trip sections">
+        <a class="section-nav-link" href="index.html">← Route</a>
+        <a class="section-nav-link active" href="itinerary.html">Itinerary</a>
+        <a class="section-nav-link" href="parks.html">Nature</a>
+        <a class="section-nav-link" href="cities.html">Cities</a>
+        <a class="section-nav-link" href="sports.html">Sports</a>
+        <a class="section-nav-link" href="events.html">Events</a>
+        <a class="section-nav-link" href="soundtrack.html">Soundtrack</a>
+      </nav>
+
+      <section class="hero-panel">
+        <div class="hero-copy">
+          <p class="eyebrow">United States &amp; Canada Road Trip</p>
+          <h1>Itinerary</h1>
+          <p class="lede">
+            A clean text breakdown of the full RT2K15 route — every day, drive, stop, stay and event.
+          </p>
+        </div>
+
+        <div class="hero-card" aria-label="Trip summary">
+          <div class="hero-card-top">
+            <span class="brand-pill">RT2K15</span>
+            <span id="hero-date-range">18 Jun → 15 Sep</span>
+          </div>
+          <div class="hero-card-grid">
+            <span><strong id="summary-days">90</strong><em>Days</em></span>
+            <span><strong id="summary-states">48</strong><em>States</em></span>
+            <span><strong id="summary-provinces">4</strong><em>Provinces</em></span>
+            <span><strong id="summary-events">26</strong><em>Events</em></span>
+          </div>
+        </div>
+      </section>
+    </header>
+
+    <section class="itinerary-controls" aria-label="Itinerary controls">
+      <label class="search-box">
+        <span>Search itinerary</span>
+        <input id="itinerary-search" type="search" placeholder="Search city, event, venue, day..." autocomplete="off" />
+      </label>
+
+      <div class="filter-row" role="group" aria-label="Filter itinerary">
+        <button class="filter-btn active" type="button" data-filter="all">All</button>
+        <button class="filter-btn" type="button" data-filter="drive">Drives</button>
+        <button class="filter-btn" type="button" data-filter="stay">Stays</button>
+        <button class="filter-btn" type="button" data-filter="event">Events</button>
+      </div>
+    </section>
+
+    <section class="overview-strip" id="overview-strip" aria-label="Route overview">
+      <article>
+        <strong id="overview-route">San Francisco Airport → Fort Lauderdale</strong>
+        <span>Full route</span>
+      </article>
+      <article>
+        <strong id="overview-miles">14,372</strong>
+        <span>Miles logged</span>
+      </article>
+      <article>
+        <strong id="overview-time">228h 36m</strong>
+        <span>Drive time</span>
+      </article>
+      <article>
+        <strong id="overview-counts">50 drives · 40 stays</strong>
+        <span>Day types</span>
+      </article>
+    </section>
+
+    <section class="timeline-shell">
+      <div class="list-status" id="list-status">Loading itinerary…</div>
+      <div class="itinerary-list" id="itinerary-list"></div>
+      <div class="empty-state" id="empty-state" hidden>
+        <strong>No matching days</strong>
+        <span>Try clearing the search or changing the filter.</span>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/itinerary.js"></script>
+</body>
+</html>
