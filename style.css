@@ -1,3 +1,19 @@
+/* RT2K15 HOMEPAGE CSS
+   Clean consolidated stylesheet.
+   Replaces style.css + map-final-overrides.css for the map homepage. */
+
+:root {
+  --paper: #fafaf7;
+  --ink: #111111;
+  --muted-teal: rgba(8, 60, 77, 0.58);
+  --ocean-main: #083c4d;
+  --ocean-dark: #062f3c;
+  --ocean-hover: #0b6f86;
+  --cyan: #00e5ff;
+  --panel: rgba(250, 250, 247, 0.96);
+  --panel-border: rgba(20, 20, 20, 0.12);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -11,8 +27,10 @@ body {
   overflow: hidden;
   font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   background: #050505;
-  color: #111;
+  color: var(--ink);
 }
+
+/* MAP */
 
 #map {
   position: fixed;
@@ -51,7 +69,7 @@ body {
   line-height: 33px !important;
   border: 0 !important;
   background: rgba(250, 250, 247, 0.94) !important;
-  color: #111 !important;
+  color: var(--ink) !important;
   font-weight: 800;
 }
 
@@ -71,7 +89,7 @@ body {
   border: 0 !important;
   border-radius: 999px !important;
   background: rgba(250, 250, 247, 0.94) !important;
-  color: #111 !important;
+  color: var(--ink) !important;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2) !important;
   padding: 6px 9px !important;
   font-size: 12px !important;
@@ -83,28 +101,333 @@ body {
   display: none !important;
 }
 
+@media (min-width: 641px) {
+  .leaflet-tile.map-base-tile,
+  .leaflet-tile.map-label-tile {
+    width: 256.75px !important;
+    height: 256.75px !important;
+    margin-left: -0.375px !important;
+    margin-top: -0.375px !important;
+    border: none !important;
+    outline: none !important;
+  }
+}
+
+/* DESKTOP HOMEPAGE NAV */
+
+.home-desktop-nav {
+  position: absolute;
+  top: 24px;
+  left: 340px;
+  right: 20px;
+  z-index: 760;
+
+  width: max-content;
+  max-width: calc(100vw - 360px);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  padding: 6px;
+  border: 1px solid rgba(255,255,255,0.20);
+  border-radius: 999px;
+  background: rgba(17,17,17,0.34);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 12px 32px rgba(0,0,0,0.22),
+    inset 0 1px 0 rgba(255,255,255,0.08);
+
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.home-desktop-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.home-desktop-nav-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  color: rgba(255,255,255,0.78);
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.home-desktop-nav-link:hover {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+  text-decoration: none;
+}
+
+.home-desktop-nav-link.active {
+  color: var(--ink);
+  background: #fff;
+}
+
+/* MAP MENU OVERRIDES
+   map.js injects menu CSS after this file loads, so key menu rules use !important. */
+
+#trip-menu,
+.trip-menu,
+#trip-menu *,
+.trip-menu * {
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  font-feature-settings: normal !important;
+  font-variant-numeric: normal !important;
+}
+
+#trip-menu.trip-menu,
+.trip-menu {
+  width: 300px !important;
+  top: 20px !important;
+  left: 20px !important;
+  border-radius: 14px !important;
+  background: var(--panel) !important;
+  border: 1px solid var(--panel-border) !important;
+  box-shadow: 0 8px 34px rgba(0,0,0,0.18) !important;
+}
+
+#trip-menu-toggle,
+.trip-menu-toggle {
+  min-height: 64px !important;
+  padding: 0 42px 0 14px !important;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+
+#trip-menu-toggle::after,
+.trip-menu-toggle::after {
+  content: none !important;
+  display: none !important;
+}
+
+.trip-menu-title-wrap {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 5px !important;
+  text-align: center !important;
+  line-height: 1 !important;
+}
+
+.trip-menu-title-line {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 9px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+.trip-menu-title-text {
+  font-size: 28px !important;
+  font-weight: 900 !important;
+  line-height: 0.95 !important;
+  letter-spacing: 0.055em !important;
+  text-transform: uppercase !important;
+  color: var(--ocean-main) !important;
+  white-space: nowrap !important;
+}
+
+.title-flags {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  flex: 0 0 auto !important;
+}
+
+.title-flags img {
+  width: 24px !important;
+  height: 16px !important;
+  display: block !important;
+  object-fit: cover !important;
+  border-radius: 3px !important;
+  box-shadow:
+    0 0 0 1px rgba(0,0,0,0.18),
+    0 1px 2px rgba(0,0,0,0.14) !important;
+}
+
+.trip-menu-subtitle {
+  width: 100% !important;
+  margin-left: 0 !important;
+  text-align: center !important;
+  font-size: 9px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--muted-teal) !important;
+  white-space: nowrap !important;
+}
+
+.trip-menu-chevron {
+  position: absolute !important;
+  right: 18px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  margin-left: 0 !important;
+  font-size: 13px !important;
+  color: rgba(8,60,77,0.70) !important;
+}
+
+.trip-menu.open .trip-menu-chevron {
+  transform: translateY(-50%) rotate(180deg) !important;
+}
+
+.trip-menu-content {
+  padding: 0 14px 14px !important;
+}
+
+.trip-menu .stats {
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
+}
+
+.trip-menu .stat {
+  min-height: 60px !important;
+  padding: 8px 5px !important;
+  border-radius: 10px !important;
+  background: rgba(255,255,255,0.72) !important;
+  border: 1px solid rgba(0,0,0,0.09) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+}
+
+.trip-menu .stat-main-row {
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.trip-menu .stat-icon-emoji,
+.trip-menu .flag-icon {
+  display: none !important;
+}
+
+#stat-days,
+#stat-countries,
+#stat-states,
+#stat-provinces {
+  font-size: 24px !important;
+  font-weight: 900 !important;
+  line-height: 1 !important;
+  letter-spacing: -0.04em !important;
+  color: var(--ink) !important;
+}
+
+.trip-menu .stat-label-row {
+  margin-top: 7px !important;
+  font-size: 8px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.12em !important;
+  line-height: 1 !important;
+  text-transform: uppercase !important;
+  color: var(--muted-teal) !important;
+}
+
+.trip-menu .menu-section {
+  padding-top: 10px !important;
+  border-top: 1px solid rgba(0,0,0,0.10) !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+.trip-menu .menu-page-link {
+  min-height: 42px !important;
+  margin: 0 !important;
+  padding: 9px 8px !important;
+  border-radius: 8px !important;
+  border: 1px solid rgba(0,229,255,0.34) !important;
+  background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%) !important;
+  color: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  font-size: 12.5px !important;
+  font-weight: 850 !important;
+  line-height: 1.1 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.trip-menu .menu-page-link:hover {
+  background: linear-gradient(135deg, var(--ocean-hover) 0%, var(--ocean-main) 100%) !important;
+  border-color: rgba(0,229,255,0.58) !important;
+  color: #fff !important;
+}
+
+@media (min-width: 900px) {
+  .trip-menu .menu-section {
+    display: none !important;
+  }
+
+  .trip-menu .stats {
+    margin-bottom: 0 !important;
+  }
+
+  .trip-menu-content {
+    padding-bottom: 16px !important;
+  }
+}
+
 /* DAY / PLACE DETAIL PANEL */
 
 .day-detail {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  bottom: 26px;
-  z-index: 760;
-  width: min(390px, calc(100vw - 40px));
-  background: rgba(250, 250, 247, 0.96);
+  position: fixed;
+  top: 24px;
+  right: 24px;
+  left: auto;
+  bottom: auto;
+  z-index: 1200;
+  width: 360px;
+  max-width: calc(100vw - 48px);
+  max-height: calc(100dvh - 48px);
+  overflow: hidden;
+  background: var(--panel);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(20, 20, 20, 0.12);
+  border: 1px solid var(--panel-border);
   border-radius: 14px;
   box-shadow: 0 8px 36px rgba(0, 0, 0, 0.22);
-  transform: translateX(calc(100% + 40px));
-  transition: transform 0.22s ease;
-  overflow: hidden;
-  color: #111;
+  color: var(--ink);
+
+  transform: translateX(calc(100% + 32px));
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.22s ease,
+    opacity 0.22s ease;
 }
 
 .day-detail.open {
   transform: translateX(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .close-btn {
@@ -117,7 +440,7 @@ body {
   border: 0;
   border-radius: 999px;
   background: rgba(0, 0, 0, 0.07);
-  color: #111;
+  color: var(--ink);
   font-size: 24px;
   line-height: 28px;
   font-weight: 500;
@@ -129,7 +452,7 @@ body {
 }
 
 .detail-content {
-  height: 100%;
+  max-height: calc(100dvh - 48px);
   overflow-y: auto;
   padding: 24px 22px 22px;
 }
@@ -198,8 +521,8 @@ body {
   margin-right: 8px;
   padding: 3px 7px;
   border-radius: 999px;
-  background: #111;
-  color: #FAFAF7;
+  background: var(--ink);
+  color: var(--paper);
   font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.08em;
@@ -220,7 +543,7 @@ body {
   font-size: 13px;
   font-weight: 850;
   margin-bottom: 4px;
-  color: #111;
+  color: var(--ink);
 }
 
 .detail-route-line {
@@ -251,133 +574,165 @@ body {
 
 .timeline {
   position: absolute;
-  left: 50%;
-  bottom: 26px;
-  transform: translateX(-50%);
+  left: 20px;
+  bottom: 20px;
+  transform: none;
   z-index: 650;
-  width: min(760px, calc(100vw - 64px));
-  background: rgba(250, 250, 247, 0.96);
+
+  width: 300px;
+  max-width: 300px;
+
+  background: var(--panel);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(20, 20, 20, 0.12);
+  border: 1px solid var(--panel-border);
   border-radius: 16px;
   box-shadow: 0 8px 34px rgba(0, 0, 0, 0.2);
-  padding: 15px 17px 14px;
-  color: #111;
+  padding: 12px;
+  color: var(--ink);
+
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-columns: 1fr;
   grid-template-areas:
-    "top stats"
-    "track track";
-  column-gap: 15px;
-  row-gap: 12px;
+    "top"
+    "stats"
+    "track";
+  row-gap: 9px;
 }
 
 .timeline-top {
   grid-area: top;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 60px minmax(0, 1fr);
+  grid-template-rows: auto;
   align-items: center;
-  gap: 12px;
-  min-width: 170px;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.timeline-main-counter,
+.timeline-percent-box {
+  min-height: 70px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.82);
+  border: 1px solid rgba(0,0,0,0.09);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.timeline-main-counter {
+  grid-column: 1;
 }
 
 .play-btn {
-  flex: 0 0 auto;
-  width: 48px;
-  height: 48px;
+  grid-column: 2;
+  justify-self: center;
+  align-self: center;
+  position: static;
+  transform: none;
+  width: 56px;
+  height: 56px;
+  margin: 0;
   border: 0;
   border-radius: 999px;
-  background: #111;
-  color: #FAFAF7;
+  background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%);
+  color: #fff;
+  border-color: rgba(0,229,255,0.38);
   font-size: 18px;
   font-weight: 900;
   cursor: pointer;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .play-btn:hover {
-  background: #000;
+  background: linear-gradient(135deg, var(--ocean-hover) 0%, var(--ocean-main) 100%);
 }
 
-.timeline-main-counter {
-  min-width: 104px;
+.timeline-percent-box {
+  grid-column: 3;
+}
+
+.timeline-day-value {
   display: flex;
   align-items: baseline;
-  justify-content: flex-start;
-  gap: 4px;
+  justify-content: center;
+  gap: 2px;
   line-height: 1;
-  white-space: nowrap;
 }
 
-.timeline-day-label {
-  margin-right: 2px;
-  font-size: 10px;
-  font-weight: 950;
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
-  color: rgba(0, 0, 0, 0.48);
+.timeline-main-counter .timeline-slash,
+.timeline-main-counter #total-days {
+  display: none !important;
 }
 
-#current-day {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 34px;
+#current-day,
+.timeline-percent-value {
+  font-size: 31px;
   font-weight: 900;
-  letter-spacing: -0.08em;
-  color: #111;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink);
 }
 
-.timeline-slash,
-#total-days {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 18px;
+.timeline-day-label,
+.timeline-percent-label,
+.timeline-stat-label {
+  margin: 0;
+  font-size: 8.5px;
   font-weight: 850;
-  color: rgba(0, 0, 0, 0.5);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted-teal);
+  white-space: nowrap;
 }
 
 .timeline-stats {
   grid-area: stats;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: 7px;
   min-width: 0;
   align-items: stretch;
 }
 
 .timeline-stat-box {
   min-width: 0;
-  padding: 8px 10px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  padding: 7px 4px;
+  border-radius: 11px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(0,0,0,0.09);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.timeline-stat-label {
-  margin-bottom: 4px;
-  font-size: 9px;
-  font-weight: 950;
-  text-transform: uppercase;
-  letter-spacing: 0.13em;
-  color: rgba(0, 0, 0, 0.46);
-  white-space: nowrap;
-}
-
 .timeline-stat-value {
-  font-family: "JetBrains Mono", monospace;
-  font-size: 12.5px;
+  order: 1;
+  margin-bottom: 0;
+  font-size: 10.5px;
   font-weight: 850;
-  color: #111;
+  color: var(--ink);
   white-space: nowrap;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
 }
 
 .timeline-stat-value strong {
   font-weight: 950;
+}
+
+.timeline-stat-label {
+  order: 2;
+  margin-top: 5px;
+  margin-bottom: 0;
+  font-size: 7.7px;
+  letter-spacing: 0.10em;
 }
 
 .timeline-track {
@@ -387,16 +742,16 @@ body {
 
 #timeline-slider {
   width: 100%;
-  height: 22px;
+  height: 20px;
   margin: 0;
-  accent-color: #111;
+  accent-color: var(--ocean-main);
   cursor: pointer;
 }
 
 #timeline-slider::-webkit-slider-runnable-track {
   height: 5px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.16);
+  background: rgba(8,60,77,0.25);
 }
 
 #timeline-slider::-webkit-slider-thumb {
@@ -405,68 +760,124 @@ body {
   height: 18px;
   margin-top: -6.5px;
   border-radius: 999px;
-  background: #111;
-  border: 3px solid #FAFAF7;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  background: var(--ocean-main);
+  border: 3px solid var(--paper);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.28);
 }
 
 #timeline-slider::-moz-range-track {
   height: 5px;
   border-radius: 999px;
-  background: rgba(0, 0, 0, 0.16);
+  background: rgba(8,60,77,0.25);
 }
 
 #timeline-slider::-moz-range-thumb {
   width: 14px;
   height: 14px;
   border-radius: 999px;
-  background: #111;
-  border: 3px solid #FAFAF7;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+  background: var(--ocean-main);
+  border: 3px solid var(--paper);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.28);
 }
 
 .timeline-labels {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 2px;
-  font-size: 10px;
-  font-weight: 800;
-  color: rgba(0, 0, 0, 0.44);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  display: none;
 }
 
-/* DESKTOP CHROME TILE SEAM FIX ONLY */
+/* MOBILE / TABLET */
 
-@media (min-width: 641px) {
-  .leaflet-tile.map-base-tile,
-  .leaflet-tile.map-label-tile {
-    width: 256.75px !important;
-    height: 256.75px !important;
-    margin-left: -0.375px !important;
-    margin-top: -0.375px !important;
-    border: none !important;
-    outline: none !important;
+@media (max-width: 899px) {
+  .home-desktop-nav {
+    display: none !important;
   }
 }
 
-/* MOBILE */
-
+@media (max-width: 640px) {
   .leaflet-control-attribution {
     font-size: 9px !important;
     max-width: 72vw;
   }
 
+  #trip-menu.trip-menu,
+  .trip-menu {
+    top: 12px !important;
+    left: 12px !important;
+    right: 12px !important;
+    width: auto !important;
+    max-width: none !important;
+    border-radius: 16px !important;
+  }
+
+  .trip-menu.open {
+    max-height: calc(100dvh - 125px);
+    overflow-y: auto;
+  }
+
+  #trip-menu-toggle,
+  .trip-menu-toggle {
+    min-height: 62px !important;
+    padding: 0 42px 0 16px !important;
+  }
+
+  .trip-menu-title-text {
+    font-size: 26px !important;
+  }
+
+  .trip-menu-subtitle {
+    font-size: 8px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .trip-menu-content {
+    padding: 0 16px 14px !important;
+  }
+
+  .trip-menu .stats {
+    gap: 8px !important;
+    margin-bottom: 11px !important;
+  }
+
+  .trip-menu .stat {
+    min-height: 62px !important;
+    padding: 9px 5px !important;
+    border-radius: 10px !important;
+  }
+
+  #stat-days,
+  #stat-countries,
+  #stat-states,
+  #stat-provinces {
+    font-size: 23px !important;
+  }
+
+  .trip-menu .stat-label-row {
+    margin-top: 7px !important;
+    font-size: 7.4px !important;
+    letter-spacing: 0.10em !important;
+  }
+
+  .trip-menu .menu-section {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+    padding-top: 11px !important;
+  }
+
+  .trip-menu .menu-page-link {
+    min-height: 46px !important;
+    border-radius: 10px !important;
+    font-size: 13px !important;
+  }
+
   .day-detail {
     top: auto;
-    left: 10px;
-    right: 10px;
-    bottom: 112px;
+    right: 12px;
+    left: 12px;
+    bottom: 92px;
     width: auto;
-    max-height: calc(100dvh - 132px);
-    transform: translateY(calc(100% + 132px));
-    border-radius: 15px;
+    max-width: none;
+    max-height: 45dvh;
+    transform: translateY(calc(100% + 24px));
   }
 
   .day-detail.open {
@@ -474,6 +885,7 @@ body {
   }
 
   .detail-content {
+    max-height: 45dvh;
     padding: 20px 17px 18px;
   }
 
@@ -493,163 +905,39 @@ body {
     bottom: 9px;
     transform: none;
     width: auto;
+    max-width: none;
     padding: 12px;
     border-radius: 15px;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "top"
-      "stats"
-      "track";
-    row-gap: 9px;
   }
 
   .timeline-top {
-    display: grid;
-    grid-template-columns: 50px minmax(0, 1fr);
-    gap: 10px;
-    min-width: 0;
+    grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .timeline-main-counter,
+  .timeline-percent-box {
+    min-height: 66px;
   }
 
   .play-btn {
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-  }
-
-  .timeline-main-counter {
-    min-width: 0;
-    height: 50px;
-    padding: 7px 10px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(0, 0, 0, 0.09);
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-  }
-
-  .timeline-day-label {
-    font-size: 9px;
-  }
-
-  #current-day {
-    font-size: 30px;
-  }
-
-  .timeline-slash,
-  #total-days {
-    font-size: 16px;
-  }
-
-  .timeline-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 7px;
-  }
-
-  .timeline-stat-box {
-    padding: 7px 5px;
-    border-radius: 11px;
-  }
-
-  .timeline-stat-label {
-    margin-bottom: 3px;
-    font-size: 8px;
-    letter-spacing: 0.1em;
-  }
-
-  .timeline-stat-value {
-    font-size: 10.5px;
-    letter-spacing: -0.05em;
-  }
-
-  #timeline-slider {
-    height: 20px;
-  }
-
-  .timeline-labels {
-    display: none;
-  }
-}
-
-@media (max-width: 390px) {
-  .timeline-stat-label {
-    font-size: 7.5px;
-    letter-spacing: 0.08em;
-  }
-
-  .timeline-stat-value {
-    font-size: 10px;
-  }
-
-  #current-day {
-    font-size: 28px;
-  }
-
-  .timeline-slash,
-  #total-days {
-    font-size: 15px;
-  }
-}
-
-/* Compact desktop timeline controller */
-@media (min-width: 641px) {
-  .timeline {
-    left: 20px;
-    bottom: 20px;
-    transform: none;
-    width: 300px;
-    max-width: 300px;
-    padding: 12px;
-    border-radius: 14px;
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "top"
-      "stats"
-      "track";
-    row-gap: 9px;
-  }
-
-  .timeline-top {
-    min-width: 0;
-    display: grid;
-    grid-template-columns: 48px minmax(0, 1fr);
-    gap: 10px;
-    align-items: center;
-  }
-
-  .play-btn {
-    width: 48px;
-    height: 48px;
+    width: 54px;
+    height: 54px;
     font-size: 17px;
   }
 
-  .timeline-main-counter {
-    min-width: 0;
-    height: 48px;
-    padding: 7px 10px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.72);
-    border: 1px solid rgba(0, 0, 0, 0.09);
-    display: flex;
-    justify-content: center;
-    align-items: baseline;
-  }
-
-  .timeline-day-label {
-    font-size: 9px;
-  }
-
-  #current-day {
+  #current-day,
+  .timeline-percent-value {
     font-size: 30px;
   }
 
-  .timeline-slash,
-  #total-days {
-    font-size: 16px;
+  .timeline-day-label,
+  .timeline-percent-label {
+    font-size: 8px;
+    letter-spacing: 0.12em;
   }
 
   .timeline-stats {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 7px;
   }
 
@@ -658,1279 +946,28 @@ body {
     border-radius: 11px;
   }
 
+  .timeline-stat-value {
+    font-size: 10px;
+  }
+
   .timeline-stat-label {
-    margin-bottom: 3px;
-    font-size: 8px;
-    letter-spacing: 0.1em;
+    font-size: 7.1px;
+    letter-spacing: 0.08em;
+  }
+}
+
+@media (max-width: 390px) {
+  #current-day,
+  .timeline-percent-value {
+    font-size: 28px;
   }
 
   .timeline-stat-value {
-    font-size: 10.5px;
-    letter-spacing: -0.05em;
+    font-size: 9.5px;
   }
 
-  #timeline-slider {
-    height: 20px;
+  .timeline-stat-label {
+    font-size: 6.7px;
+    letter-spacing: 0.06em;
   }
-
-  .timeline-labels {
-    display: none;
-  }
-}
-
-/* Keep map detail panel on the right side */
-
-#day-detail,
-.day-detail {
-  position: fixed;
-  top: 24px;
-  right: 24px;
-  left: auto;
-  bottom: auto;
-  width: 360px;
-  max-width: calc(100vw - 48px);
-  max-height: calc(100dvh - 48px);
-  overflow-y: auto;
-  z-index: 1200;
-
-  transform: translateX(calc(100% + 32px));
-  opacity: 0;
-  pointer-events: none;
-
-  transition:
-    transform 0.22s ease,
-    opacity 0.22s ease;
-}
-
-#day-detail.open,
-.day-detail.open {
-  transform: translateX(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Mobile: keep it as a bottom sheet instead of blocking the map */
-@media (max-width: 640px) {
-  #day-detail,
-  .day-detail {
-    top: auto;
-    right: 12px;
-    left: 12px;
-    bottom: 92px;
-    width: auto;
-    max-width: none;
-    max-height: 45dvh;
-
-    transform: translateY(calc(100% + 24px));
-  }
-
-  #day-detail.open,
-  .day-detail.open {
-    transform: translateY(0);
-  }
-}
-
-/* Desktop compact menu now that we have multiple page links */
-
-@media (min-width: 641px) {
-  .trip-menu {
-    width: 300px !important;
-  }
-
-  .trip-menu-toggle {
-    padding: 10px 14px !important;
-    font-size: 17px !important;
-  }
-
-  .trip-menu-content {
-    padding: 0 14px 13px !important;
-  }
-
-  .trip-menu .stats {
-    gap: 7px !important;
-    margin-bottom: 12px !important;
-  }
-
-  .trip-menu .stat {
-    min-height: 50px !important;
-    padding: 8px 10px !important;
-    border-radius: 8px !important;
-  }
-
-  .trip-menu .stat-value {
-    font-size: 21px !important;
-    line-height: 1 !important;
-  }
-
-  .stat-label-row {
-    margin-top: 6px !important;
-    font-size: 8.5px !important;
-    letter-spacing: 0.11em !important;
-  }
-
-  .stat-main-row {
-    gap: 6px !important;
-  }
-
-  .stat-icon-emoji {
-    font-size: 18px !important;
-  }
-
-  .flag-icon {
-    width: 27px !important;
-    height: 18px !important;
-  }
-
-  .menu-section {
-    padding-top: 12px !important;
-    display: grid !important;
-    gap: 8px !important;
-  }
-
-  .menu-page-link {
-    padding: 9px 12px !important;
-    font-size: 13px !important;
-    border-radius: 8px !important;
-    margin-bottom: 0 !important;
-  }
-}
-
-/* Desktop: slimmer menu with compact page links */
-
-@media (min-width: 641px) {
-  .trip-menu {
-    width: 280px !important;
-  }
-
-  .trip-menu-toggle {
-    padding: 9px 13px !important;
-    font-size: 16px !important;
-  }
-
-  .trip-menu-content {
-    padding: 0 13px 12px !important;
-  }
-
-  .trip-menu .stats {
-    gap: 6px !important;
-    margin-bottom: 10px !important;
-  }
-
-  .trip-menu .stat {
-    min-height: 47px !important;
-    padding: 7px 9px !important;
-    border-radius: 8px !important;
-  }
-
-  .trip-menu .stat-value {
-    font-size: 20px !important;
-    line-height: 1 !important;
-  }
-
-  .trip-menu .stat-label-row {
-    margin-top: 5px !important;
-    font-size: 8px !important;
-    letter-spacing: 0.12em !important;
-  }
-
-  .trip-menu .stat-main-row {
-    gap: 5px !important;
-  }
-
-  .trip-menu .stat-icon-emoji {
-    font-size: 17px !important;
-  }
-
-  .trip-menu .flag-icon {
-    width: 25px !important;
-    height: 17px !important;
-  }
-
-  .menu-section {
-    padding-top: 10px !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 7px !important;
-  }
-
-  .menu-page-link {
-    margin: 0 !important;
-    padding: 10px 8px !important;
-    min-height: 42px !important;
-    border-radius: 8px !important;
-    font-size: 12.5px !important;
-    line-height: 1.1 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-
-  .menu-page-link:nth-child(3) {
-    grid-column: 1 / -1 !important;
-  }
-}
-
-/* Desktop: 4 menu links as a clean 2x2 grid, no controller overlap */
-
-@media (min-width: 641px) {
-  .menu-section {
-    padding-top: 9px !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 7px !important;
-  }
-
-  .menu-page-link,
-  .menu-page-link:nth-child(3),
-  .menu-page-link:nth-child(4) {
-    grid-column: auto !important;
-    margin: 0 !important;
-    min-height: 40px !important;
-    padding: 9px 8px !important;
-    border-radius: 8px !important;
-    font-size: 12px !important;
-    line-height: 1.1 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-
-  .trip-menu .stats {
-    margin-bottom: 9px !important;
-  }
-
-  .trip-menu-content {
-    padding-bottom: 10px !important;
-  }
-}
-
-/* Mobile: compact opened menu + 2x2 page links */
-
-@media (max-width: 640px) {
-  .trip-menu {
-    top: 12px !important;
-    left: 12px !important;
-    right: 12px !important;
-    width: auto !important;
-    max-width: none !important;
-    border-radius: 16px !important;
-  }
-
-  .trip-menu-toggle {
-    padding: 11px 16px !important;
-    font-size: 18px !important;
-  }
-
-  .trip-menu-content {
-    padding: 0 16px 14px !important;
-  }
-
-  .trip-menu .stats {
-    gap: 8px !important;
-    margin-bottom: 11px !important;
-  }
-
-  .trip-menu .stat {
-    min-height: 64px !important;
-    padding: 10px 12px !important;
-    border-radius: 10px !important;
-  }
-
-  .trip-menu .stat-value {
-    font-size: 24px !important;
-    line-height: 1 !important;
-  }
-
-  .trip-menu .stat-label-row {
-    margin-top: 7px !important;
-    font-size: 9px !important;
-    letter-spacing: 0.12em !important;
-  }
-
-  .trip-menu .stat-icon-emoji {
-    font-size: 21px !important;
-  }
-
-  .trip-menu .flag-icon {
-    width: 31px !important;
-    height: 21px !important;
-  }
-
-  .menu-section {
-    padding-top: 11px !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 8px !important;
-  }
-
-  .menu-page-link,
-  .menu-page-link:nth-child(3),
-  .menu-page-link:nth-child(4) {
-    grid-column: auto !important;
-    margin: 0 !important;
-    min-height: 46px !important;
-    padding: 9px 8px !important;
-    border-radius: 10px !important;
-    font-size: 13.5px !important;
-    line-height: 1.1 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-  }
-}
-
-/* Slim cross-page section nav */
-
-.section-nav {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  max-width: 100%;
-  margin-bottom: 20px;
-  padding: 6px;
-  border: 1px solid rgba(255,255,255,0.14);
-  border-radius: 999px;
-  background: rgba(255,255,255,0.075);
-  backdrop-filter: blur(12px);
-  box-shadow:
-    0 12px 32px rgba(0,0,0,0.20),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-}
-
-.section-nav-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 34px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  color: rgba(255,255,255,0.72);
-  text-decoration: none;
-  font-size: 12px;
-  font-weight: 900;
-  line-height: 1;
-  white-space: nowrap;
-}
-
-.section-nav-link:hover {
-  color: #fff;
-  background: rgba(255,255,255,0.10);
-}
-
-.section-nav-link.active {
-  color: #111;
-  background: #fff;
-}
-
-/* remove old back-link spacing if still present */
-.events-nav,
-.places-nav,
-.soundtrack-nav {
-  margin-bottom: 0;
-}
-
-@media (max-width: 700px) {
-  .section-nav {
-    display: flex;
-    width: 100%;
-    overflow-x: auto;
-    flex-wrap: nowrap;
-    gap: 6px;
-    margin-bottom: 18px;
-    padding: 6px;
-    scrollbar-width: none;
-  }
-
-  .section-nav::-webkit-scrollbar {
-    display: none;
-  }
-
-  .section-nav-link {
-    flex: 0 0 auto;
-    min-height: 34px;
-    padding: 8px 11px;
-    font-size: 11px;
-  }
-}
-
-/* FINAL MAP UI CLEANUP
-   Minimal overrides only. Do not globally change UI fonts. */
-
-:root {
-  --ocean-main: #083c4d;
-  --ocean-dark: #062f3c;
-  --ocean-hover: #0b6f86;
-}
-
-/* Brand title only */
-#trip-menu-toggle > .trip-menu-title-text,
-.trip-menu-toggle > .trip-menu-title-text {
-  font-family: "Bebas Neue", sans-serif !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.055em !important;
-  font-weight: 400 !important;
-  color: var(--ocean-main) !important;
-  line-height: 1 !important;
-}
-
-#trip-menu-toggle,
-.trip-menu-toggle {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  min-height: 58px !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* No car image in the menu header */
-#trip-menu-toggle::after,
-.trip-menu-toggle::after {
-  content: none !important;
-  display: none !important;
-}
-
-/* Page buttons: teal, but keep normal UI font/weight */
-#trip-menu .menu-page-link,
-.menu-page-link {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-weight: 700 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-  background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%) !important;
-  color: #ffffff !important;
-  border: 1px solid rgba(0, 229, 255, 0.34) !important;
-}
-
-#trip-menu .menu-page-link:hover,
-.menu-page-link:hover {
-  background: linear-gradient(135deg, var(--ocean-hover) 0%, var(--ocean-main) 100%) !important;
-  color: #ffffff !important;
-}
-
-/* Play button: teal */
-.play-btn,
-#play-pause,
-#play-button,
-#playPause,
-#play,
-#play-pause-button,
-#playback-play,
-.play-button,
-.playback-play,
-.play-pause,
-.play-toggle,
-.timeline-play,
-.timeline-play-button {
-  background: linear-gradient(135deg, var(--ocean-main) 0%, var(--ocean-dark) 100%) !important;
-  background-color: var(--ocean-main) !important;
-  color: #ffffff !important;
-  border-color: rgba(0, 229, 255, 0.38) !important;
-}
-
-.play-btn:hover,
-#play-pause:hover,
-#play-button:hover,
-#playPause:hover,
-#play:hover,
-#play-pause-button:hover,
-#playback-play:hover,
-.play-button:hover,
-.playback-play:hover,
-.play-pause:hover,
-.play-toggle:hover,
-.timeline-play:hover,
-.timeline-play-button:hover {
-  background: linear-gradient(135deg, var(--ocean-hover) 0%, var(--ocean-main) 100%) !important;
-}
-
-/* Slider: teal track and knob */
-#timeline-slider {
-  accent-color: var(--ocean-hover) !important;
-}
-
-#timeline-slider::-webkit-slider-runnable-track {
-  background: var(--ocean-main) !important;
-}
-
-#timeline-slider::-webkit-slider-thumb {
-  background: var(--ocean-hover) !important;
-  border: 3px solid #FAFAF7 !important;
-}
-
-#timeline-slider::-moz-range-track {
-  background: var(--ocean-main) !important;
-}
-
-#timeline-slider::-moz-range-thumb {
-  background: var(--ocean-hover) !important;
-  border: 3px solid #FAFAF7 !important;
-}
-
-
-/* FINAL TYPOGRAPHY SYSTEM v5
-   One clear rule: title = Bebas, numbers = JetBrains Mono, labels/buttons = Inter. */
-
-#trip-menu-toggle > .trip-menu-title-text,
-.trip-menu-toggle > .trip-menu-title-text {
-  font-family: "Bebas Neue", sans-serif !important;
-  font-size: 31px !important;
-  line-height: 1 !important;
-  letter-spacing: 0.055em !important;
-  font-weight: 400 !important;
-  text-transform: uppercase !important;
-  color: #083c4d !important;
-  display: flex !important;
-  align-items: center !important;
-}
-
-#trip-menu-toggle,
-.trip-menu-toggle {
-  min-height: 58px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* Numeric values: same mono style across menu + controller */
-.trip-menu .stat-value,
-#current-day,
-#total-days,
-.timeline-slash,
-.timeline-stat-value,
-.timeline-stat-value strong {
-  font-family: "JetBrains Mono", monospace !important;
-  color: #111111 !important;
-}
-
-.trip-menu .stat-value {
-  font-size: 23px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.06em !important;
-}
-
-/* Labels + buttons: same clean UI family */
-.trip-menu .stat-label-row,
-.timeline-day-label,
-.timeline-stat-label,
-.menu-page-link,
-.menu-page-link * {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-}
-
-.trip-menu .stat-label-row,
-.timeline-day-label,
-.timeline-stat-label {
-  text-transform: uppercase !important;
-  letter-spacing: 0.13em !important;
-  font-weight: 850 !important;
-}
-
-.trip-menu .stat-label-row {
-  font-size: 8.5px !important;
-}
-
-.timeline-day-label,
-.timeline-stat-label {
-  font-size: 8px !important;
-}
-
-#trip-menu .menu-page-link,
-.menu-page-link {
-  font-size: 13px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-}
-
-/* Keep the menu header uncluttered: no car beside title */
-#trip-menu-toggle::after,
-.trip-menu-toggle::after {
-  content: none !important;
-  display: none !important;
-}
-
-@media (max-width: 640px) {
-  #trip-menu-toggle > .trip-menu-title-text,
-  .trip-menu-toggle > .trip-menu-title-text {
-    font-size: 30px !important;
-  }
-}
-
-
-/* FINAL NUMERIC FONT CONSISTENCY v6
-   Target the actual IDs so the zeroes match everywhere. */
-#stat-days,
-#stat-countries,
-#stat-states,
-#stat-provinces,
-#stat-km,
-#stat-miles,
-#current-day,
-#total-days,
-.timeline-slash,
-#driven-kilometres,
-#driven-distance,
-#driven-time,
-.timeline-stat-value,
-.timeline-stat-value strong {
-  font-family: "JetBrains Mono", monospace !important;
-  font-variant-numeric: tabular-nums !important;
-  font-feature-settings: "tnum" 1 !important;
-  color: #111111 !important;
-}
-
-#stat-days,
-#stat-countries,
-#stat-states,
-#stat-provinces,
-#stat-km,
-#stat-miles {
-  font-size: 23px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.06em !important;
-}
-
-/* Keep labels and buttons on the same UI face */
-.stat-label-row,
-.timeline-day-label,
-.timeline-stat-label,
-.menu-page-link,
-.menu-page-link * {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-}
-
-
-/* FINAL v7: ONE FONT SYSTEM — INTER EVERYWHERE */
-#trip-menu,
-#trip-menu *,
-.timeline,
-.timeline *,
-.playback-controller,
-.playback-controller *,
-.timeline-stat-box,
-.timeline-stat-box *,
-.menu-page-link,
-.menu-page-link * {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-feature-settings: normal !important;
-  font-variant-numeric: normal !important;
-}
-
-/* Menu title: bigger, but still Inter */
-#trip-menu-toggle > .trip-menu-title-text,
-.trip-menu-toggle > .trip-menu-title-text,
-#trip-menu-toggle > span:first-child,
-.trip-menu-toggle > span:first-child {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 27px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: 0.025em !important;
-  text-transform: uppercase !important;
-  color: #083c4d !important;
-}
-
-#trip-menu-toggle,
-.trip-menu-toggle {
-  min-height: 58px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding-top: 0 !important;
-  padding-bottom: 0 !important;
-}
-
-/* Keep all numeric values on Inter too */
-#stat-days,
-#stat-countries,
-#stat-states,
-#stat-provinces,
-#stat-km,
-#stat-miles,
-#current-day,
-#total-days,
-.timeline-slash,
-#driven-kilometres,
-#driven-distance,
-#driven-time,
-.timeline-stat-value,
-.timeline-stat-value strong {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-feature-settings: normal !important;
-  font-variant-numeric: normal !important;
-  color: #111111 !important;
-}
-
-#stat-days,
-#stat-countries,
-#stat-states,
-#stat-provinces,
-#stat-km,
-#stat-miles {
-  font-size: 23px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.045em !important;
-}
-
-#current-day {
-  font-size: 34px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.055em !important;
-}
-
-#total-days,
-.timeline-slash {
-  font-size: 18px !important;
-  font-weight: 850 !important;
-}
-
-.timeline-stat-value {
-  font-size: 12.5px !important;
-  font-weight: 850 !important;
-  letter-spacing: -0.035em !important;
-}
-
-.trip-menu .stat-label-row,
-.timeline-day-label,
-.timeline-stat-label {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  text-transform: uppercase !important;
-  letter-spacing: 0.12em !important;
-  font-weight: 800 !important;
-}
-
-#trip-menu .menu-page-link,
-.menu-page-link {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 13px !important;
-  font-weight: 800 !important;
-  letter-spacing: 0 !important;
-  text-transform: none !important;
-}
-
-/* No car beside title */
-#trip-menu-toggle::after,
-.trip-menu-toggle::after {
-  content: none !important;
-  display: none !important;
-}
-
-
-/* FINAL v8: balanced 4-stat menu layout after removing kilometres/miles */
-.trip-menu .stats {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 8px !important;
-  margin-bottom: 12px !important;
-}
-
-.trip-menu .stat {
-  min-height: 60px !important;
-  padding: 8px 5px !important;
-  border-radius: 10px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-.trip-menu .stat-main-row {
-  width: 100% !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Remove icons/flags from the compact stat strip */
-.trip-menu .stat-icon-emoji,
-.trip-menu .flag-icon {
-  display: none !important;
-}
-
-#stat-days,
-#stat-countries,
-#stat-states,
-#stat-provinces {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 24px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -0.04em !important;
-}
-
-.trip-menu .stat-label-row {
-  margin-top: 7px !important;
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 7.5px !important;
-  font-weight: 850 !important;
-  letter-spacing: 0.10em !important;
-  text-transform: uppercase !important;
-  color: rgba(0,0,0,0.62) !important;
-}
-
-.menu-section {
-  padding-top: 12px !important;
-  display: grid !important;
-  grid-template-columns: 1fr 1fr !important;
-  gap: 10px !important;
-}
-
-#trip-menu .menu-page-link,
-.menu-page-link {
-  min-height: 50px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-@media (max-width: 390px) {
-  .trip-menu .stats {
-    gap: 6px !important;
-  }
-
-  #stat-days,
-  #stat-countries,
-  #stat-states,
-  #stat-provinces {
-    font-size: 22px !important;
-  }
-
-  .trip-menu .stat-label-row {
-    font-size: 6.8px !important;
-    letter-spacing: 0.07em !important;
-  }
-}
-
-
-/* FINAL v10: compact RT2K15 title with proper SVG flags */
-#trip-menu-toggle,
-.trip-menu-toggle {
-  justify-content: flex-start !important;
-  gap: 10px !important;
-  min-height: 64px !important;
-}
-
-.trip-menu-title-wrap {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-start !important;
-  justify-content: center !important;
-  gap: 5px !important;
-  line-height: 1 !important;
-  min-width: 0 !important;
-}
-
-.trip-menu-title-line {
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  line-height: 1 !important;
-  min-width: 0 !important;
-}
-
-#trip-menu-toggle .trip-menu-title-text,
-.trip-menu-toggle .trip-menu-title-text {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 28px !important;
-  font-weight: 900 !important;
-  line-height: 0.95 !important;
-  letter-spacing: 0.055em !important;
-  text-transform: uppercase !important;
-  color: #083c4d !important;
-  white-space: nowrap !important;
-}
-
-.trip-menu-subtitle {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 9px !important;
-  font-weight: 850 !important;
-  line-height: 1 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  color: rgba(8, 60, 77, 0.58) !important;
-  white-space: nowrap !important;
-}
-
-.title-flags {
-  display: inline-flex !important;
-  align-items: center !important;
-  gap: 6px !important;
-  flex: 0 0 auto !important;
-}
-
-.title-flags img {
-  width: 26px !important;
-  height: 18px !important;
-  display: block !important;
-  object-fit: cover !important;
-  border-radius: 3px !important;
-  box-shadow:
-    0 0 0 1px rgba(0,0,0,0.22),
-    0 1px 2px rgba(0,0,0,0.14) !important;
-}
-
-.trip-menu-chevron {
-  margin-left: auto !important;
-}
-
-@media (max-width: 390px) {
-  #trip-menu-toggle .trip-menu-title-text,
-  .trip-menu-toggle .trip-menu-title-text {
-    font-size: 26px !important;
-    letter-spacing: 0.045em !important;
-  }
-
-  .trip-menu-subtitle {
-    font-size: 8px !important;
-    letter-spacing: 0.12em !important;
-  }
-
-  .title-flags img {
-    width: 24px !important;
-    height: 16px !important;
-  }
-}
-
-/* Centre RT2K15 title block properly */
-#trip-menu-toggle,
-.trip-menu-toggle {
-  position: relative !important;
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-.trip-menu-title-wrap {
-  width: 100% !important;
-  align-items: center !important;
-  text-align: center !important;
-}
-
-.trip-menu-title-line {
-  width: 100% !important;
-  justify-content: center !important;
-  text-align: center !important;
-}
-
-.trip-menu-subtitle {
-  width: 100% !important;
-  text-align: center !important;
-  margin-left: 0 !important;
-}
-
-/* Keep dropdown arrow on the right without pushing the title off-centre */
-.trip-menu-chevron {
-  position: absolute !important;
-  right: 20px !important;
-  top: 50% !important;
-  transform: translateY(-50%) !important;
-  margin-left: 0 !important;
-}
-
-/* Controller percent complete box */
-.timeline-top {
-  display: grid !important;
-  grid-template-columns: auto minmax(0, 1fr) 96px !important;
-  align-items: center !important;
-  gap: 12px !important;
-  min-width: 0 !important;
-}
-
-.timeline-main-counter,
-.timeline-percent-box {
-  min-height: 58px !important;
-  border-radius: 14px !important;
-  background: rgba(255, 255, 255, 0.82) !important;
-  border: 1px solid rgba(0, 0, 0, 0.09) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.timeline-percent-box {
-  flex-direction: column !important;
-  gap: 4px !important;
-  padding: 6px 8px !important;
-}
-
-.timeline-percent-value {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 24px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  color: #111 !important;
-  letter-spacing: -0.04em !important;
-}
-
-.timeline-percent-label {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 8px !important;
-  font-weight: 850 !important;
-  letter-spacing: 0.12em !important;
-  text-transform: uppercase !important;
-  color: rgba(0, 0, 0, 0.48) !important;
-}
-
-/* Cleaner day counter layout */
-.timeline-main-counter {
-  flex-direction: column !important;
-  gap: 4px !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-.timeline-day-value {
-  display: flex !important;
-  align-items: baseline !important;
-  justify-content: center !important;
-  gap: 6px !important;
-  line-height: 1 !important;
-}
-
-.timeline-day-label {
-  margin: 0 !important;
-  font-size: 9px !important;
-  font-weight: 850 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  color: rgba(0, 0, 0, 0.48) !important;
-}
-
-#current-day {
-  font-size: 34px !important;
-  font-weight: 900 !important;
-  letter-spacing: -0.05em !important;
-}
-
-.timeline-slash,
-#total-days {
-  font-size: 19px !important;
-  font-weight: 850 !important;
-}
-
-.timeline-day-value {
-  gap: 5px !important;
-}
-
-/* Controller top row: Day | Play | Complete */
-.timeline {
-  grid-template-columns: 1fr !important;
-  grid-template-areas:
-    "top"
-    "stats"
-    "track" !important;
-}
-
-.timeline-top {
-  grid-area: top !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 74px minmax(0, 1fr) !important;
-  align-items: center !important;
-  gap: 12px !important;
-  width: 100% !important;
-  min-width: 0 !important;
-}
-
-/* Put day box left */
-.timeline-main-counter {
-  grid-column: 1 !important;
-  min-height: 76px !important;
-  flex-direction: column !important;
-  gap: 5px !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Put play button dead centre */
-.play-btn {
-  grid-column: 2 !important;
-  justify-self: center !important;
-  align-self: center !important;
-  width: 62px !important;
-  height: 62px !important;
-}
-
-/* Put percent box right */
-.timeline-percent-box {
-  grid-column: 3 !important;
-  min-height: 76px !important;
-  flex-direction: column !important;
-  gap: 5px !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* Make 35/90 same visual style as 39% */
-.timeline-day-value {
-  display: flex !important;
-  align-items: baseline !important;
-  justify-content: center !important;
-  gap: 2px !important;
-  line-height: 1 !important;
-}
-
-#current-day,
-.timeline-slash,
-#total-days,
-.timeline-percent-value {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 32px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -0.045em !important;
-  color: #111 !important;
-}
-
-.timeline-day-label,
-.timeline-percent-label {
-  margin: 0 !important;
-  font-size: 9px !important;
-  font-weight: 850 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  color: rgba(0, 0, 0, 0.48) !important;
-}
-
-/* FINAL controller layout: Day | Play | Complete */
-.timeline {
-  grid-template-columns: 1fr !important;
-  grid-template-areas:
-    "top"
-    "stats"
-    "track" !important;
-}
-
-.timeline-top {
-  grid-area: top !important;
-  display: grid !important;
-  grid-template-columns: minmax(0, 1fr) 74px minmax(0, 1fr) !important;
-  grid-template-rows: auto !important;
-  align-items: center !important;
-  gap: 14px !important;
-  width: 100% !important;
-  min-width: 0 !important;
-}
-
-/* Day box on the left */
-.timeline-main-counter {
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-  min-height: 76px !important;
-  border-radius: 14px !important;
-  background: rgba(255, 255, 255, 0.82) !important;
-  border: 1px solid rgba(0, 0, 0, 0.09) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 5px !important;
-}
-
-/* Play button centred between them */
-.play-btn {
-  grid-column: 2 !important;
-  grid-row: 1 !important;
-  justify-self: center !important;
-  align-self: center !important;
-  position: static !important;
-  transform: none !important;
-  width: 62px !important;
-  height: 62px !important;
-  margin: 0 !important;
-}
-
-/* Complete box on the right */
-.timeline-percent-box {
-  grid-column: 3 !important;
-  grid-row: 1 !important;
-  min-height: 76px !important;
-  border-radius: 14px !important;
-  background: rgba(255, 255, 255, 0.82) !important;
-  border: 1px solid rgba(0, 0, 0, 0.09) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 5px !important;
-}
-
-/* Hide /90 */
-.timeline-main-counter .timeline-slash,
-.timeline-main-counter #total-days {
-  display: none !important;
-}
-
-/* Make 90 and 100% match */
-#current-day,
-.timeline-percent-value {
-  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  font-size: 31px !important;
-  font-weight: 900 !important;
-  line-height: 1 !important;
-  letter-spacing: -0.045em !important;
-  color: #111 !important;
-}
-
-/* Label styling */
-.timeline-day-label,
-.timeline-percent-label {
-  margin: 0 !important;
-  font-size: 9px !important;
-  font-weight: 850 !important;
-  letter-spacing: 0.14em !important;
-  text-transform: uppercase !important;
-  color: rgba(0, 0, 0, 0.48) !important;
-}
-
-/* Softer label colour to match subtitle */
-.stat-label-row,
-.timeline-day-label,
-.timeline-percent-label,
-.timeline-stat-label {
-  color: rgba(8, 60, 77, 0.58) !important;
-}
-
-/* Move bottom controller labels below their figures */
-.timeline-stat-box {
-  flex-direction: column !important;
-}
-
-.timeline-stat-value {
-  order: 1 !important;
-  margin-bottom: 0 !important;
-}
-
-.timeline-stat-label {
-  order: 2 !important;
-  margin-top: 5px !important;
-  margin-bottom: 0 !important;
-}
-
-/* FINAL label colour override — all small labels same muted colour */
-html body #trip-menu .stat-label-row,
-html body .trip-menu .stat-label-row,
-html body .timeline .timeline-day-label,
-html body .timeline .timeline-percent-label,
-html body .timeline .timeline-stat-label {
-  color: rgba(8, 60, 77, 0.58) !important;
-}
-
-/* Home menu page links: 2x3 grid */
-#trip-menu .menu-section,
-.trip-menu .menu-section {
-  display: grid !important;
-  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-  gap: 8px !important;
-}
-
-#trip-menu .menu-page-link,
-.trip-menu .menu-page-link {
-  margin-bottom: 0 !important;
 }
