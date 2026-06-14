@@ -1786,7 +1786,7 @@ body {
   font-weight: 650 !important;
   letter-spacing: 0.10em !important;
   text-transform: uppercase !important;
-  color: rgba(255,255,255,0.38) !important;
+color: rgba(255,255,255,0.46) !important;
 }
 
 /* Put divider directly under the route descriptor */
