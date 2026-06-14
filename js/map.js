@@ -1338,14 +1338,6 @@ menu.innerHTML = `
       <div class="stats">
         <div class="stat">
           <div class="stat-main-row">
-            <span class="stat-value" id="stat-days">—</span>
-            <span class="stat-icon-emoji" aria-hidden="true">🕒</span>
-          </div>
-          <span class="stat-label-row">Days</span>
-        </div>
-
-        <div class="stat">
-          <div class="stat-main-row">
             <span class="stat-value" id="stat-countries">—</span>
             <span class="stat-icon-emoji" aria-hidden="true">🌎</span>
           </div>
@@ -1354,18 +1346,18 @@ menu.innerHTML = `
 
         <div class="stat">
           <div class="stat-main-row">
-            <span class="stat-value" id="stat-states">—</span>
-            <span class="flag-icon flag-usa" aria-hidden="true"></span>
-          </div>
-          <span class="stat-label-row">States</span>
-        </div>
-
-        <div class="stat">
-          <div class="stat-main-row">
             <span class="stat-value" id="stat-provinces">—</span>
             <span class="flag-icon flag-canada" aria-hidden="true"></span>
           </div>
           <span class="stat-label-row">Provinces</span>
+        </div>
+
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-states">—</span>
+            <span class="flag-icon flag-usa" aria-hidden="true"></span>
+          </div>
+          <span class="stat-label-row">States</span>
         </div>
       </div>
 
@@ -1731,7 +1723,6 @@ function applyStatsToMenu() {
   const estimatedKm = estimatedMiles * MILES_TO_KM;
 
   const stats = {
-    days: tripData?.stats?.days || getMaxDay(),
     countries: COUNTRIES_VISITED,
     states: tripData?.stats?.states || 48,
     provinces: tripData?.stats?.provinces || 4,
@@ -1740,7 +1731,6 @@ function applyStatsToMenu() {
   };
 
   const values = {
-    "stat-days": stats.days,
     "stat-countries": stats.countries,
     "stat-states": stats.states,
     "stat-provinces": stats.provinces
