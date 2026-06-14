@@ -1768,3 +1768,13 @@ body {
     justify-content: center !important;
   }
 }
+
+.controller-brand-route {
+  margin-top: 5px !important;
+  text-align: center !important;
+  font-size: 8.5px !important;
+  font-weight: 850 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: rgba(255,255,255,0.48) !important;
+}
