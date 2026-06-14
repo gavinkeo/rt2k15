@@ -2064,7 +2064,7 @@ async function init() {
   const allCoords = getAllRouteCoords();
 
   if (allCoords.length) {
-    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const isMobile = window.matchMedia("(max-width: 899px)").matches;
 
     if (isMobile) {
       map.setView([35.2, -96.5], 3, {
@@ -2078,7 +2078,7 @@ async function init() {
 
         // Mobile: push the visible route much higher above the super-controller.
         const shiftedCentre = map.unproject(
-          centrePoint.add([0, 170]),
+          centrePoint.add([0, 130]),
           zoom
         );
 
