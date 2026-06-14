@@ -1834,10 +1834,10 @@ setTimeout(() => {
   const centre = map.getCenter();
   const centrePoint = map.project(centre, zoom);
 
-  const shiftedCentre = map.unproject(
-    centrePoint.subtract([50, 0]),
-    zoom
-  );
+const shiftedCentre = map.unproject(
+  centrePoint.subtract([50, 25]),
+  zoom
+);
 
   map.setView(shiftedCentre, zoom, {
     animate: false
