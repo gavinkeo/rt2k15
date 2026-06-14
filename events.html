@@ -1,60 +1,69 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RT2K15 · Events</title>
-  <link rel="stylesheet" href="tickets.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Events · RT2K15</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="events.css" />
 </head>
-<body data-ticket-page="events">
-  <main class="ticket-page">
-    <header class="ticket-hero">
-      <nav class="section-nav" aria-label="Road Trip sections">
-        <a class="section-nav-link" href="index.html">← Route</a>
-        <a class="section-nav-link" href="itinerary.html">Itinerary</a>
-        <a class="section-nav-link" href="parks.html">Nature</a>
-        <a class="section-nav-link" href="cities.html">Cities</a>
-        <a class="section-nav-link" href="sports.html">Sports</a>
-        <a class="section-nav-link active" href="events.html">Events</a>
-        <a class="section-nav-link" href="soundtrack.html">Soundtrack</a>
-      </nav>
 
-      <section class="hero-panel">
-        <div>
-          <p class="eyebrow">RT2K15 archive</p>
-          <h1>Events</h1>
-          <p class="lede">Concerts, comedy, shows, attractions and non-sport experiences from the trip.</p>
-        </div>
+<body data-event-page="events">
+  <div class="events-page">
+    <header class="events-hero">
+<nav class="section-nav" aria-label="Road Trip sections">
+  <a class="section-nav-link" href="index.html">ROUTE</a>
+  <a class="section-nav-link" href="itinerary.html">ITINERARY</a>
+  <a class="section-nav-link" href="cities.html">CITIES</a>
+  <a class="section-nav-link" href="parks.html">NATURE</a>
+  <a class="section-nav-link" href="sports.html">SPORTS</a>
+  <a class="section-nav-link active" href="events.html">EVENTS</a>
+  <a class="section-nav-link" href="soundtrack.html">SOUNDTRACK</a>
+</nav>
+      <div class="events-hero-main">
+<div>
+  <p class="eyebrow compact-page-title">Road Trip 2K15 · Events</p>
+</div>
 
-        <div class="hero-ticket">
-          <span class="mini-label">Ticket file</span>
-          <strong id="hero-count">—</strong>
-          <span id="hero-subtitle">Events</span>
-        </div>
-      </section>
+
+      </div>
     </header>
 
-    <section class="ticket-controls" aria-label="Ticket controls">
-      <label class="search-box">
-        <span>Search events</span>
-        <input id="ticket-search" type="search" placeholder="Search events, venues, cities..." autocomplete="off" />
-      </label>
+    <main class="events-main">
+      <section class="events-controls" aria-label="Events filters">
+        <div class="filter-buttons" id="event-filters">
 
-      <div class="filter-row" id="type-filters" role="group" aria-label="Filter by event type"></div>
-    </section>
+          <button class="filter-btn active" type="button" data-filter="all">All</button>
+          <button class="filter-btn" type="button" data-filter="Concert">Concert</button>
+          <button class="filter-btn" type="button" data-filter="Comedy">Comedy</button>
+          <button class="filter-btn" type="button" data-filter="TV Show">TV Show</button>
+          <button class="filter-btn" type="button" data-filter="Theme Park">Theme Parks</button>
+          <button class="filter-btn" type="button" data-filter="Other">Other</button>
+        </div>
+      </section>
 
-    <section class="summary-strip" id="summary-strip" aria-label="Events summary"></section>
+      <section class="events-meta-row">
+        <p class="events-count" id="event-summary">
+          Loading events…
+        </p>
+      </section>
 
-    <section class="ticket-list-shell">
-      <div class="list-status" id="list-status">Loading events…</div>
-      <div class="ticket-list" id="ticket-list"></div>
-      <div class="empty-state" id="empty-state" hidden>
-        <strong>No matching events</strong>
-        <span>Try clearing the search or changing the filter.</span>
-      </div>
-    </section>
-  </main>
+      <section class="ticket-grid" id="ticket-grid" aria-live="polite">
+        <div class="empty-state">
+          Loading events…
+        </div>
+      </section>
+    </main>
+  </div>
 
-  <script src="js/tickets.js"></script>
+  <script src="js/events.js"></script>
 </body>
 </html>
