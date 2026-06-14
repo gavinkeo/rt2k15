@@ -1232,15 +1232,11 @@ body {
   }
 }
 
-/* Desktop: slightly tone down day and completion numbers */
-@media (min-width: 900px) {
-  #current-day {
-    font-size: 28px !important;
-    letter-spacing: -0.035em !important;
-  }
 
-  .timeline-percent-value {
-    font-size: 27px !important;
-    letter-spacing: -0.035em !important;
+/* FINAL DASHBOARD COUNTERS: Sports Venues / States / Cities */
+@media (min-width: 900px) {
+  .controller-trip-stat-long em {
+    font-size: 6.4px !important;
+    letter-spacing: 0.085em !important;
   }
 }
