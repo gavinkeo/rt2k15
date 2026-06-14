@@ -118,12 +118,12 @@ body {
 .home-desktop-nav {
   position: absolute;
   top: 24px;
-  left: 340px;
+  left: 325px;
   right: 20px;
   z-index: 760;
 
   width: max-content;
-  max-width: calc(100vw - 360px);
+  max-width: calc(100vw - 345px);
 
   display: inline-flex;
   align-items: center;
@@ -186,7 +186,7 @@ body {
 
 #trip-menu.trip-menu,
 .trip-menu {
-  width: 300px !important;
+  width: 285px !important;
   top: 20px !important;
   left: 20px !important;
   border-radius: 14px !important;
@@ -297,7 +297,7 @@ body {
 
 .trip-menu .stats {
   display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
   gap: 8px !important;
   margin-bottom: 12px !important;
 }
@@ -969,22 +969,5 @@ body {
   .timeline-stat-label {
     font-size: 6.7px;
     letter-spacing: 0.06em;
-  }
-}
-
-/* Desktop: stack navbar above the RT2K15 menu card */
-@media (min-width: 900px) {
-  .home-desktop-nav {
-    top: 20px !important;
-    left: 20px !important;
-    right: auto !important;
-
-    width: max-content !important;
-    max-width: calc(100vw - 40px) !important;
-  }
-
-  #trip-menu.trip-menu,
-  .trip-menu {
-    top: 92px !important;
   }
 }
