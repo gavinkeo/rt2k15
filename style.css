@@ -2281,3 +2281,11 @@ html body .leaflet-control-attribution a {
     padding: 2px 6px !important;
   }
 }
+
+/* Stop mobile dashboard labels rendering as italics */
+html body .timeline .controller-trip-stat em,
+html body .timeline .timeline-day-label,
+html body .timeline .timeline-percent-label,
+html body .timeline .timeline-stat-label {
+  font-style: normal !important;
+}
