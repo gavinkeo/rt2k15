@@ -342,6 +342,53 @@ const LOCAL_DRIVING_MARKUP = 1.10;
 const MILES_TO_KM = 1.609344;
 const COUNTRIES_VISITED = 2;
 
+const SPORTS_VENUE_TYPES = new Set([
+  "MLB",
+  "NFL",
+  "NCAAF",
+  "CFB",
+  "MLS",
+  "NHL",
+  "MotoGP",
+  "UFC",
+  "UFC189",
+  "Boxing",
+  "WWE",
+  "Tennis"
+]);
+
+const US_STATE_CODES = new Set([
+  "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
+  "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
+  "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
+  "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
+  "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY"
+]);
+
+const NON_CITY_COUNTER_PLACES = new Set([
+  "San Mateo Hayward Bridge",
+  "San Rafael Bridge",
+  "Golden Gate Bridge",
+  "Yosemite NP",
+  "17-Mile Drive",
+  "Pebble Beach Golf Club",
+  "Piedras Blancas Elephant Seal Rookery",
+  "Four Corners Monument",
+  "Grand Canyon",
+  "Yellowstone NP",
+  "Mount Rushmore",
+  "Welcome to Oklahoma Sign, Devol OK",
+  "University of Notre Dame",
+  "Notre Dame",
+  "Michigan Stadium",
+  "Hockey Hall of Fame",
+  "Toronto Island Park",
+  "Delaware"
+]);
+
+let dashboardDerivedFinalStateCount = null;
+
+
 const style = document.createElement("style");
 style.innerHTML = `
   .marker-dot {
@@ -1270,6 +1317,190 @@ function getCumulativeTripStats(upToDay) {
   };
 }
 
+
+function normaliseDashboardEventType(type) {
+  if (!type) return "";
+  if (type === "UFC189") return "UFC";
+  if (type === "CFB") return "NCAAF";
+  return type;
+}
+
+function isSportsVenueDay(day) {
+  if (!day?.event) return false;
+
+  const type = normaliseDashboardEventType(day.event.type);
+  const eventText = [
+    day.event.type,
+    day.event.name,
+    day.event.venue,
+    day.event.location
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  return (
+    SPORTS_VENUE_TYPES.has(day.event.type) ||
+    SPORTS_VENUE_TYPES.has(type) ||
+    (
+      type === "TV Show" &&
+      (eventText.includes("espn") || eventText.includes("sports nation"))
+    )
+  );
+}
+
+function getSportsVenueCounterKey(day) {
+  if (!day?.event) return "";
+
+  return (
+    getEventVenuePlace(day) ||
+    day.event.venue ||
+    day.event.location ||
+    day.event.name ||
+    ""
+  );
+}
+
+function getCounterCityName(place) {
+  if (!place) return "";
+  if (place === "San Francisco Airport") return "San Francisco";
+  if (place === "Fort Lauderdale Airport") return "Fort Lauderdale";
+  if (NON_CITY_COUNTER_PLACES.has(place)) return "";
+  if (/Airport|Bridge|Monument|Rookery|Golf Club|Stadium|Arena|Field|Center|Centre|Hall of Fame|Park|Bowl|Coliseum/i.test(place)) {
+    return "";
+  }
+
+  return place;
+}
+
+function getDerivedStateCount(upToDay) {
+  const states = new Set();
+
+  if (!tripData?.days) return 0;
+
+  tripData.days.forEach(day => {
+    if (Number(day.day) > Number(upToDay)) return;
+
+    getRoutePlaces(day, true).forEach(place => {
+      const region = LOCATION_REGION_LABELS[place];
+
+      if (US_STATE_CODES.has(region)) {
+        states.add(region);
+      }
+    });
+
+    const eventVenue = getEventVenuePlace(day);
+    const eventRegion = LOCATION_REGION_LABELS[eventVenue];
+
+    if (US_STATE_CODES.has(eventRegion)) {
+      states.add(eventRegion);
+    }
+  });
+
+  return states.size;
+}
+
+function getRollingStateCount(upToDay) {
+  const statesFromTripData = new Set();
+  const hasExplicitNewStates = tripData?.days?.some(day => Array.isArray(day.newStates) && day.newStates.length);
+
+  if (hasExplicitNewStates) {
+    tripData.days.forEach(day => {
+      if (Number(day.day) > Number(upToDay)) return;
+
+      if (Array.isArray(day.newStates)) {
+        day.newStates.forEach(state => {
+          const code = String(state).trim().toUpperCase();
+
+          if (US_STATE_CODES.has(code)) {
+            statesFromTripData.add(code);
+          }
+        });
+      }
+    });
+
+    return statesFromTripData.size;
+  }
+
+  const derivedCount = getDerivedStateCount(upToDay);
+  const targetTotal = Number(tripData?.stats?.states) || derivedCount || 0;
+
+  if (!dashboardDerivedFinalStateCount) {
+    dashboardDerivedFinalStateCount = getDerivedStateCount(getMaxDay()) || targetTotal;
+  }
+
+  if (Number(upToDay) >= getMaxDay()) {
+    return targetTotal;
+  }
+
+  if (dashboardDerivedFinalStateCount && targetTotal > dashboardDerivedFinalStateCount) {
+    return Math.min(
+      targetTotal,
+      Math.round((derivedCount / dashboardDerivedFinalStateCount) * targetTotal)
+    );
+  }
+
+  return derivedCount;
+}
+
+function getDashboardCounterStats(upToDay) {
+  const sportsVenues = new Set();
+  const cities = new Set();
+
+  if (!tripData?.days) {
+    return {
+      sportsVenues: 0,
+      states: 0,
+      cities: 0
+    };
+  }
+
+  tripData.days.forEach(day => {
+    if (Number(day.day) > Number(upToDay)) return;
+
+    if (isSportsVenueDay(day)) {
+      const venueKey = getSportsVenueCounterKey(day);
+
+      if (venueKey) {
+        sportsVenues.add(venueKey);
+      }
+    }
+
+    getRoutePlaces(day, false).forEach(place => {
+      const city = getCounterCityName(place);
+
+      if (city) {
+        cities.add(city);
+      }
+    });
+
+    if (day.event?.location) {
+      const eventCity = getCounterCityName(day.event.location);
+
+      if (eventCity) {
+        cities.add(eventCity);
+      }
+    }
+  });
+
+  return {
+    sportsVenues: sportsVenues.size,
+    states: getRollingStateCount(upToDay),
+    cities: cities.size
+  };
+}
+
+function updateDashboardCounters(upToDay) {
+  const sportsVenuesEl = document.getElementById("dash-sports-venues");
+  const statesEl = document.getElementById("dash-states");
+  const citiesEl = document.getElementById("dash-cities");
+
+  if (!sportsVenuesEl && !statesEl && !citiesEl) return;
+
+  const stats = getDashboardCounterStats(upToDay);
+
+  if (sportsVenuesEl) sportsVenuesEl.textContent = formatFullStat(stats.sportsVenues);
+  if (statesEl) statesEl.textContent = formatFullStat(stats.states);
+  if (citiesEl) citiesEl.textContent = formatFullStat(stats.cities);
+}
+
 function updateRollingCounters(upToDay) {
   const drivenKilometresEl = document.getElementById("driven-kilometres");
   const drivenDistanceEl = document.getElementById("driven-distance");
@@ -1338,6 +1569,14 @@ menu.innerHTML = `
       <div class="stats">
         <div class="stat">
           <div class="stat-main-row">
+            <span class="stat-value" id="stat-days">—</span>
+            <span class="stat-icon-emoji" aria-hidden="true">🕒</span>
+          </div>
+          <span class="stat-label-row">Days</span>
+        </div>
+
+        <div class="stat">
+          <div class="stat-main-row">
             <span class="stat-value" id="stat-countries">—</span>
             <span class="stat-icon-emoji" aria-hidden="true">🌎</span>
           </div>
@@ -1346,18 +1585,18 @@ menu.innerHTML = `
 
         <div class="stat">
           <div class="stat-main-row">
-            <span class="stat-value" id="stat-provinces">—</span>
-            <span class="flag-icon flag-canada" aria-hidden="true"></span>
-          </div>
-          <span class="stat-label-row">Provinces</span>
-        </div>
-
-        <div class="stat">
-          <div class="stat-main-row">
             <span class="stat-value" id="stat-states">—</span>
             <span class="flag-icon flag-usa" aria-hidden="true"></span>
           </div>
           <span class="stat-label-row">States</span>
+        </div>
+
+        <div class="stat">
+          <div class="stat-main-row">
+            <span class="stat-value" id="stat-provinces">—</span>
+            <span class="flag-icon flag-canada" aria-hidden="true"></span>
+          </div>
+          <span class="stat-label-row">Provinces</span>
         </div>
       </div>
 
@@ -1506,6 +1745,7 @@ function renderRoute(upToDay, options = {}) {
   if (currentDayEl) currentDayEl.textContent = upToDay;
 
   updateRollingCounters(upToDay);
+  updateDashboardCounters(upToDay);
 
   const totalDayEl = document.getElementById("total-days");
   if (totalDayEl) totalDayEl.textContent = maxDay;
@@ -1723,6 +1963,7 @@ function applyStatsToMenu() {
   const estimatedKm = estimatedMiles * MILES_TO_KM;
 
   const stats = {
+    days: tripData?.stats?.days || getMaxDay(),
     countries: COUNTRIES_VISITED,
     states: tripData?.stats?.states || 48,
     provinces: tripData?.stats?.provinces || 4,
@@ -1731,6 +1972,7 @@ function applyStatsToMenu() {
   };
 
   const values = {
+    "stat-days": stats.days,
     "stat-countries": stats.countries,
     "stat-states": stats.states,
     "stat-provinces": stats.provinces
@@ -1820,32 +2062,27 @@ async function init() {
     if (isMobile) {
       map.setView([39.5, -96.5], 3);
     } else {
+      const bounds = L.latLngBounds(allCoords);
 
+      map.fitBounds(bounds, {
+        padding: [70, 70],
+        animate: false
+      });
 
-const bounds = L.latLngBounds(allCoords);
+      setTimeout(() => {
+        const zoom = map.getZoom();
+        const centre = map.getCenter();
+        const centrePoint = map.project(centre, zoom);
 
-map.fitBounds(bounds, {
-  padding: [70, 70],
-  animate: false
-});
+        const shiftedCentre = map.unproject(
+          centrePoint.subtract([50, 25]),
+          zoom
+        );
 
-setTimeout(() => {
-  const zoom = map.getZoom();
-  const centre = map.getCenter();
-  const centrePoint = map.project(centre, zoom);
-
-const shiftedCentre = map.unproject(
-  centrePoint.subtract([50, 25]),
-  zoom
-);
-
-  map.setView(shiftedCentre, zoom, {
-    animate: false
-  });
-}, 150);
-
-
-      
+        map.setView(shiftedCentre, zoom, {
+          animate: false
+        });
+      }, 150);
     }
   }
 
