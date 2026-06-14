@@ -1651,3 +1651,120 @@ body {
     align-self: center !important;
   }
 }
+
+
+/* FINAL v8: one real 3x3 dashboard grid — no separate row alignment issues */
+@media (min-width: 900px) {
+  html body .timeline {
+    grid-template-areas:
+      "brand"
+      "dashboard"
+      "track" !important;
+    row-gap: 12px !important;
+  }
+
+  html body .timeline .controller-brand {
+    grid-area: brand !important;
+    border-bottom: none !important;
+    padding-bottom: 8px !important;
+  }
+
+  html body .timeline .controller-trip-stats,
+  html body .timeline .timeline-top,
+  html body .timeline .timeline-stats {
+    display: contents !important;
+  }
+
+  html body .timeline .dashboard-grid {
+    grid-area: dashboard !important;
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+    padding-top: 12px !important;
+    border-top: 1px solid rgba(255,255,255,0.12) !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .timeline .dashboard-grid > .controller-trip-stat,
+  html body .timeline .dashboard-grid > .timeline-main-counter,
+  html body .timeline .dashboard-grid > .timeline-percent-box,
+  html body .timeline .dashboard-grid > .timeline-stat-box,
+  html body .timeline .dashboard-grid > .timeline-play-cell {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: 64px !important;
+    min-height: 64px !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .timeline .dashboard-grid > .controller-trip-stat,
+  html body .timeline .dashboard-grid > .timeline-main-counter,
+  html body .timeline .dashboard-grid > .timeline-percent-box,
+  html body .timeline .dashboard-grid > .timeline-stat-box {
+    padding: 8px 6px !important;
+    border-radius: 14px !important;
+    background: rgba(255,255,255,0.10) !important;
+    border: 1px solid rgba(255,255,255,0.14) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05) !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  html body .timeline .dashboard-grid > .timeline-play-cell {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  html body .timeline .dashboard-grid .play-btn {
+    position: static !important;
+    transform: none !important;
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 !important;
+    justify-self: center !important;
+    align-self: center !important;
+  }
+
+  html body .timeline .timeline-track {
+    grid-area: track !important;
+  }
+}
+
+@media (max-width: 640px) {
+  html body .timeline .controller-trip-stats,
+  html body .timeline .timeline-top,
+  html body .timeline .timeline-stats {
+    display: contents !important;
+  }
+
+  html body .timeline .dashboard-grid {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .timeline .dashboard-grid > .controller-trip-stat,
+  html body .timeline .dashboard-grid > .timeline-main-counter,
+  html body .timeline .dashboard-grid > .timeline-percent-box,
+  html body .timeline .dashboard-grid > .timeline-stat-box,
+  html body .timeline .dashboard-grid > .timeline-play-cell {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+  }
+
+  html body .timeline .dashboard-grid > .timeline-play-cell {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+}
