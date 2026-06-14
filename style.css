@@ -1921,3 +1921,16 @@ html body .timeline .timeline-percent-label,
 html body .timeline .timeline-stat-label {
   color: rgba(8, 60, 77, 0.58) !important;
 }
+
+/* Home menu page links: 2x3 grid */
+#trip-menu .menu-section,
+.trip-menu .menu-section {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+}
+
+#trip-menu .menu-page-link,
+.trip-menu .menu-page-link {
+  margin-bottom: 0 !important;
+}
