@@ -2,6 +2,27 @@ const ticketGrid = document.getElementById("ticket-grid");
 const summary = document.getElementById("event-summary");
 const filterButtons = document.querySelectorAll(".filter-btn");
 
+const pageMode = document.body.dataset.eventPage || (
+  window.location.pathname.toLowerCase().includes("sports") ? "sports" : "events"
+);
+
+const SPORTS_TYPES = new Set([
+  "MLB",
+  "NFL",
+  "NCAAF",
+  "MLS",
+  "NHL",
+  "Tennis",
+  "MotoGP"
+]);
+
+const NON_SPORT_MAIN_TYPES = new Set([
+  "Concert",
+  "Comedy",
+  "TV Show",
+  "Theme Park"
+]);
+
 let allEvents = [];
 let activeFilter = "all";
 
@@ -56,6 +77,14 @@ function filterGroup(type) {
   return "Other";
 }
 
+function isSportsItem(item) {
+  return SPORTS_TYPES.has(item.type) || item.group === "Combat";
+}
+
+function isCorrectPageItem(item) {
+  return pageMode === "sports" ? isSportsItem(item) : !isSportsItem(item);
+}
+
 function getEventLocation(day) {
   return day.event?.location || day.finish || "";
 }
@@ -82,7 +111,8 @@ function getLogoPath(type) {
     MotoGP: "assets/logos/motogp.svg",
     Concert: "assets/logos/concert.png",
     Comedy: "assets/logos/comedy.png",
-    "TV Show": "assets/logos/tv-show.png"
+    "TV Show": "assets/logos/tv-show.png",
+    "Theme Park": "assets/logos/theme-park.png"
   };
 
   return logos[type] || logos[normalised] || "";
@@ -118,7 +148,8 @@ function buildEventList(tripData) {
       youtube: day.event.youtube || day.event.youtubeUrl || "",
       boxscore: day.event.boxscore || day.event.boxScore || day.event.boxscoreUrl || "",
       ticket: day.event.ticket || {}
-    }));
+    }))
+    .filter(isCorrectPageItem);
 }
 
 function eventMatchesFilter(item) {
@@ -129,6 +160,10 @@ function eventMatchesFilter(item) {
   }
 
   if (activeFilter === "Other") {
+    if (pageMode === "events") {
+      return !NON_SPORT_MAIN_TYPES.has(item.type);
+    }
+
     return item.group === "Other";
   }
 
@@ -143,7 +178,7 @@ function renderEvents() {
   if (!visibleEvents.length) {
     ticketGrid.innerHTML = `
       <div class="empty-state">
-        No events found for this filter.
+        No ${pageMode === "sports" ? "sports" : "events"} found for this filter.
       </div>
     `;
     return;
@@ -305,8 +340,9 @@ function renderSummary() {
 
   const total = allEvents.length;
   const types = [...new Set(allEvents.map(item => item.type))].sort();
+  const label = pageMode === "sports" ? "sports" : "events";
 
-  summary.textContent = `${total} events · ${types.join(" / ")}`;
+  summary.textContent = `${total} ${label} · ${types.join(" / ")}`;
 }
 
 function setupFilters() {
@@ -341,13 +377,13 @@ async function init() {
     console.error(error);
 
     if (summary) {
-      summary.textContent = "Could not load events.";
+      summary.textContent = pageMode === "sports" ? "Could not load sports." : "Could not load events.";
     }
 
     if (ticketGrid) {
       ticketGrid.innerHTML = `
         <div class="empty-state">
-          Could not load events from data/trip.json.
+          Could not load ${pageMode === "sports" ? "sports" : "events"} from data/trip.json.
         </div>
       `;
     }
