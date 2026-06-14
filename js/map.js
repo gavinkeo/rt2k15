@@ -1370,10 +1370,12 @@ menu.innerHTML = `
       </div>
 
       <div class="menu-section">
-      <a class="menu-page-link" href="parks.html">NATURE</a>
-      <a class="menu-page-link" href="cities.html">CITIES</a>
-      <a class="menu-page-link" href="events.html">EVENTS</a>
-      <a class="menu-page-link" href="soundtrack.html">SOUNDTRACK</a>
+  <a class="menu-page-link" href="itinerary.html">ITINERARY</a>
+  <a class="menu-page-link" href="cities.html">CITIES</a>
+    <a class="menu-page-link" href="parks.html">NATURE</a>
+  <a class="menu-page-link" href="sports.html">SPORTS</a>
+  <a class="menu-page-link" href="events.html">EVENTS</a>
+  <a class="menu-page-link" href="soundtrack.html">SOUNDTRACK</a>
 </div>
     </div>
   `;
