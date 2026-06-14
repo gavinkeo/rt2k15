@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>RT2K15 · Events</title>
+  <title>RT2K15 · Sports</title>
   <link rel="stylesheet" href="tickets.css" />
 </head>
-<body data-ticket-page="events">
+<body data-ticket-page="sports">
   <main class="ticket-page">
     <header class="ticket-hero">
       <nav class="section-nav" aria-label="Road Trip sections">
@@ -14,42 +14,42 @@
         <a class="section-nav-link" href="itinerary.html">Itinerary</a>
         <a class="section-nav-link" href="parks.html">Nature</a>
         <a class="section-nav-link" href="cities.html">Cities</a>
-        <a class="section-nav-link" href="sports.html">Sports</a>
-        <a class="section-nav-link active" href="events.html">Events</a>
+        <a class="section-nav-link active" href="sports.html">Sports</a>
+        <a class="section-nav-link" href="events.html">Events</a>
         <a class="section-nav-link" href="soundtrack.html">Soundtrack</a>
       </nav>
 
       <section class="hero-panel">
         <div>
           <p class="eyebrow">RT2K15 archive</p>
-          <h1>Events</h1>
-          <p class="lede">Concerts, comedy, shows, attractions and non-sport experiences from the trip.</p>
+          <h1>Sports</h1>
+          <p class="lede">Games, stadiums, tours, training camps and sporting stops from the road trip.</p>
         </div>
 
         <div class="hero-ticket">
           <span class="mini-label">Ticket file</span>
           <strong id="hero-count">—</strong>
-          <span id="hero-subtitle">Events</span>
+          <span id="hero-subtitle">Sports stops</span>
         </div>
       </section>
     </header>
 
     <section class="ticket-controls" aria-label="Ticket controls">
       <label class="search-box">
-        <span>Search events</span>
-        <input id="ticket-search" type="search" placeholder="Search events, venues, cities..." autocomplete="off" />
+        <span>Search sports</span>
+        <input id="ticket-search" type="search" placeholder="Search teams, venues, cities..." autocomplete="off" />
       </label>
 
-      <div class="filter-row" id="type-filters" role="group" aria-label="Filter by event type"></div>
+      <div class="filter-row" id="type-filters" role="group" aria-label="Filter by sport type"></div>
     </section>
 
-    <section class="summary-strip" id="summary-strip" aria-label="Events summary"></section>
+    <section class="summary-strip" id="summary-strip" aria-label="Sports summary"></section>
 
     <section class="ticket-list-shell">
-      <div class="list-status" id="list-status">Loading events…</div>
+      <div class="list-status" id="list-status">Loading sports…</div>
       <div class="ticket-list" id="ticket-list"></div>
       <div class="empty-state" id="empty-state" hidden>
-        <strong>No matching events</strong>
+        <strong>No matching sports stops</strong>
         <span>Try clearing the search or changing the filter.</span>
       </div>
     </section>
