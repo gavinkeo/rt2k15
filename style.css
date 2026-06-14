@@ -1788,3 +1788,24 @@ body {
   text-transform: uppercase !important;
   color: rgba(255,255,255,0.38) !important;
 }
+
+/* Put divider directly under the route descriptor */
+@media (min-width: 900px) {
+  .controller-brand {
+    border-bottom: 1px solid rgba(255,255,255,0.12) !important;
+    padding-bottom: 7px !important;
+    margin-bottom: 0 !important;
+  }
+
+  .controller-brand-route {
+    margin-top: 3px !important;
+    margin-bottom: 0 !important;
+    line-height: 1.05 !important;
+  }
+
+  .dashboard-grid {
+    border-top: none !important;
+    margin-top: 0 !important;
+    padding-top: 16px !important;
+  }
+}
