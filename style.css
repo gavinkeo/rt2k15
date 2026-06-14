@@ -1204,6 +1204,6 @@ body {
 @media (min-width: 900px) {
   #trip-menu.trip-menu,
   .trip-menu {
-    top: clamp(175px, 24vh, 215px) !important;
+    top: 175px !important;
   }
 }
