@@ -1744,6 +1744,13 @@ function renderRoute(upToDay, options = {}) {
   const currentDayEl = document.getElementById("current-day");
   if (currentDayEl) currentDayEl.textContent = upToDay;
 
+  const timelineDateEl = document.getElementById("timeline-current-date");
+  const currentTripDay = tripData.days.find(day => Number(day.day) === Number(upToDay));
+
+  if (timelineDateEl && currentTripDay?.date) {
+    timelineDateEl.textContent = formatDate(currentTripDay.date);
+  }
+
   updateRollingCounters(upToDay);
   updateDashboardCounters(upToDay);
 
