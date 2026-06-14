@@ -1121,3 +1121,82 @@ body {
     background: rgba(255,255,255,0.34) !important;
   }
 }
+
+/* Mobile: test dark glass menu + controller */
+@media (max-width: 640px) {
+  #trip-menu.trip-menu,
+  .trip-menu,
+  .timeline {
+    background: rgba(17, 17, 17, 0.40) !important;
+    border: 1px solid rgba(255, 255, 255, 0.20) !important;
+    color: #ffffff !important;
+    backdrop-filter: blur(12px) !important;
+    box-shadow:
+      0 12px 32px rgba(0,0,0,0.24),
+      inset 0 1px 0 rgba(255,255,255,0.08) !important;
+  }
+
+  .trip-menu-title-text,
+  #stat-countries,
+  #stat-provinces,
+  #stat-states,
+  #current-day,
+  .timeline-percent-value,
+  .timeline-stat-value,
+  .timeline-stat-value strong {
+    color: #ffffff !important;
+  }
+
+  .trip-menu-subtitle,
+  .trip-menu .stat-label-row,
+  .timeline-day-label,
+  .timeline-percent-label,
+  .timeline-stat-label {
+    color: rgba(255,255,255,0.62) !important;
+  }
+
+  .trip-menu-chevron {
+    color: rgba(255,255,255,0.72) !important;
+  }
+
+  .trip-menu .stat,
+  .timeline-main-counter,
+  .timeline-percent-box,
+  .timeline-stat-box {
+    background: rgba(255,255,255,0.10) !important;
+    border: 1px solid rgba(255,255,255,0.14) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05) !important;
+  }
+
+  .play-btn {
+    background: rgba(255,255,255,0.96) !important;
+    color: var(--ocean-main) !important;
+    border: 1px solid rgba(255,255,255,0.28) !important;
+    box-shadow:
+      0 10px 22px rgba(0,0,0,0.24),
+      inset 0 1px 0 rgba(255,255,255,0.35) !important;
+  }
+
+  .play-btn:hover {
+    background: #ffffff !important;
+    color: var(--ocean-dark) !important;
+  }
+
+  #timeline-slider::-webkit-slider-runnable-track {
+    background: rgba(255,255,255,0.32) !important;
+  }
+
+  #timeline-slider::-moz-range-track {
+    background: rgba(255,255,255,0.32) !important;
+  }
+
+  #timeline-slider::-webkit-slider-thumb {
+    background: #ffffff !important;
+    border: 3px solid rgba(8,60,77,0.90) !important;
+  }
+
+  #timeline-slider::-moz-range-thumb {
+    background: #ffffff !important;
+    border: 3px solid rgba(8,60,77,0.90) !important;
+  }
+}
