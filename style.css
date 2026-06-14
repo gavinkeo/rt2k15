@@ -1231,3 +1231,16 @@ body {
     display: none !important;
   }
 }
+
+/* Desktop: slightly tone down day and completion numbers */
+@media (min-width: 900px) {
+  #current-day {
+    font-size: 28px !important;
+    letter-spacing: -0.035em !important;
+  }
+
+  .timeline-percent-value {
+    font-size: 28px !important;
+    letter-spacing: -0.035em !important;
+  }
+}
