@@ -1104,3 +1104,10 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.32) !important;
   }
 }
+
+@media (min-width: 900px) {
+  #trip-menu.trip-menu,
+  .trip-menu {
+    top: 100px !important;
+  }
+}
