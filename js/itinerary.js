@@ -796,24 +796,18 @@ function renderList() {
   if (!visibleDays.length) {
     listEl.innerHTML = "";
     statusEl.textContent = "0 matching days";
+    statusEl.hidden = true;
     emptyEl.hidden = false;
     return;
   }
 
   emptyEl.hidden = true;
   statusEl.textContent = `${visibleDays.length} matching ${visibleDays.length === 1 ? "day" : "days"}`;
+  statusEl.hidden = true;
 
-  let currentGroup = "";
   let html = "";
 
   visibleDays.forEach(day => {
-    const groupLabel = getGroupLabel(day.day);
-
-    if (groupLabel !== currentGroup) {
-      currentGroup = groupLabel;
-      html += `<h2 class="group-heading">${escapeHtml(groupLabel)}</h2>`;
-    }
-
     html += renderDayCard(day);
   });
 
