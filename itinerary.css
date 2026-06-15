@@ -1910,3 +1910,109 @@ body::before {
   margin-top: 0;
   padding-top: 0;
 }
+
+
+/* === RT2K15 itinerary clean-up: no search, cleaner badges, provinces === */
+.itinerary-controls {
+  display: none !important;
+}
+
+.day-card::before,
+.day-card.night-usa::before,
+.day-card.night-canada::before {
+  content: none !important;
+  display: none !important;
+}
+
+.day-card {
+  border-left-width: 1px !important;
+}
+
+.day-badge {
+  min-height: 86px;
+  padding: 9px 8px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.day-badge::before,
+.day-badge.night-canada::before {
+  content: none !important;
+  display: none !important;
+}
+
+.day-badge .night-flag {
+  position: static !important;
+  order: -1;
+  width: 31px;
+  height: 20px;
+  margin: 0 auto 3px;
+  transform: none !important;
+  flex: 0 0 auto;
+}
+
+.day-badge .day-badge-label {
+  font-size: 8px;
+  line-height: 1;
+  letter-spacing: 0.13em;
+}
+
+.day-badge strong {
+  font-size: 28px;
+  line-height: 0.96;
+}
+
+.day-badge small {
+  margin-top: 3px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.day-badge.night-usa {
+  background: linear-gradient(180deg, #3c3b6e, #081f3d);
+}
+
+.day-badge.night-canada {
+  background: linear-gradient(180deg, #c8102e, #8d0f20);
+}
+
+.state-cell.is-empty {
+  background: rgba(255,255,255,0.44);
+  border-color: rgba(10,49,97,0.08);
+  box-shadow: none;
+}
+
+.state-cell.is-empty::before,
+.state-cell.is-empty::after {
+  content: none !important;
+}
+
+.state-pill.province-pill {
+  color: #8d0f20;
+  border-color: rgba(200,16,46,0.18);
+  background:
+    linear-gradient(135deg, rgba(200,16,46,0.09), rgba(255,255,255,0.76));
+}
+
+.state-pill.province-pill::before {
+  color: #c8102e;
+}
+
+@media (max-width: 760px) {
+  .day-badge {
+    min-height: 58px;
+    display: grid;
+    grid-template-columns: auto auto auto minmax(0, 1fr);
+    padding-right: 10px;
+    gap: 8px;
+  }
+
+  .day-badge .night-flag {
+    order: 0;
+    margin: 0;
+  }
+}
