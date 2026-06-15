@@ -86,6 +86,8 @@ function filterGroup(type) {
   }
 
   if (normalised === "Concert") return "Concert";
+  if (normalised === "Comedy") return "Comedy";
+  if (normalised === "Theme Park") return "Theme Park";
 
   return "Other";
 }
@@ -105,7 +107,7 @@ function isSportsTvItem(item) {
 }
 
 function isSportsItem(item) {
-  return SPORTS_TYPES.has(item.type) || item.group === "Combat" || isSportsTvItem(item);
+  return SPORTS_TYPES.has(item.type) || isSportsTvItem(item);
 }
 
 function isCorrectPageItem(item) {
@@ -185,6 +187,10 @@ function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
 
   if (activeFilter === "Other") {
+    if (pageMode === "events") {
+      return !NON_SPORT_MAIN_TYPES.has(item.type);
+    }
+
     return item.group === "Other";
   }
 
