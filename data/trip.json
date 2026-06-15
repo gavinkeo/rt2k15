@@ -7,7 +7,7 @@
     "drivingHours": "228:36",
     "states": 48,
     "provinces": 4,
-    "events": 26,
+    "events": 27,
     "flights": 0
   },
   "days": [
@@ -349,12 +349,21 @@
       "start": "Beaver",
       "finish": "Rexburg",
       "type": "drive",
-      "via": "Salt Lake City",
+      "via": "LaVell Edwards Stadium",
       "viaStops": [
-        "Salt Lake City"
+        "LaVell Edwards Stadium"
       ],
       "miles": 435,
-      "drivingTime": "5:42"
+      "drivingTime": "5:42",
+      "event": {
+        "type": "CFB",
+        "name": "LaVell Edwards Stadium Visit",
+        "venue": "LaVell Edwards Stadium",
+        "location": "Provo",
+        "ticket": {
+          "price": "FREE"
+        }
+      }
     },
     {
       "day": 27,
