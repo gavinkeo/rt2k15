@@ -2016,3 +2016,136 @@ body::before {
     margin: 0;
   }
 }
+
+
+/* === RT2K15 itinerary: remove type bubbles + move milestones into day summary === */
+.type-badge {
+  display: none !important;
+}
+
+.day-card {
+  grid-template-columns: 74px minmax(0, 1fr) 118px !important;
+}
+
+.state-cell {
+  display: none !important;
+}
+
+.milestone-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 9px;
+}
+
+.milestone-label {
+  flex: 0 0 auto;
+  color: var(--usa-red);
+  font-size: 9px;
+  line-height: 1;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  font-weight: 950;
+}
+
+.milestone-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 24px;
+  border-radius: 999px;
+  padding: 5px 8px;
+  background: rgba(255,255,255,0.88);
+  border: 1px solid rgba(60,59,110,0.16);
+  color: var(--usa-blue);
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 4px 12px rgba(10,35,66,0.05);
+}
+
+.milestone-pill::before {
+  content: "★";
+  color: var(--usa-red);
+  font-size: 9px;
+}
+
+.milestone-pill em {
+  font-style: normal;
+  color: rgba(10,49,97,0.58);
+  font-weight: 950;
+}
+
+.milestone-pill.province-pill {
+  color: #8d0f20;
+  border-color: rgba(200,16,46,0.18);
+  background:
+    linear-gradient(135deg, rgba(200,16,46,0.08), rgba(255,255,255,0.88));
+}
+
+.milestone-pill.province-pill::before {
+  content: "✦";
+  color: #c8102e;
+}
+
+.milestone-pill.province-pill em {
+  color: rgba(200,16,46,0.62);
+}
+
+@media (max-width: 980px) {
+  .day-card {
+    grid-template-columns: 64px minmax(0, 1fr) 118px !important;
+  }
+
+  .day-stats-cell {
+    grid-column: auto !important;
+    grid-row: auto !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .day-card {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* === RT2K15 itinerary: flag sits below day number === */
+.day-badge .day-badge-label {
+  order: 0;
+}
+
+.day-badge strong {
+  order: 1;
+}
+
+.day-badge .night-flag {
+  order: 2 !important;
+  position: static !important;
+  width: 32px;
+  height: 20px;
+  margin: 3px auto 3px !important;
+  transform: none !important;
+  flex: 0 0 auto;
+}
+
+.day-badge small {
+  order: 3;
+  margin-top: 1px;
+}
+
+@media (max-width: 760px) {
+  .day-badge {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    min-height: 86px;
+    padding: 9px 8px 10px !important;
+  }
+
+  .day-badge .night-flag {
+    margin: 3px auto 3px !important;
+  }
+}
