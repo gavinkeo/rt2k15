@@ -1,0 +1,46 @@
+[
+  {
+    "day": 26,
+    "src": "assets/photos/trip/2015-07-13-d26-lavell-edwards-stadium-01.jpg",
+    "title": "LaVell Edwards Stadium exterior",
+    "place": "LaVell Edwards Stadium",
+    "city": "Provo",
+    "state": "UT",
+    "caption": "First look at LaVell Edwards Stadium, home of BYU football, with the Wasatch Mountains rising behind the stadium.",
+    "alt": "Exterior view of LaVell Edwards Stadium with BYU branding and mountains in the background.",
+    "tags": ["sports", "cfb", "stadium", "byu", "utah"]
+  },
+  {
+    "day": 26,
+    "src": "assets/photos/trip/2015-07-13-d26-lavell-edwards-stadium-02.jpg",
+    "title": "BYU seating bowl",
+    "place": "LaVell Edwards Stadium",
+    "city": "Provo",
+    "state": "UT",
+    "caption": "Inside the stadium looking across the BYU seating bowl, with the mountain backdrop giving it one of the best settings in college football.",
+    "alt": "Interior view of LaVell Edwards Stadium showing BYU seating and mountains beyond the stands.",
+    "tags": ["sports", "cfb", "stadium", "byu", "utah"]
+  },
+  {
+    "day": 26,
+    "src": "assets/photos/trip/2015-07-13-d26-lavell-edwards-stadium-03.jpg",
+    "title": "Field view from the stands",
+    "place": "LaVell Edwards Stadium",
+    "city": "Provo",
+    "state": "UT",
+    "caption": "A wide view from inside LaVell Edwards Stadium, taking in the field, stands and scoreboard on a clear Utah afternoon.",
+    "alt": "Wide interior view of LaVell Edwards Stadium from the stands looking across the field.",
+    "tags": ["sports", "cfb", "stadium", "byu", "utah"]
+  },
+  {
+    "day": 26,
+    "src": "assets/photos/trip/2015-07-13-d26-lavell-edwards-stadium-04.jpg",
+    "title": "Mountain backdrop at BYU",
+    "place": "LaVell Edwards Stadium",
+    "city": "Provo",
+    "state": "UT",
+    "caption": "The empty stands and mountain backdrop at LaVell Edwards Stadium — a proper bucket-list college football setting.",
+    "alt": "View of the seating at LaVell Edwards Stadium with mountains visible beyond the stadium.",
+    "tags": ["sports", "cfb", "stadium", "byu", "utah"]
+  }
+]
