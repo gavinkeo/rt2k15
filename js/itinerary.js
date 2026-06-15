@@ -1,6 +1,8 @@
 const DATA_URL = "data/trip.json";
+const PHOTOS_URL = "data/photos.json";
 
 let allDays = [];
+let allPhotos = [];
 let activeFilter = "all";
 let activeQuery = "";
 
@@ -54,6 +56,158 @@ function formatDriveTime(value) {
   if (!hours) return String(value);
   return `${Number(hours)}h ${String(minutes || "00").padStart(2, "0")}m`;
 }
+
+
+function normaliseCompare(value) {
+  return String(value ?? "")
+    .trim()
+    .toLowerCase();
+}
+
+async function loadPhotos() {
+  try {
+    const response = await fetch(PHOTOS_URL);
+
+    if (!response.ok) {
+      return [];
+    }
+
+    const data = await response.json();
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.warn("RT2K15 photos not loaded:", error);
+    return [];
+  }
+}
+
+function getPhotosForDay(day) {
+  const dayNumber = Number(day.day);
+
+  return allPhotos.filter(photo => Number(photo.day) === dayNumber);
+}
+
+let activeGalleryPhotos = [];
+let activeGalleryIndex = 0;
+let galleryModal = null;
+
+function ensureGalleryModal() {
+  if (galleryModal) return galleryModal;
+
+  galleryModal = document.createElement("div");
+  galleryModal.className = "photo-gallery-modal";
+  galleryModal.setAttribute("aria-hidden", "true");
+  galleryModal.innerHTML = `
+    <div class="photo-gallery-backdrop" data-gallery-close></div>
+    <section class="photo-gallery-panel" role="dialog" aria-modal="true" aria-label="Day photo gallery">
+      <button class="photo-gallery-close" type="button" data-gallery-close aria-label="Close photo gallery">×</button>
+      <div class="photo-gallery-stage">
+        <button class="photo-gallery-nav photo-gallery-prev" type="button" data-gallery-prev aria-label="Previous photo">‹</button>
+        <img class="photo-gallery-image" src="" alt="" loading="eager">
+        <button class="photo-gallery-nav photo-gallery-next" type="button" data-gallery-next aria-label="Next photo">›</button>
+      </div>
+      <div class="photo-gallery-copy">
+        <div>
+          <h2 class="photo-gallery-title"></h2>
+          <p class="photo-gallery-caption"></p>
+        </div>
+        <span class="photo-gallery-count"></span>
+      </div>
+    </section>
+  `;
+
+  document.body.appendChild(galleryModal);
+
+  galleryModal.addEventListener("click", event => {
+    if (event.target.closest("[data-gallery-close]")) {
+      closePhotoGallery();
+    }
+
+    if (event.target.closest("[data-gallery-prev]")) {
+      movePhotoGallery(-1);
+    }
+
+    if (event.target.closest("[data-gallery-next]")) {
+      movePhotoGallery(1);
+    }
+  });
+
+  document.addEventListener("keydown", event => {
+    if (!galleryModal.classList.contains("open")) return;
+
+    if (event.key === "Escape") closePhotoGallery();
+    if (event.key === "ArrowLeft") movePhotoGallery(-1);
+    if (event.key === "ArrowRight") movePhotoGallery(1);
+  });
+
+  return galleryModal;
+}
+
+function renderPhotoGallery() {
+  const modal = ensureGalleryModal();
+  const photo = activeGalleryPhotos[activeGalleryIndex];
+
+  if (!photo) return;
+
+  const image = modal.querySelector(".photo-gallery-image");
+  const title = modal.querySelector(".photo-gallery-title");
+  const caption = modal.querySelector(".photo-gallery-caption");
+  const count = modal.querySelector(".photo-gallery-count");
+  const prev = modal.querySelector(".photo-gallery-prev");
+  const next = modal.querySelector(".photo-gallery-next");
+
+  image.src = photo.src;
+  image.alt = photo.alt || photo.title || "RT2K15 trip photo";
+  title.textContent = photo.title || photo.place || "Trip photo";
+  caption.textContent = photo.caption || "";
+  count.textContent = `${activeGalleryIndex + 1} / ${activeGalleryPhotos.length}`;
+
+  const hasMultiple = activeGalleryPhotos.length > 1;
+  prev.hidden = !hasMultiple;
+  next.hidden = !hasMultiple;
+}
+
+function openPhotoGallery(photos, startIndex = 0) {
+  if (!photos.length) return;
+
+  activeGalleryPhotos = photos;
+  activeGalleryIndex = Math.max(0, Math.min(startIndex, photos.length - 1));
+
+  const modal = ensureGalleryModal();
+  renderPhotoGallery();
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("gallery-open");
+}
+
+function closePhotoGallery() {
+  if (!galleryModal) return;
+
+  galleryModal.classList.remove("open");
+  galleryModal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("gallery-open");
+}
+
+function movePhotoGallery(direction) {
+  if (!activeGalleryPhotos.length) return;
+
+  activeGalleryIndex = (activeGalleryIndex + direction + activeGalleryPhotos.length) % activeGalleryPhotos.length;
+  renderPhotoGallery();
+}
+
+function setupDayGalleryTriggers() {
+  if (!listEl) return;
+
+  listEl.querySelectorAll(".day-photo-thumb").forEach(button => {
+    button.addEventListener("click", () => {
+      const dayNumber = Number(button.dataset.galleryDay);
+      const day = allDays.find(item => Number(item.day) === dayNumber);
+      const photos = day ? getPhotosForDay(day) : [];
+
+      openPhotoGallery(photos);
+    });
+  });
+}
+
 
 
 
@@ -335,6 +489,7 @@ function getSearchHaystack(day) {
     day.event?.ticket?.section,
     day.event?.ticket?.row,
     day.event?.ticket?.seat,
+    ...getPhotosForDay(day).flatMap(photo => [photo.title, photo.place, photo.city, photo.caption, ...(Array.isArray(photo.tags) ? photo.tags : [])]),
     ...getStateMilestones(day).map(item => `${STATE_NAMES[item.code] || item.code} ${item.code} ${item.number}`)
   ].filter(Boolean).join(" ").toLowerCase();
 }
@@ -509,6 +664,23 @@ function renderStatsCell(day) {
   `;
 }
 
+
+function renderDayPhotoThumb(day) {
+  const photos = getPhotosForDay(day);
+
+  if (!photos.length) return "";
+
+  const first = photos[0];
+  const label = `${photos.length} ${photos.length === 1 ? "photo" : "photos"}`;
+
+  return `
+    <button class="day-photo-thumb" type="button" data-gallery-day="${escapeHtml(day.day)}" aria-label="Open Day ${escapeHtml(day.day)} photo gallery">
+      <img src="${escapeHtml(first.src)}" alt="${escapeHtml(first.alt || first.title || `Day ${day.day} photo`)}" loading="lazy">
+      <span>${escapeHtml(label)}</span>
+    </button>
+  `;
+}
+
 function renderDayCard(day) {
   const type = day.type || "visited";
   const typeLabel = type === "drive" ? "Drive" : type === "stay" ? "Stay" : type;
@@ -529,6 +701,7 @@ function renderDayCard(day) {
         <h2 class="day-title">${escapeHtml(getDayTitle(day))}</h2>
         ${renderStopsLine(day)}
         ${renderCompactEventLine(day)}
+        ${renderDayPhotoThumb(day)}
       </div>
 
       ${renderStatsCell(day)}
@@ -565,6 +738,7 @@ function renderList() {
   });
 
   listEl.innerHTML = html;
+  setupDayGalleryTriggers();
 }
 
 function setActiveFilter(filter) {
@@ -617,6 +791,7 @@ async function initItinerary() {
       throw new Error("trip.json loaded, but no days array was found.");
     }
 
+    allPhotos = await loadPhotos();
     allDays = data.days;
     buildExplicitStateMilestones(allDays);
     updateSummary(data);
