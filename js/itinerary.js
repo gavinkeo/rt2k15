@@ -768,17 +768,25 @@ function renderMilestonePills(day) {
   `;
 }
 
-function renderStatsCell(day) {
-  const miles = day.miles ? `${formatNumber(day.miles)} mi` : "—";
-  const drive = day.drivingTime ? formatDriveTime(day.drivingTime) : "—";
+function renderDrivePill(day) {
+  if (!day.miles && !day.drivingTime) return "";
+
+  const bits = [];
+
+  if (day.miles) {
+    bits.push(`${formatNumber(day.miles)} miles`);
+  }
+
+  if (day.drivingTime) {
+    bits.push(`${formatDriveTime(day.drivingTime)} drive`);
+  }
+
+  if (!bits.length) return "";
 
   return `
-    <aside class="day-stats-cell" aria-label="Day stats">
-      <span class="stat-cell-label">Drive</span>
-      <div class="stat-line"><span>Miles</span><strong>${escapeHtml(miles)}</strong></div>
-      <div class="stat-line"><span>Time</span><strong>${escapeHtml(drive)}</strong></div>
-      <a class="map-link compact-map-link" href="index.html?day=${encodeURIComponent(day.day)}">Map →</a>
-    </aside>
+    <div class="drive-pill" aria-label="Driving stats">
+      <span>${escapeHtml(bits.join(" · "))}</span>
+    </div>
   `;
 }
 
@@ -822,11 +830,10 @@ function renderDayCard(day) {
         <h2 class="day-title">${escapeHtml(getDayTitle(day))}</h2>
         ${renderStopsLine(day)}
         ${renderCompactEventLine(day)}
+        ${renderDrivePill(day)}
         ${renderMilestonePills(day)}
         ${renderDayPhotoThumb(day)}
       </div>
-
-      ${renderStatsCell(day)}
     </article>
   `;
 }
