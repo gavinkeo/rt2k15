@@ -55,6 +55,91 @@ function formatDriveTime(value) {
   return `${Number(hours)}h ${String(minutes || "00").padStart(2, "0")}m`;
 }
 
+
+
+const STATE_NAMES = {
+  AL: "Alabama", AZ: "Arizona", AR: "Arkansas", CA: "California", CO: "Colorado",
+  CT: "Connecticut", DE: "Delaware", FL: "Florida", GA: "Georgia", ID: "Idaho",
+  IL: "Illinois", IN: "Indiana", IA: "Iowa", KS: "Kansas", KY: "Kentucky",
+  LA: "Louisiana", ME: "Maine", MD: "Maryland", MA: "Massachusetts", MI: "Michigan",
+  MN: "Minnesota", MS: "Mississippi", MO: "Missouri", MT: "Montana", NE: "Nebraska",
+  NV: "Nevada", NH: "New Hampshire", NJ: "New Jersey", NM: "New Mexico", NY: "New York",
+  NC: "North Carolina", ND: "North Dakota", OH: "Ohio", OK: "Oklahoma", OR: "Oregon",
+  PA: "Pennsylvania", RI: "Rhode Island", SC: "South Carolina", SD: "South Dakota", TN: "Tennessee",
+  TX: "Texas", UT: "Utah", VT: "Vermont", VA: "Virginia", WA: "Washington",
+  WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming"
+};
+
+const FALLBACK_STATE_MILESTONES = {
+  1: [{ code: "CA", number: 1 }],
+  15: [{ code: "AZ", number: 2 }],
+  17: [{ code: "NM", number: 3 }],
+  20: [{ code: "NV", number: 4 }],
+  25: [{ code: "UT", number: 5 }],
+  26: [{ code: "ID", number: 6 }],
+  27: [{ code: "WY", number: 7 }],
+  29: [{ code: "OR", number: 8 }],
+  31: [{ code: "WA", number: 9 }],
+  37: [{ code: "MT", number: 10 }],
+  39: [{ code: "ND", number: 11 }, { code: "SD", number: 12 }],
+  40: [{ code: "NE", number: 13 }, { code: "CO", number: 14 }],
+  42: [{ code: "TX", number: 15 }],
+  43: [{ code: "OK", number: 16 }],
+  47: [{ code: "LA", number: 17 }],
+  49: [{ code: "MS", number: 18 }, { code: "AR", number: 19 }],
+  50: [{ code: "TN", number: 20 }, { code: "KY", number: 21 }],
+  52: [{ code: "OH", number: 22 }, { code: "IN", number: 23 }],
+  55: [{ code: "MO", number: 24 }],
+  56: [{ code: "KS", number: 25 }, { code: "IA", number: 26 }, { code: "MN", number: 27 }, { code: "WI", number: 28 }],
+  57: [{ code: "IL", number: 29 }],
+  60: [{ code: "MI", number: 30 }],
+  64: [{ code: "VT", number: 31 }, { code: "NH", number: 32 }, { code: "ME", number: 33 }, { code: "MA", number: 34 }],
+  66: [{ code: "RI", number: 35 }, { code: "CT", number: 36 }, { code: "NY", number: 37 }, { code: "NJ", number: 38 }],
+  73: [{ code: "PA", number: 39 }],
+  75: [{ code: "DE", number: 40 }, { code: "MD", number: 41 }, { code: "WV", number: 42 }],
+  77: [{ code: "VA", number: 43 }, { code: "NC", number: 44 }],
+  79: [{ code: "SC", number: 45 }, { code: "GA", number: 46 }, { code: "AL", number: 47 }],
+  80: [{ code: "FL", number: 48 }]
+};
+
+let explicitStateMilestonesByDay = new Map();
+
+function buildExplicitStateMilestones(days) {
+  const seen = new Set();
+  const byDay = new Map();
+
+  days.forEach(day => {
+    if (!Array.isArray(day.newStates)) return;
+
+    const milestones = [];
+
+    day.newStates.forEach(rawCode => {
+      const code = String(rawCode || "").trim().toUpperCase();
+
+      if (!STATE_NAMES[code] || seen.has(code)) return;
+
+      seen.add(code);
+      milestones.push({ code, number: seen.size });
+    });
+
+    if (milestones.length) {
+      byDay.set(Number(day.day), milestones);
+    }
+  });
+
+  explicitStateMilestonesByDay = byDay;
+}
+
+function getStateMilestones(day) {
+  const dayNumber = Number(day.day);
+
+  if (explicitStateMilestonesByDay.size) {
+    return explicitStateMilestonesByDay.get(dayNumber) || [];
+  }
+
+  return FALLBACK_STATE_MILESTONES[dayNumber] || [];
+}
+
 function getRoutePlaces(day) {
   const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
 
@@ -89,7 +174,8 @@ function getSearchHaystack(day) {
     day.event?.location,
     day.event?.ticket?.section,
     day.event?.ticket?.row,
-    day.event?.ticket?.seat
+    day.event?.ticket?.seat,
+    ...getStateMilestones(day).map(item => `${STATE_NAMES[item.code] || item.code} ${item.code} ${item.number}`)
   ].filter(Boolean).join(" ").toLowerCase();
 }
 
@@ -109,15 +195,18 @@ function getVisibleDays() {
 }
 
 function getGroupLabel(dayNumber) {
-  const start = Math.floor((Number(dayNumber) - 1) / 10) * 10 + 1;
-  const end = Math.min(start + 9, 90);
-  return `Days ${start}–${end}`;
+  const week = Math.floor((Number(dayNumber) - 1) / 7) + 1;
+  const start = (week - 1) * 7 + 1;
+  const end = Math.min(start + 6, 90);
+  return `Week ${week} · Days ${start}–${end}`;
 }
 
 function renderRouteLine(day) {
-  const parts = getRoutePlaces(day);
+  const viaStops = Array.isArray(day.viaStops) ? day.viaStops.filter(Boolean) : [];
 
-  if (!parts.length) return "";
+  if (!viaStops.length) return "";
+
+  const parts = getRoutePlaces(day);
 
   return parts
     .map(part => `<span>${escapeHtml(part)}</span>`)
@@ -196,6 +285,70 @@ function renderEvent(day) {
   `;
 }
 
+
+
+function renderStopsLine(day) {
+  const viaStops = Array.isArray(day.viaStops) ? day.viaStops.filter(Boolean) : [];
+
+  if (!viaStops.length) return "";
+
+  return `
+    <div class="compact-detail">
+      <strong>Stops</strong>
+      <span>${viaStops.map(escapeHtml).join(" · ")}</span>
+    </div>
+  `;
+}
+
+function renderCompactEventLine(day) {
+  if (!day.event) return "";
+
+  const event = day.event;
+  const venue = event.venue || event.location || "";
+  const type = event.type ? `${event.type} · ` : "";
+  const venueText = venue ? ` · ${venue}` : "";
+
+  return `
+    <div class="compact-detail">
+      <strong>Event</strong>
+      <span>${escapeHtml(`${type}${event.name || "Event"}${venueText}`)}</span>
+    </div>
+  `;
+}
+
+function renderStateCell(day) {
+  const milestones = getStateMilestones(day);
+
+  return `
+    <aside class="state-cell" aria-label="State counter">
+      <span class="state-cell-label">New State</span>
+      ${milestones.length ? `
+        <div class="state-list">
+          ${milestones.map(item => `
+            <span class="state-pill" title="${escapeHtml(STATE_NAMES[item.code] || item.code)}">
+              ${escapeHtml(STATE_NAMES[item.code] || item.code)} <em>#${escapeHtml(item.number)}</em>
+            </span>
+          `).join("")}
+        </div>
+      ` : `<span class="state-empty">—</span>`}
+    </aside>
+  `;
+}
+
+function renderStatsCell(day) {
+  const miles = day.miles ? `${formatNumber(day.miles)} mi` : "—";
+  const drive = day.drivingTime ? formatDriveTime(day.drivingTime) : "—";
+
+  return `
+    <aside class="day-stats-cell" aria-label="Day stats">
+      <span class="stat-cell-label">Drive</span>
+      <div class="stat-line"><span>Miles</span><strong>${escapeHtml(miles)}</strong></div>
+      <div class="stat-line"><span>Time</span><strong>${escapeHtml(drive)}</strong></div>
+      <a class="map-link compact-map-link" href="index.html?day=${encodeURIComponent(day.day)}">Map →</a>
+    </aside>
+  `;
+}
+
 function renderDayCard(day) {
   const type = day.type || "visited";
   const typeLabel = type === "drive" ? "Drive" : type === "stay" ? "Stay" : type;
@@ -206,6 +359,7 @@ function renderDayCard(day) {
       <div class="day-badge">
         <span>Day</span>
         <strong>${escapeHtml(day.day)}</strong>
+        <small>${escapeHtml(formatDateShort(day.date))}</small>
       </div>
 
       <div class="day-main">
@@ -215,16 +369,13 @@ function renderDayCard(day) {
         </div>
 
         <h2 class="day-title">${escapeHtml(getDayTitle(day))}</h2>
-
         ${routeLine ? `<div class="route-line">${routeLine}</div>` : ""}
-        ${renderMeta(day)}
-        ${renderVia(day)}
-        ${renderEvent(day)}
-
-        <div class="card-actions">
-          <a class="map-link" href="index.html?day=${encodeURIComponent(day.day)}">View this day on route →</a>
-        </div>
+        ${renderStopsLine(day)}
+        ${renderCompactEventLine(day)}
       </div>
+
+      ${renderStateCell(day)}
+      ${renderStatsCell(day)}
     </article>
   `;
 }
@@ -310,6 +461,7 @@ async function initItinerary() {
     }
 
     allDays = data.days;
+    buildExplicitStateMilestones(allDays);
     updateSummary(data);
     renderList();
   } catch (error) {
