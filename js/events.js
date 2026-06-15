@@ -267,17 +267,22 @@ function buildSportPlaceTickets(placesData, tripData) {
 
 
 function eventMatchesFilter(item) {
-  if (activeFilter === "all") return true;
+  const filter = String(activeFilter || "all").trim().toLowerCase();
 
-  if (activeFilter === "Other") {
+  if (filter === "all") return true;
+
+  if (filter === "other") {
     if (pageMode === "events") {
       return !NON_SPORT_MAIN_TYPES.has(item.type);
     }
 
-    return item.group === "Other";
+    return String(item.group || "").toLowerCase() === "other";
   }
 
-  return item.type === activeFilter || item.group === activeFilter;
+  const itemType = String(item.type || "").trim().toLowerCase();
+  const itemGroup = String(item.group || "").trim().toLowerCase();
+
+  return itemType === filter || itemGroup === filter;
 }
 
 
