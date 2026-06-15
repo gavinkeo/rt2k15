@@ -465,8 +465,7 @@ function renderSummary() {
 function setupFilters() {
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
-      activeFilter = button.dataset.filter || "all";
-
+activeFilter = String(button.dataset.filter || "all").trim();
       filterButtons.forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
 
