@@ -59,10 +59,12 @@ function formatDate(dateString) {
 function normaliseType(type) {
   if (!type) return "Other";
 
-  if (type === "UFC189") return "UFC";
-  if (type === "CFB") return "NCAAF";
+  const value = String(type).trim();
 
-  return type;
+  if (value === "UFC189" || value === "UFC 189") return "UFC";
+  if (value === "CFB") return "NCAAF";
+
+  return value;
 }
 
 function filterGroup(type) {
