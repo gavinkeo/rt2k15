@@ -98,8 +98,31 @@ function formatDateShort(dateString) {
   });
 }
 
+function normaliseTicketType(type) {
+  if (!type) return "";
+  const value = String(type).trim();
+  if (value === "UFC189" || value === "UFC 189") return "UFC";
+  if (value === "CFB") return "NCAAF";
+  return value;
+}
+
+function isSportsTvEvent(day) {
+  const event = day.event || {};
+  const text = [
+    event.type,
+    event.name,
+    event.venue,
+    event.location
+  ].filter(Boolean).join(" ").toLowerCase();
+
+  return event.type === "TV Show" && (
+    text.includes("espn") ||
+    text.includes("sports nation")
+  );
+}
+
 function isSportEvent(day) {
-  return SPORT_TYPES.has(day.event?.type);
+  return SPORT_TYPES.has(normaliseTicketType(day.event?.type)) || isSportsTvEvent(day);
 }
 
 function isCorrectMode(day) {
@@ -140,7 +163,7 @@ function getSearchHaystack(day) {
 
 function getVisibleDays() {
   return allTicketDays.filter(day => {
-    if (activeType !== "all" && day.event?.type !== activeType) return false;
+    if (activeType !== "all" && normaliseTicketType(day.event?.type) !== activeType && day.event?.type !== activeType) return false;
     if (activeQuery && !getSearchHaystack(day).includes(activeQuery)) return false;
     return true;
   });
