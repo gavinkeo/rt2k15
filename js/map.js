@@ -71,6 +71,9 @@ const LOCATIONS = {
   "Long Beach": [33.7701, -118.1937],
   "La Jolla": [32.8328, -117.2713],
   "Las Cruces": [32.3199, -106.7637],
+  "Horseshoe Bend": [36.8791, -111.5104],
+  "Lower Antelope Canyon": [36.9026, -111.4129],
+  "White Sands National Park": [32.7797, -106.1717],
   "Four Corners Monument": [36.9989, -109.0452],
   "Grand Canyon": [36.0544, -112.1401],
   "Cedar City": [37.6775, -113.0619],
@@ -361,6 +364,11 @@ const SPORTS_VENUE_TYPES = new Set([
   "Tennis"
 ]);
 
+const SPORTS_ROUTE_PLACES = new Set([
+  "Pebble Beach Golf Club"
+]);
+
+
 const US_STATE_CODES = new Set([
   "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
   "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
@@ -389,7 +397,10 @@ const NON_CITY_COUNTER_PLACES = new Set([
   "Hockey Hall of Fame",
   "Toronto Island Park",
   "Delaware"
-]);
+,
+  "White Sands National Park",
+  "Lower Antelope Canyon",
+  "Horseshoe Bend"]);
 
 let dashboardDerivedFinalStateCount = null;
 
@@ -1467,6 +1478,12 @@ function getDashboardCounterStats(upToDay) {
         sportsVenues.add(venueKey);
       }
     }
+
+    getRoutePlaces(day, false).forEach(place => {
+      if (SPORTS_ROUTE_PLACES.has(place)) {
+        sportsVenues.add(place);
+      }
+    });
 
     getRoutePlaces(day, false).forEach(place => {
       const city = getCounterCityName(place);
