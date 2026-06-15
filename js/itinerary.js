@@ -224,6 +224,21 @@ const STATE_NAMES = {
   WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming"
 };
 
+const PROVINCE_NAMES = {
+  BC: "British Columbia",
+  AB: "Alberta",
+  ON: "Ontario",
+  QC: "Quebec"
+};
+
+function getMilestoneName(item) {
+  return STATE_NAMES[item.code] || PROVINCE_NAMES[item.code] || item.code;
+}
+
+function getMilestoneKind(item) {
+  return PROVINCE_NAMES[item.code] ? "province" : "state";
+}
+
 const LOCATION_REGION_LABELS = {
   "San Francisco Airport": "CA",
   "Oakland": "CA",
@@ -470,6 +485,13 @@ const FALLBACK_STATE_MILESTONES = {
   80: [{ code: "FL", number: 48 }]
 };
 
+const FALLBACK_PROVINCE_MILESTONES = {
+  32: [{ code: "BC", number: 1, kind: "province" }],
+  35: [{ code: "AB", number: 2, kind: "province" }],
+  60: [{ code: "ON", number: 3, kind: "province" }],
+  63: [{ code: "QC", number: 4, kind: "province" }]
+};
+
 let explicitStateMilestonesByDay = new Map();
 
 function buildExplicitStateMilestones(days) {
@@ -500,12 +522,19 @@ function buildExplicitStateMilestones(days) {
 
 function getStateMilestones(day) {
   const dayNumber = Number(day.day);
+  const provinceMilestones = FALLBACK_PROVINCE_MILESTONES[dayNumber] || [];
 
   if (explicitStateMilestonesByDay.size) {
-    return explicitStateMilestonesByDay.get(dayNumber) || [];
+    return [
+      ...(explicitStateMilestonesByDay.get(dayNumber) || []),
+      ...provinceMilestones
+    ];
   }
 
-  return FALLBACK_STATE_MILESTONES[dayNumber] || [];
+  return [
+    ...(FALLBACK_STATE_MILESTONES[dayNumber] || []),
+    ...provinceMilestones
+  ];
 }
 
 
@@ -566,7 +595,7 @@ function getSearchHaystack(day) {
     day.event?.ticket?.row,
     day.event?.ticket?.seat,
     ...getPhotosForDay(day).flatMap(photo => [photo.title, photo.place, photo.city, photo.caption, ...(Array.isArray(photo.tags) ? photo.tags : [])]),
-    ...getStateMilestones(day).map(item => `${STATE_NAMES[item.code] || item.code} ${item.code} ${item.number}`)
+    ...getStateMilestones(day).map(item => `${getMilestoneName(item)} ${item.code} ${getMilestoneKind(item)} ${item.number}`)
   ].filter(Boolean).join(" ").toLowerCase();
 }
 
@@ -710,18 +739,32 @@ function renderCompactEventLine(day) {
 function renderStateCell(day) {
   const milestones = getStateMilestones(day);
 
+  if (!milestones.length) {
+    return `<aside class="state-cell is-empty" aria-label="No new state or province"></aside>`;
+  }
+
+  const kinds = [...new Set(milestones.map(getMilestoneKind))];
+  const label = kinds.length > 1
+    ? "New Region"
+    : kinds[0] === "province"
+      ? "New Province"
+      : "New State";
+
   return `
-    <aside class="state-cell" aria-label="State counter">
-      <span class="state-cell-label">New State</span>
-      ${milestones.length ? `
-        <div class="state-list">
-          ${milestones.map(item => `
-            <span class="state-pill" title="${escapeHtml(STATE_NAMES[item.code] || item.code)}">
-              ${escapeHtml(STATE_NAMES[item.code] || item.code)} <em>#${escapeHtml(item.number)}</em>
+    <aside class="state-cell" aria-label="State and province counter">
+      <span class="state-cell-label">${escapeHtml(label)}</span>
+      <div class="state-list">
+        ${milestones.map(item => {
+          const kind = getMilestoneKind(item);
+          const name = getMilestoneName(item);
+
+          return `
+            <span class="state-pill ${escapeHtml(kind)}-pill" title="${escapeHtml(name)}">
+              ${escapeHtml(name)} <em>#${escapeHtml(item.number)}</em>
             </span>
-          `).join("")}
-        </div>
-      ` : `<span class="state-empty">—</span>`}
+          `;
+        }).join("")}
+      </div>
     </aside>
   `;
 }
