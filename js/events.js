@@ -14,12 +14,12 @@ const SPORTS_TYPES = new Set([
   "NHL",
   "Tennis",
   "MotoGP"
+  "TV Show",
 ]);
 
 const NON_SPORT_MAIN_TYPES = new Set([
   "Concert",
   "Comedy",
-  "TV Show",
   "Theme Park"
 ]);
 
