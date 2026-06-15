@@ -31,24 +31,24 @@
       "note": "Giant trees and mountain roads"
     },
     {
-      "name": "White Sands",
+      "name": "White Sands National Park",
       "type": "park",
       "location": "New Mexico",
       "slug": "white-sands",
       "folder": "assets/places/white-sands",
       "cover": "assets/places/white-sands/cover.jpg",
       "photoCount": 0,
-      "note": "Bright gypsum dunes in the desert"
+      "note": "Bright gypsum dunes near Alamogordo"
     },
     {
-      "name": "Antelope Canyon",
+      "name": "Lower Antelope Canyon",
       "type": "park",
       "location": "Arizona",
-      "slug": "antelope-canyon",
-      "folder": "assets/places/antelope-canyon",
-      "cover": "assets/places/antelope-canyon/cover.jpg",
+      "slug": "lower-antelope-canyon",
+      "folder": "assets/places/lower-antelope-canyon",
+      "cover": "assets/places/lower-antelope-canyon/cover.jpg",
       "photoCount": 0,
-      "note": "Slot canyon light beams and red rock"
+      "note": "Slot canyon stop near Page, Arizona"
     },
     {
       "name": "Grand Canyon",
@@ -449,6 +449,46 @@
       "cover": "assets/places/miami/cover.jpg",
       "photoCount": 0,
       "note": "Final major city stop"
+    },
+    {
+      "name": "17-Mile Drive",
+      "type": "park",
+      "location": "California",
+      "slug": "17-mile-drive",
+      "folder": "assets/places/17-mile-drive",
+      "cover": "assets/places/17-mile-drive/cover.jpg",
+      "photoCount": 0,
+      "note": "Scenic coastal drive around Monterey and Pebble Beach"
+    },
+    {
+      "name": "Piedras Blancas Elephant Seal Rookery",
+      "type": "park",
+      "location": "California",
+      "slug": "piedras-blancas-elephant-seal-rookery",
+      "folder": "assets/places/piedras-blancas-elephant-seal-rookery",
+      "cover": "assets/places/piedras-blancas-elephant-seal-rookery/cover.jpg",
+      "photoCount": 0,
+      "note": "Pacific Coast Highway wildlife stop with elephant seals"
+    },
+    {
+      "name": "Horseshoe Bend",
+      "type": "park",
+      "location": "Arizona",
+      "slug": "horseshoe-bend",
+      "folder": "assets/places/horseshoe-bend",
+      "cover": "assets/places/horseshoe-bend/cover.jpg",
+      "photoCount": 0,
+      "note": "Colorado River viewpoint near Page, Arizona"
+    },
+    {
+      "name": "Pebble Beach Golf Club",
+      "type": "sport",
+      "location": "California",
+      "slug": "pebble-beach-golf-club",
+      "folder": "assets/places/pebble-beach-golf-club",
+      "cover": "assets/places/pebble-beach-golf-club/cover.jpg",
+      "photoCount": 0,
+      "note": "Iconic golf course stop on 17-Mile Drive"
     }
   ]
 }

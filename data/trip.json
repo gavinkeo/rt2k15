@@ -255,7 +255,11 @@
       "finish": "Alamogordo",
       "type": "drive",
       "miles": 460,
-      "drivingTime": "6:17"
+      "drivingTime": "6:17",
+      "via": "White Sands National Park",
+      "viaStops": [
+        "White Sands National Park"
+      ]
     },
     {
       "day": 18,
@@ -285,8 +289,10 @@
       "start": "Page",
       "finish": "Las Vegas",
       "type": "drive",
-      "via": "Grand Canyon",
+      "via": "Lower Antelope Canyon / Horseshoe Bend / Grand Canyon",
       "viaStops": [
+        "Lower Antelope Canyon",
+        "Horseshoe Bend",
         "Grand Canyon"
       ],
       "miles": 413,
