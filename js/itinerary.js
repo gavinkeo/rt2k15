@@ -362,6 +362,82 @@ const LOCATION_REGION_LABELS = {
   "East Rutherford": "NJ"
 };
 
+
+const CANADIAN_REGION_CODES = new Set(["BC", "AB", "ON", "QC"]);
+const US_REGION_CODES = new Set(Object.keys(STATE_NAMES));
+
+function getNightCountry(day) {
+  const finish = String(day.finish || "").trim();
+  const region = LOCATION_REGION_LABELS[finish];
+
+  if (CANADIAN_REGION_CODES.has(region)) return "canada";
+  if (US_REGION_CODES.has(region)) return "usa";
+
+  return "unknown";
+}
+
+function getNightCountryLabel(country) {
+  if (country === "canada") return "Night spent in Canada";
+  if (country === "usa") return "Night spent in the USA";
+  return "Night location";
+}
+
+function renderNightFlagSvg(country) {
+  if (country === "canada") {
+    return `
+      <svg class="night-flag-svg" viewBox="0 0 36 24" aria-hidden="true" focusable="false">
+        <rect width="36" height="24" fill="#ffffff"></rect>
+        <rect width="9" height="24" fill="#d52b1e"></rect>
+        <rect x="27" width="9" height="24" fill="#d52b1e"></rect>
+        <path fill="#d52b1e" d="M18 4.2l1.25 3.1 2.8-1.6-.85 3.15 3.25.35-2.65 1.9 1.05 2.9-3.15-.8-.2 3.55h-3l-.2-3.55-3.15.8 1.05-2.9-2.65-1.9 3.25-.35-.85-3.15 2.8 1.6L18 4.2z"></path>
+      </svg>
+    `;
+  }
+
+  if (country === "usa") {
+    return `
+      <svg class="night-flag-svg" viewBox="0 0 38 24" aria-hidden="true" focusable="false">
+        <rect width="38" height="24" fill="#ffffff"></rect>
+        <g fill="#b22234">
+          <rect y="0" width="38" height="2"></rect>
+          <rect y="4" width="38" height="2"></rect>
+          <rect y="8" width="38" height="2"></rect>
+          <rect y="12" width="38" height="2"></rect>
+          <rect y="16" width="38" height="2"></rect>
+          <rect y="20" width="38" height="2"></rect>
+        </g>
+        <rect width="16" height="12" fill="#3c3b6e"></rect>
+        <g fill="#ffffff" opacity="0.95">
+          <circle cx="3" cy="3" r="0.75"></circle>
+          <circle cx="7" cy="3" r="0.75"></circle>
+          <circle cx="11" cy="3" r="0.75"></circle>
+          <circle cx="5" cy="6" r="0.75"></circle>
+          <circle cx="9" cy="6" r="0.75"></circle>
+          <circle cx="13" cy="6" r="0.75"></circle>
+          <circle cx="3" cy="9" r="0.75"></circle>
+          <circle cx="7" cy="9" r="0.75"></circle>
+          <circle cx="11" cy="9" r="0.75"></circle>
+        </g>
+      </svg>
+    `;
+  }
+
+  return "";
+}
+
+function renderNightFlag(day) {
+  const country = getNightCountry(day);
+  const svg = renderNightFlagSvg(country);
+
+  if (!svg) return "";
+
+  return `
+    <span class="night-flag night-flag-${escapeHtml(country)}" title="${escapeHtml(getNightCountryLabel(country))}" aria-label="${escapeHtml(getNightCountryLabel(country))}">
+      ${svg}
+    </span>
+  `;
+}
+
 const FALLBACK_STATE_MILESTONES = {
   1: [{ code: "CA", number: 1 }],
   15: [{ code: "AZ", number: 2 }],
@@ -684,12 +760,16 @@ function renderDayPhotoThumb(day) {
 function renderDayCard(day) {
   const type = day.type || "visited";
   const typeLabel = type === "drive" ? "Drive" : type === "stay" ? "Stay" : type;
+  const nightCountry = getNightCountry(day);
+  const nightCountryClass = nightCountry !== "unknown" ? ` night-${nightCountry}` : "";
+
   return `
-    <article class="day-card" id="day-${escapeHtml(day.day)}">
-      <div class="day-badge">
-        <span>Day</span>
+    <article class="day-card${nightCountryClass}" id="day-${escapeHtml(day.day)}">
+      <div class="day-badge${nightCountryClass}">
+        <span class="day-badge-label">Day</span>
         <strong>${escapeHtml(day.day)}</strong>
         <small>${escapeHtml(formatDateShort(day.date))}</small>
+        ${renderNightFlag(day)}
       </div>
 
       <div class="day-main">
