@@ -144,6 +144,8 @@ const LOCATION_REGION_LABELS = {
   "Grand Canyon": "AZ",
   "Cedar City": "UT",
   "Salt Lake City": "UT",
+  "LaVell Edwards Stadium": "UT",
+  "Provo": "UT",
   "Yellowstone NP": "WY",
   "Idaho Falls": "ID",
   "Twin Falls": "ID",
