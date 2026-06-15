@@ -23,7 +23,10 @@ function escapeHtml(value) {
 function formatNumber(value) {
   const number = Number(value);
   if (!Number.isFinite(number)) return "—";
-  return Math.round(number).toLocaleString();
+
+  return number.toLocaleString("en-GB", {
+    maximumFractionDigits: Number.isInteger(number) ? 0 : 1
+  });
 }
 
 function formatDate(dateString) {
@@ -298,6 +301,7 @@ const LOCATION_REGION_LABELS = {
   "Richmond": "CA",
   "San Rafael Bridge": "CA",
   "Golden Gate Bridge": "CA",
+  "Twin Peaks SF": "CA",
   "Yosemite NP": "CA",
   "17-Mile Drive": "CA",
   "Pebble Beach Golf Club": "CA",
