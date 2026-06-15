@@ -901,3 +901,211 @@ body::before {
     font-size: 12px;
   }
 }
+
+/* === RT2K15 SOUNDTRACK TRACKLIST POLISH === */
+
+.tracklist-panel {
+  min-height: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 0, 61, 0.13), transparent 45%),
+    linear-gradient(180deg, rgba(255,255,255,0.105), rgba(255,255,255,0.045));
+  border: 1px solid rgba(255,255,255,0.16);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.045),
+    0 18px 44px rgba(0,0,0,0.24);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.tracklist-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.13);
+  background: rgba(255,255,255,0.035);
+}
+
+.tracklist-head span {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.58);
+}
+
+.tracklist-head strong {
+  flex: 0 0 auto;
+  color: rgba(255,255,255,0.82);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.tracklist {
+  min-height: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.34) transparent;
+}
+
+.tracklist::-webkit-scrollbar {
+  width: 8px;
+}
+
+.tracklist::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tracklist::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.28);
+  border-radius: 999px;
+}
+
+/* Covers the current .track setup and older possible row names */
+.track,
+.track-row,
+.track-item,
+.song-row {
+  display: grid !important;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  padding: 11px 12px;
+  border-radius: 15px;
+  text-decoration: none;
+  color: #ffffff;
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    background 0.16s ease,
+    border-color 0.16s ease,
+    transform 0.16s ease;
+}
+
+.track:hover,
+.track-row:hover,
+.track-item:hover,
+.song-row:hover {
+  background: rgba(255,255,255,0.075);
+  border-color: rgba(255,255,255,0.13);
+  transform: translateX(2px);
+}
+
+.track-number,
+.track-index,
+.song-number {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.42);
+  text-align: right;
+}
+
+.track-info,
+.track-copy,
+.song-info {
+  min-width: 0;
+  display: grid;
+  gap: 3px;
+}
+
+.track-title,
+.song-title {
+  display: block;
+  min-width: 0;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.12;
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-artist,
+.song-artist {
+  display: block;
+  min-width: 0;
+  color: rgba(255,255,255,0.56);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 9px;
+  line-height: 1.2;
+  font-weight: 800;
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track-duration,
+.song-duration,
+.duration {
+  justify-self: end;
+  color: rgba(255,255,255,0.48);
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+/* If duration is currently appearing inside the text block, make it subtle */
+.track-info .duration,
+.track-copy .duration,
+.song-info .duration {
+  justify make it subtle */
+.track-info .duration,
+.track-copy .duration,
+.song-info .duration {
+  justify-self: start;
+  margin-top: 2px;
+}
+
+/* Empty/loading state */
+.empty-tracklist {
+  padding: 26px 18px;
+  text-align: center;
+  color: rgba(255,255,255,0.66);
+  font-weight: 800;
+  line-height: 1.45;
+}
+
+/* Mobile */
+@media (max-width: 820px) {
+  .tracklist-panel {
+    max-height: 380px;
+    border-radius: 18px;
+  }
+
+  .tracklist {
+    max-height: 320px;
+    padding: 8px;
+  }
+
+  .track,
+  .track-row,
+  .track-item,
+  .song-row {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 9px;
+    padding: 10px 9px;
+    border-radius: 13px;
+  }
+
+  .track-title,
+  .song-title {
+    font-size: 14px;
+  }
+
+  .track-duration,
+  .song-duration,
+  .duration {
+    font-size: 9px;
+  }
+}
