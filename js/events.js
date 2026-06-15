@@ -44,6 +44,46 @@ function classSafe(value) {
     .replace(/^-+|-+$/g, "");
 }
 
+
+
+const LOCATION_REGION_FULL_NAMES = {
+  Oakland: "California",
+  "Los Angeles": "California",
+  "San Diego": "California",
+  Phoenix: "Arizona",
+  "Las Vegas": "Nevada",
+  Seattle: "Washington",
+  Denver: "Colorado",
+  Provo: "Utah",
+  Arlington: "Texas",
+  Louisville: "Kentucky",
+  Cincinnati: "Ohio",
+  Indianapolis: "Indiana",
+  Chicago: "Illinois",
+  Toronto: "Ontario",
+  Boston: "Massachusetts",
+  "East Rutherford": "New Jersey",
+  "New York": "New York",
+  Philadelphia: "Pennsylvania",
+  Charlotte: "North Carolina",
+  Gainesville: "Florida"
+};
+
+function formatLocationWithRegion(location) {
+  if (!location) return "";
+
+  const cleanLocation = String(location).trim();
+
+  // Don't add another region when the location already contains one.
+  if (/,[^,]+$/.test(cleanLocation)) {
+    return cleanLocation;
+  }
+
+  const region = LOCATION_REGION_FULL_NAMES[cleanLocation];
+
+  return region ? `${cleanLocation}, ${region}` : cleanLocation;
+}
+
 function formatDate(dateString) {
   if (!dateString) return "";
 
@@ -217,7 +257,7 @@ function renderEvents() {
     const day = item.day;
     const type = item.type;
     const venue = item.venue;
-    const location = item.location;
+    const location = formatLocationWithRegion(item.location);
     const date = formatDate(item.date);
     const ticket = item.ticket || {};
 
