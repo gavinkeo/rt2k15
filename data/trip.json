@@ -1,6 +1,6 @@
 {
   "title": "RT2K15",
-  "subtitle": "San Fran → Miami, 18 Jun → 16 Sep",
+  "subtitle": "San Fran \u2192 Miami, 18 Jun \u2192 16 Sep",
   "stats": {
     "days": 90,
     "milesDriven": 14372,
@@ -20,7 +20,9 @@
       "via": "San Mateo Hayward Bridge",
       "viaStops": [
         "San Mateo Hayward Bridge"
-      ]
+      ],
+      "miles": 30.5,
+      "drivingTime": "0:34"
     },
     {
       "day": 2,
@@ -44,7 +46,9 @@
           "eventTime": "6:35 PM",
           "price": "$16.50"
         }
-      }
+      },
+      "miles": 61.4,
+      "drivingTime": "1:33"
     },
     {
       "day": 3,
@@ -52,10 +56,6 @@
       "start": "Oakland",
       "finish": "Oakland",
       "type": "stay",
-      "via": "Golden Gate Bridge",
-      "viaStops": [
-        "Golden Gate Bridge"
-      ],
       "event": {
         "type": "Boxing",
         "name": "Andre Ward v Paul Smith",
@@ -75,7 +75,14 @@
       "date": "2015-06-21",
       "start": "Oakland",
       "finish": "Oakland",
-      "type": "stay"
+      "type": "stay",
+      "via": "Twin Peaks SF / Golden Gate Bridge",
+      "viaStops": [
+        "Twin Peaks SF",
+        "Golden Gate Bridge"
+      ],
+      "miles": 53.4,
+      "drivingTime": "1:44"
     },
     {
       "day": 5,
