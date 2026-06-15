@@ -352,8 +352,6 @@ function renderStatsCell(day) {
 function renderDayCard(day) {
   const type = day.type || "visited";
   const typeLabel = type === "drive" ? "Drive" : type === "stay" ? "Stay" : type;
-  const routeLine = renderRouteLine(day);
-
   return `
     <article class="day-card" id="day-${escapeHtml(day.day)}">
       <div class="day-badge">
@@ -369,13 +367,12 @@ function renderDayCard(day) {
         </div>
 
         <h2 class="day-title">${escapeHtml(getDayTitle(day))}</h2>
-        ${routeLine ? `<div class="route-line">${routeLine}</div>` : ""}
         ${renderStopsLine(day)}
         ${renderCompactEventLine(day)}
       </div>
 
-      ${renderStateCell(day)}
       ${renderStatsCell(day)}
+      ${renderStateCell(day)}
     </article>
   `;
 }
