@@ -736,12 +736,10 @@ function renderCompactEventLine(day) {
   `;
 }
 
-function renderStateCell(day) {
+function renderMilestonePills(day) {
   const milestones = getStateMilestones(day);
 
-  if (!milestones.length) {
-    return `<aside class="state-cell is-empty" aria-label="No new state or province"></aside>`;
-  }
+  if (!milestones.length) return "";
 
   const kinds = [...new Set(milestones.map(getMilestoneKind))];
   const label = kinds.length > 1
@@ -751,21 +749,19 @@ function renderStateCell(day) {
       : "New State";
 
   return `
-    <aside class="state-cell" aria-label="State and province counter">
-      <span class="state-cell-label">${escapeHtml(label)}</span>
-      <div class="state-list">
-        ${milestones.map(item => {
-          const kind = getMilestoneKind(item);
-          const name = getMilestoneName(item);
+    <div class="milestone-row" aria-label="New state or province">
+      <span class="milestone-label">${escapeHtml(label)}</span>
+      ${milestones.map(item => {
+        const kind = getMilestoneKind(item);
+        const name = getMilestoneName(item);
 
-          return `
-            <span class="state-pill ${escapeHtml(kind)}-pill" title="${escapeHtml(name)}">
-              ${escapeHtml(name)} <em>#${escapeHtml(item.number)}</em>
-            </span>
-          `;
-        }).join("")}
-      </div>
-    </aside>
+        return `
+          <span class="milestone-pill ${escapeHtml(kind)}-pill" title="${escapeHtml(name)}">
+            ${escapeHtml(name)} <em>#${escapeHtml(item.number)}</em>
+          </span>
+        `;
+      }).join("")}
+    </div>
   `;
 }
 
@@ -818,17 +814,16 @@ function renderDayCard(day) {
       <div class="day-main">
         <div class="day-topline">
           <span class="day-date">${escapeHtml(formatDate(day.date))}</span>
-          <span class="type-badge ${escapeHtml(type)}">${escapeHtml(typeLabel)}</span>
         </div>
 
         <h2 class="day-title">${escapeHtml(getDayTitle(day))}</h2>
         ${renderStopsLine(day)}
         ${renderCompactEventLine(day)}
+        ${renderMilestonePills(day)}
         ${renderDayPhotoThumb(day)}
       </div>
 
       ${renderStatsCell(day)}
-      ${renderStateCell(day)}
     </article>
   `;
 }
