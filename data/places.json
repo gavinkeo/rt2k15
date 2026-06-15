@@ -483,12 +483,20 @@
     {
       "name": "Pebble Beach Golf Club",
       "type": "sport",
-      "location": "California",
+      "location": "Pebble Beach, California",
       "slug": "pebble-beach-golf-club",
       "folder": "assets/places/pebble-beach-golf-club",
       "cover": "assets/places/pebble-beach-golf-club/cover.jpg",
       "photoCount": 0,
-      "note": "Iconic golf course stop on 17-Mile Drive"
+      "note": "Iconic golf course stop on 17-Mile Drive",
+      "day": 6,
+      "date": "2015-06-23",
+      "sportType": "Golf",
+      "ticketName": "Pebble Beach Golf Club Visit",
+      "ticketCode": "RT2K15-06-GOLF",
+      "ticket": {
+        "price": "FREE"
+      }
     }
   ]
 }
