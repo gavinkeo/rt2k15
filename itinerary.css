@@ -2201,3 +2201,66 @@ body::before {
     white-space: nowrap !important;
   }
 }
+
+
+/* === RT2K15 itinerary: replace drive stats box with compact drive pill === */
+.day-card {
+  grid-template-columns: 74px minmax(0, 1fr) !important;
+}
+
+.day-stats-cell {
+  display: none !important;
+}
+
+.drive-pill {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  margin-top: 9px;
+  border-radius: 999px;
+  padding: 6px 10px;
+  border: 1px solid rgba(10,49,97,0.15);
+  background:
+    linear-gradient(135deg, rgba(10,49,97,0.08), rgba(255,255,255,0.88));
+  color: var(--usa-blue);
+  font-size: 11px;
+  line-height: 1;
+  font-weight: 950;
+  letter-spacing: 0.01em;
+  box-shadow: 0 5px 14px rgba(10,35,66,0.055);
+}
+
+.drive-pill::before {
+  content: "↗";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 7px;
+  border-radius: 999px;
+  background: var(--usa-red);
+  color: #ffffff;
+  font-size: 10px;
+  line-height: 1;
+  font-weight: 950;
+}
+
+@media (max-width: 980px) {
+  .day-card {
+    grid-template-columns: 64px minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .day-card {
+    grid-template-columns: 1fr !important;
+  }
+
+  .drive-pill {
+    width: 100%;
+    justify-content: center;
+    padding: 7px 10px;
+  }
+}
