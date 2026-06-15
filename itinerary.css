@@ -1894,3 +1894,19 @@ body::before {
     padding-right: 48px;
   }
 }
+
+
+/* === Remove itinerary status + week dividers === */
+.list-status,
+.group-heading {
+  display: none !important;
+}
+
+.timeline-shell {
+  margin-top: 0;
+}
+
+.itinerary-list {
+  margin-top: 0;
+  padding-top: 0;
+}
