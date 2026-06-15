@@ -66,9 +66,18 @@ function normaliseType(type) {
 function filterGroup(type) {
   const normalised = normaliseType(type);
 
-  if (["Boxing", "UFC", "WWE"].includes(normalised)) return "Combat";
-
-  if (["MLB", "NFL", "NCAAF", "MLS", "NHL", "Tennis", "MotoGP"].includes(normalised)) {
+  if ([
+    "MLB",
+    "NFL",
+    "NCAAF",
+    "MLS",
+    "NHL",
+    "Tennis",
+    "MotoGP",
+    "UFC",
+    "WWE",
+    "Boxing"
+  ].includes(normalised)) {
     return normalised;
   }
 
@@ -166,23 +175,19 @@ function buildEventList(tripData) {
     .filter(isCorrectPageItem);
 }
 
+
+
 function eventMatchesFilter(item) {
   if (activeFilter === "all") return true;
 
-  if (activeFilter === "Combat") {
-    return item.group === "Combat";
-  }
-
   if (activeFilter === "Other") {
-    if (pageMode === "events") {
-      return !NON_SPORT_MAIN_TYPES.has(item.type);
-    }
-
     return item.group === "Other";
   }
 
   return item.type === activeFilter || item.group === activeFilter;
 }
+
+
 
 function renderEvents() {
   if (!ticketGrid || !summary) return;
