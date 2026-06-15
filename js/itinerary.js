@@ -70,6 +70,142 @@ const STATE_NAMES = {
   WV: "West Virginia", WI: "Wisconsin", WY: "Wyoming"
 };
 
+const LOCATION_REGION_LABELS = {
+  "San Francisco Airport": "CA",
+  "Oakland": "CA",
+  "San Francisco": "CA",
+  "Chowchilla": "CA",
+  "San Luis Obispo": "CA",
+  "Santa Barbara": "CA",
+  "Los Angeles": "CA",
+  "San Diego": "CA",
+  "Palm Springs": "CA",
+  "Phoenix": "AZ",
+  "Alamogordo": "NM",
+  "Albuquerque": "NM",
+  "Page": "AZ",
+  "Las Vegas": "NV",
+  "Beaver": "UT",
+  "Rexburg": "ID",
+  "Boise": "ID",
+  "Portland": "OR",
+  "Seattle": "WA",
+  "Vancouver": "BC",
+  "Kamloops": "BC",
+  "Calgary": "AB",
+  "Great Falls": "MT",
+  "Glendive": "MT",
+  "Hot Springs": "SD",
+  "Denver": "CO",
+  "Amarillo": "TX",
+  "Dallas": "TX",
+  "Houston": "TX",
+  "New Orleans": "LA",
+  "West Memphis": "AR",
+  "Louisville": "KY",
+  "Indianapolis": "IN",
+  "Kansas City": "MO",
+  "Onalaska": "WI",
+  "Chicago": "IL",
+  "Windsor": "ON",
+  "Toronto": "ON",
+  "Montreal": "QC",
+  "Boston": "MA",
+  "New York": "NY",
+  "Philadelphia": "PA",
+  "Washington": "DC",
+  "Charlotte": "NC",
+  "Atlanta": "GA",
+  "Opelika": "AL",
+  "Gainesville": "FL",
+  "Orlando": "FL",
+  "West Palm Beach": "FL",
+  "Key West": "FL",
+  "Miami": "FL",
+  "Fort Lauderdale": "FL",
+  "Fort Lauderdale Airport": "FL",
+
+  "San Mateo Hayward Bridge": "CA",
+  "Richmond": "CA",
+  "San Rafael Bridge": "CA",
+  "Golden Gate Bridge": "CA",
+  "Yosemite NP": "CA",
+  "17-Mile Drive": "CA",
+  "Pebble Beach Golf Club": "CA",
+  "Piedras Blancas Elephant Seal Rookery": "CA",
+  "Monterey": "CA",
+  "Carmel": "CA",
+  "Santa Monica": "CA",
+  "Venice Beach": "CA",
+  "Long Beach": "CA",
+  "La Jolla": "CA",
+  "Las Cruces": "NM",
+  "Four Corners Monument": "AZ/NM/CO/UT",
+  "Grand Canyon": "AZ",
+  "Cedar City": "UT",
+  "Salt Lake City": "UT",
+  "Yellowstone NP": "WY",
+  "Idaho Falls": "ID",
+  "Twin Falls": "ID",
+  "Lake Louise": "AB",
+  "Banff": "AB",
+  "Rapid City": "SD",
+  "Mount Rushmore": "SD",
+  "Scottsbluff": "NE",
+  "Welcome to Oklahoma Sign, Devol OK": "OK",
+  "Jackson": "MS",
+  "Memphis": "TN",
+  "Nashville": "TN",
+  "Cincinnati": "OH",
+  "Cincinnatti": "OH",
+  "St Louis": "MO",
+  "National WWI Museum and Memorial": "MO",
+  "Kansas City, Kansas": "KS",
+  "Notre Dame": "IN",
+  "University of Notre Dame": "IN",
+  "Michigan Stadium": "MI",
+  "Detroit": "MI",
+  "Niagara Falls": "ON",
+  "Hockey Hall of Fame": "ON",
+  "Toronto Island Park": "ON",
+  "Ottawa": "ON",
+  "Kittery, ME": "ME",
+  "Providence": "RI",
+  "New Haven": "CT",
+  "Delaware": "DE",
+  "Baltimore": "MD",
+  "Harpers Ferry": "WV",
+
+  "Oakland Coliseum": "CA",
+  "Oracle Arena": "CA",
+  "Hollywood Bowl": "CA",
+  "ESPN Los Angeles Production Center": "CA",
+  "Petco Park": "CA",
+  "Chase Field": "AZ",
+  "MGM Grand Garden Arena": "NV",
+  "Lumen Field": "WA",
+  "Pepsi Center": "CO",
+  "AT&T Stadium": "TX",
+  "Cardinal Stadium": "KY",
+  "Paul Brown Stadium": "OH",
+  "Anderson University": "IN",
+  "Lucas Oil Stadium": "IN",
+  "Soldier Field": "IL",
+  "U.S. Cellular Field": "IL",
+  "Fenway Park": "MA",
+  "MetLife Stadium": "NJ",
+  "Barclays Center": "NY",
+  "Yankee Stadium": "NY",
+  "USTA Billie Jean King National Tennis Center": "NY",
+  "Citi Field": "NY",
+  "Lincoln Financial Field": "PA",
+  "Bank of America Stadium": "NC",
+  "Ben Hill Griffin Stadium": "FL",
+
+  "Arlington": "TX",
+  "East Rutherford": "NJ"
+};
+
 const FALLBACK_STATE_MILESTONES = {
   1: [{ code: "CA", number: 1 }],
   15: [{ code: "AZ", number: 2 }],
@@ -140,6 +276,25 @@ function getStateMilestones(day) {
   return FALLBACK_STATE_MILESTONES[dayNumber] || [];
 }
 
+
+
+function hasRegionSuffix(place) {
+  return /,\s*[A-Z]{2}(?:\/[A-Z]{2})*$/.test(String(place || "").trim());
+}
+
+function formatPlaceName(place) {
+  if (!place) return "";
+
+  const cleanPlace = String(place).trim();
+  const region = LOCATION_REGION_LABELS[cleanPlace];
+
+  if (!region || hasRegionSuffix(cleanPlace)) {
+    return cleanPlace;
+  }
+
+  return `${cleanPlace}, ${region}`;
+}
+
 function getRoutePlaces(day) {
   const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
 
@@ -150,11 +305,11 @@ function getRoutePlaces(day) {
 
 function getDayTitle(day) {
   if (day.start && day.finish && day.start !== day.finish) {
-    return `${day.start} → ${day.finish}`;
+    return `${formatPlaceName(day.start)} → ${formatPlaceName(day.finish)}`;
   }
 
-  if (day.finish) return day.finish;
-  if (day.start) return day.start;
+  if (day.finish) return formatPlaceName(day.finish);
+  if (day.start) return formatPlaceName(day.start);
   return `Day ${day.day}`;
 }
 
@@ -164,9 +319,12 @@ function getSearchHaystack(day) {
     day.date,
     day.start,
     day.finish,
+    formatPlaceName(day.start),
+    formatPlaceName(day.finish),
     day.type,
     day.via,
     ...(Array.isArray(day.viaStops) ? day.viaStops : []),
+    ...(Array.isArray(day.viaStops) ? day.viaStops.map(formatPlaceName) : []),
     day.hotel,
     day.event?.type,
     day.event?.name,
@@ -209,7 +367,7 @@ function renderRouteLine(day) {
   const parts = getRoutePlaces(day);
 
   return parts
-    .map(part => `<span>${escapeHtml(part)}</span>`)
+    .map(part => `<span>${escapeHtml(formatPlaceName(part))}</span>`)
     .join(`<span class="arrow">→</span>`);
 }
 
@@ -276,7 +434,7 @@ function renderEvent(day) {
       </div>
       ${venue || ticketLine ? `
         <div class="event-subline">
-          ${venue ? escapeHtml(venue) : ""}
+          ${venue ? escapeHtml(formatPlaceName(venue)) : ""}
           ${venue && ticketLine ? " · " : ""}
           ${ticketLine ? escapeHtml(ticketLine) : ""}
         </div>
@@ -295,7 +453,7 @@ function renderStopsLine(day) {
   return `
     <div class="compact-detail">
       <strong>Stops</strong>
-      <span>${viaStops.map(escapeHtml).join(" · ")}</span>
+      <span>${viaStops.map(stop => escapeHtml(formatPlaceName(stop))).join(" · ")}</span>
     </div>
   `;
 }
@@ -306,7 +464,7 @@ function renderCompactEventLine(day) {
   const event = day.event;
   const venue = event.venue || event.location || "";
   const type = event.type ? `${event.type} · ` : "";
-  const venueText = venue ? ` · ${venue}` : "";
+  const venueText = venue ? ` · ${formatPlaceName(venue)}` : "";
 
   return `
     <div class="compact-detail">
