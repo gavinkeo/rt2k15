@@ -13,7 +13,9 @@ const SPORTS_TYPES = new Set([
   "MLS",
   "NHL",
   "Tennis",
-  "MotoGP",
+  "UFC",
+  "WWE",
+  "Boxing"
   "TV Show"
 ]);
 
