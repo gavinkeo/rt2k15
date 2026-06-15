@@ -1631,3 +1631,152 @@ body::before {
 .day-photo-thumb:hover {
   border-color: rgba(179,25,66,0.36);
 }
+
+/* === Make itinerary feel more USA, less generic tricolour === */
+
+:root {
+  --usa-red: #b22234;
+  --usa-blue: #3c3b6e;
+  --usa-navy: #071f3d;
+}
+
+/* Warmer American road-trip paper tone */
+html {
+  background:
+    radial-gradient(circle at 12% 8%, rgba(60,59,110,0.20), transparent 28%),
+    radial-gradient(circle at 88% 5%, rgba(178,34,52,0.14), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(214,120,38,0.08), transparent 34%),
+    linear-gradient(180deg, #fb,0.14), transparent 24%),
+    radial-gradient(circle at f7ef 0%, #eee6d9 100%);
+}
+
+/* More obvious subtle star field */
+body::before {
+  opacity: 0.20;
+  background-image:
+    radial-gradient(circle, rgba(60,59,110,0.55) 1.1px, transparent 1.4px),
+    repeating-linear-gradient(
+      0deg,
+      rgba(178,34,52,0.045) 0,
+      rgba(178,34,52,0.045) 5px,
+      transparent 5px,
+      transparent 15px
+    );
+  background-size:
+    32px 32px,
+    auto;
+}
+
+/* Active filter: proper US flag red */
+.filter-btn:hover,
+.filter-btn.active {
+  background: var(--usa-red);
+  border-color: var(--usa-red);
+  color: #ffffff;
+}
+
+/* Week heading: replace French-feeling tricolour bar with mini flag stripe */
+.group-heading::before {
+  content: "★ ★ ★";
+  left: 42px;
+  top: 8px;
+  color: var(--usa-blue);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+}
+
+.group-heading::after {
+  width: 290px;
+  height: 8px;
+  margin-top: 10px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      var(--usa-red) 0,
+      var(--usa-red) 2px,
+      #ffffff 2px,
+      #ffffff 4px
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(60,59,110,0.12),
+    -58px 0 0 var(--usa-blue);
+}
+
+/* Day badge: more American shield feel */
+.day-badge {
+  background:
+    linear-gradient(180deg, var(--usa-blue), var(--usa-navy));
+  border-radius: 18px 18px 14px 14px;
+}
+
+.day-badge::before {
+  background: var(--usa-red);
+}
+
+.day-badge::after {
+  content: "★";
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  color: rgba(255,255,255,0.50);
+  font-size: 9px;
+}
+
+/* Card accent: tiny flag stripe on the left edge */
+.day-card {
+  overflow: hidden;
+}
+
+.day-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 18px;
+  bottom: 18px;
+  width: 5px;
+  border-radius: 999px;
+  background:
+    repeating-linear-gradient(
+      180deg,
+      var(--usa-red) 0,
+      var(--usa-red) 7px,
+      #ffffff 7px,
+      #ffffff 13px
+    );
+  box-shadow: 1px 0 0 rgba(60,59,110,0.18);
+}
+
+/* State box: less pink, more American stamp */
+.state-cell {
+  border-color: rgba(60,59,110,0.20);
+  background:
+    radial-gradient(circle at 100% 0%, rgba(178,34,52,0.07), transparent 45%),
+    linear-gradient(180deg, rgba(255,255,255,0.90), rgba(255,255,255,0.70));
+}
+
+.state-cell-label {
+  color: var(--usa-red);
+}
+
+.state-pill {
+  color: var(--usa-blue);
+  background:
+    linear-gradient(135deg, rgba(60,59,110,0.10), rgba(255,255,255,0.72));
+  border-color: rgba(60,59,110,0.18);
+}
+
+.state-pill::before {
+  content: "★";
+  margin-right: 5px;
+  color: var(--usa-red);
+  font-size: 9px;
+}
+
+/* Slightly stronger navy for important labels */
+.day-title,
+.compact-detail strong,
+.stat-cell-label,
+.search-box span {
+  color: var(--usa-navy);
+}
