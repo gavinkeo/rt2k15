@@ -269,18 +269,22 @@ function buildSportPlaceTickets(placesData, tripData) {
 function eventMatchesFilter(item) {
   const filter = String(activeFilter || "all").trim().toLowerCase();
 
-  if (filter === "all") return true;
+  // All means literally every item loaded onto this page,
+  // including synthetic sport-place tickets like Pebble Beach.
+  if (filter === "all") {
+    return true;
+  }
+
+  const itemType = String(item.type || "").trim().toLowerCase();
+  const itemGroup = String(item.group || "").trim().toLowerCase();
 
   if (filter === "other") {
     if (pageMode === "events") {
       return !NON_SPORT_MAIN_TYPES.has(item.type);
     }
 
-    return String(item.group || "").toLowerCase() === "other";
+    return itemGroup === "other";
   }
-
-  const itemType = String(item.type || "").trim().toLowerCase();
-  const itemGroup = String(item.group || "").trim().toLowerCase();
 
   return itemType === filter || itemGroup === filter;
 }
