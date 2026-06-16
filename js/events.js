@@ -469,13 +469,15 @@ function renderSummary() {
 function setupFilters() {
   filterButtons.forEach(button => {
     button.addEventListener("click", () => {
-activeFilter = String(button.dataset.filter || "all").trim();
+      activeFilter = String(button.getAttribute("data-filter") || "all").trim();
+
       filterButtons.forEach(btn => btn.classList.remove("active"));
       button.classList.add("active");
 
       renderEvents();
     });
   });
+}
 }
 
 async function init() {
