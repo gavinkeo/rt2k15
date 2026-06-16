@@ -110,7 +110,16 @@
         "Piedras Blancas Elephant Seal Rookery"
       ],
       "miles": 222,
-      "drivingTime": "4:45"
+      "drivingTime": "4:45",
+      "event": {
+        "type": "Golf",
+        "name": "Pebble Beach Golf Club Visit",
+        "venue": "Pebble Beach Golf Club",
+        "location": "Pebble Beach",
+        "ticket": {
+          "price": "FREE"
+        }
+      }
     },
     {
       "day": 7,
