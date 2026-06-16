@@ -184,94 +184,11 @@ function buildEventList(tripData) {
 }
 
 
-function getAllPlaces(placesData) {
-  if (!placesData) return [];
-  if (Array.isArray(placesData)) return placesData;
-  if (Array.isArray(placesData.places)) return placesData.places;
-  return [];
-}
-
-function normalisePlaceName(value) {
-  return String(value || "").trim().toLowerCase();
-}
-
-function findDayForSportPlace(place, tripData) {
-  const explicitDay = Number(place.day);
-
-  if (Number.isFinite(explicitDay) && explicitDay > 0) {
-    return tripData.days.find(day => Number(day.day) === explicitDay) || {
-      day: explicitDay,
-      date: place.date || "",
-      finish: place.location || ""
-    };
-  }
-
-  const target = normalisePlaceName(place.name);
-
-  return tripData.days.find(day => {
-    const viaStops = Array.isArray(day.viaStops) ? day.viaStops : [];
-    const eventVenue = day.event?.venue || "";
-
-    return [day.start, day.finish, eventVenue, ...viaStops]
-      .filter(Boolean)
-      .some(name => normalisePlaceName(name) === target);
-  }) || {
-    day: "",
-    date: place.date || "",
-    finish: place.location || ""
-  };
-}
-
-function buildSportPlaceTickets(placesData, tripData) {
-  if (pageMode !== "sports") return [];
-
-  return getAllPlaces(placesData)
-    .filter(place => place.type === "sport")
-    .map(place => {
-      const day = findDayForSportPlace(place, tripData);
-      const rawType = place.sportType || place.ticketType || "Golf";
-      const type = normaliseType(rawType);
-      const ticket = {
-        price: "FREE",
-        ...(place.ticket || {})
-      };
-
-      if (place.ticketCode || place.code) {
-        ticket.code = place.ticketCode || place.code;
-      }
-
-      return {
-        day,
-        event: {
-          type,
-          name: place.ticketName || `${place.name} Visit`,
-          venue: place.name,
-          location: place.location || day.finish || "",
-          ticket
-        },
-        type,
-        group: filterGroup(type),
-        name: place.ticketName || `${place.name} Visit`,
-        venue: place.name,
-        location: place.location || day.finish || "",
-        date: place.date || day.date,
-        logo: place.logo || getLogoPath(type),
-        stubGraphic: place.stubGraphic || "",
-        youtube: place.youtube || "",
-        boxscore: place.boxscore || "",
-        ticket
-      };
-    })
-    .filter(isCorrectPageItem);
-}
-
 
 function eventMatchesFilter(item) {
   const filter = String(activeFilter || "all").trim().toLowerCase();
 
-  if (filter === "all") {
-    return true;
-  }
+  if (filter === "all") return true;
 
   const itemType = String(item.type || "").trim().toLowerCase();
   const itemGroup = String(item.group || "").trim().toLowerCase();
@@ -476,7 +393,6 @@ function setupFilters() {
     });
   });
 }
-}
 
 async function init() {
   try {
@@ -488,24 +404,7 @@ async function init() {
 
     const tripData = await response.json();
 
-    let placesData = null;
-
-    if (pageMode === "sports") {
-      try {
-        const placesResponse = await fetch("data/places.json");
-
-        if (placesResponse.ok) {
-          placesData = await placesResponse.json();
-        }
-      } catch (placesError) {
-        console.warn("Could not load sport places from places.json:", placesError);
-      }
-    }
-
-    allEvents = [
-      ...buildEventList(tripData),
-      ...buildSportPlaceTickets(placesData, tripData)
-    ];
+    allEvents = buildEventList(tripData);
 
     renderSummary();
     setupFilters();
