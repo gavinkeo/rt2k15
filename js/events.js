@@ -269,8 +269,6 @@ function buildSportPlaceTickets(placesData, tripData) {
 function eventMatchesFilter(item) {
   const filter = String(activeFilter || "all").trim().toLowerCase();
 
-  // All means literally every item loaded onto this page,
-  // including synthetic sport-place tickets like Pebble Beach.
   if (filter === "all") {
     return true;
   }
